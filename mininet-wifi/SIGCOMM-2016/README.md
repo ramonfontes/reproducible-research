@@ -1,0 +1,1 @@
+Ramon dos Reis Fontes and Christian Esteve Rothenberg. Mininet-WiFi: A Platform for Hybrid Physical-Virtual Software-Defined Wireless Networking Research (SIGCOMM 2016) - 2016, Florianopolis - ES - Brazil.
