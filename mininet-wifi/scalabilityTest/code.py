@@ -22,8 +22,8 @@ import matplotlib.pyplot as plt
 import pylab
 
 nr_nodes_single = 256 #Single Topo
-nr_nodes = 256 #Linear Topo
-r = 1  #Repetitions
+nr_nodes_linear = 256 #Linear Topo
+repetitions = 1  #Repetitions
 RANGE = 16
 pmem_ovs_linear = []
 pmem_user_linear = []
@@ -57,9 +57,9 @@ def runExperiment():
     """Run Experiment"""
     
     print 'Testing OVS linear topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 1
-        while i <= nr_nodes:
+        while i <= nr_nodes_linear:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
             v = (int(subprocess.check_output(mem, shell=True)))
             os.system('echo %s >> %s' % (v, mem_ovs_linear))
@@ -71,9 +71,9 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting User linear topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 1
-        while i <= nr_nodes:
+        while i <= nr_nodes_linear:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
             v = (int(subprocess.check_output(mem, shell=True)))
             os.system('echo %s >> %s' % (v, mem_user_linear))
@@ -85,7 +85,7 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting OVS single topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 1
         while i <= nr_nodes_single:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
@@ -99,7 +99,7 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting User single topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 1
         while i <= nr_nodes_single:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
@@ -113,9 +113,9 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting ICMP OVS linear topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 2
-        while i <= nr_nodes:
+        while i <= nr_nodes_linear:
             print 'Test %d: Number of access points: %d' % (n, i)
             step1 = '\"sta1 ping -c21 sta2\"'
             step2 = 'mn --wifi --topo=linear,%d 2>&1' % i
@@ -124,9 +124,9 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting ICMP User linear topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 2
-        while i <= nr_nodes:
+        while i <= nr_nodes_linear:
             print 'Test %d: Number of access points: %d' % (n, i)
             step1 = '\"sta1 ping -c21 sta2\"'
             step2 = 'mn --wifi --ap user --topo=linear,%d 2>&1' % i
@@ -135,7 +135,7 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting ICMP OVS single topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 2
         while i <= nr_nodes_single:
             print 'Test %d: Number of Stations: %d' % (n, i)
@@ -146,7 +146,7 @@ def runExperiment():
             i = numberOfNodes(i)
     
     print '\nTesting ICMP User single topo...'
-    for n in range(0, r):
+    for n in range(0, repetitions):
         i = 2
         while i <= nr_nodes_single:
             print 'Test %d: Number of Stations: %d' % (n, i)
@@ -301,7 +301,7 @@ def buildGraph():
     nSINGLEicmpOVS = []
     nSINGLEicmpUser = []
     
-    nrn = (((nr_nodes / RANGE) + 1))
+    nrn = (((nr_nodes_linear / RANGE) + 1))
     nrnSINGLE = (((nr_nodes_single / RANGE) + 1))
     for x in range(0, (nrn)):
         ntovs.append(0)
@@ -324,7 +324,7 @@ def buildGraph():
     icmpNodes = []
     for x in range(0, nrn):
         b = x
-        for k in range(0, r):
+        for k in range(0, repetitions):
             ntovs[x] = ntovs[x] + tovs[b] / 60
             ntuser[x] = ntuser[x] + tuser[b] / 60
             nmovs[x] = nmovs[x] + movs[b]
@@ -332,12 +332,12 @@ def buildGraph():
             nicmpOVS[x] = nicmpOVS[x] + icmpOVS[b]
             nicmpUser[x] = nicmpUser[x] + icmpUser[b]
             b = x + (RANGE + 1)
-        ntovs[x] = ntovs[x] / r
-        ntuser[x] = ntuser[x] / r
-        nmovs[x] = nmovs[x] / r
-        nmuser[x] = nmuser[x] / r
-        nicmpUser[x] = nicmpUser[x] / r
-        nicmpOVS[x] = nicmpOVS[x] / r
+        ntovs[x] = ntovs[x] / repetitions
+        ntuser[x] = ntuser[x] / repetitions
+        nmovs[x] = nmovs[x] / repetitions
+        nmuser[x] = nmuser[x] / repetitions
+        nicmpUser[x] = nicmpUser[x] / repetitions
+        nicmpOVS[x] = nicmpOVS[x] / repetitions
         nodes.append(i)
         if i == 1:
             icmpNodes.append(i + 1)
@@ -350,7 +350,7 @@ def buildGraph():
     icmpNodesSINGLE = []
     for x in range(0, nrnSINGLE):
         b = x
-        for k in range(0, r):
+        for k in range(0, repetitions):
             nSINGLEtovs[x] = nSINGLEtovs[x] + tSINGLEovs[b] / 60 #convert to minutes
             nSINGLEtuser[x] = nSINGLEtuser[x] + tSINGLEuser[b] / 60 #convert to minutes
             nSINGLEmovs[x] = nSINGLEmovs[x] + mSINGLEovs[b]
@@ -358,12 +358,12 @@ def buildGraph():
             nSINGLEicmpOVS[x] = nSINGLEicmpOVS[x] + icmpOVSSINGLE[b]
             nSINGLEicmpUser[x] = nSINGLEicmpUser[x] + icmpUserSINGLE[b]
             b = x + (RANGE + 1)
-        nSINGLEtovs[x] = nSINGLEtovs[x] / r
-        nSINGLEtuser[x] = nSINGLEtuser[x] / r
-        nSINGLEmovs[x] = nSINGLEmovs[x] / r
-        nSINGLEmuser[x] = nSINGLEmuser[x] / r
-        nSINGLEicmpUser[x] = nSINGLEicmpUser[x] / r
-        nSINGLEicmpOVS[x] = nSINGLEicmpOVS[x] / r
+        nSINGLEtovs[x] = nSINGLEtovs[x] / repetitions
+        nSINGLEtuser[x] = nSINGLEtuser[x] / repetitions
+        nSINGLEmovs[x] = nSINGLEmovs[x] / repetitions
+        nSINGLEmuser[x] = nSINGLEmuser[x] / repetitions
+        nSINGLEicmpUser[x] = nSINGLEicmpUser[x] / repetitions
+        nSINGLEicmpOVS[x] = nSINGLEicmpOVS[x] / repetitions
         nodesSINGLE.append(i)
         if i == 1:
             icmpNodesSINGLE.append(i + 1)
@@ -379,7 +379,7 @@ def buildGraph():
     ax1.set_ylabel("start+shutdown time (minutes)", fontsize=20)
     ax1.set_xlabel("# of Access Points", fontsize=20)
     ax1.set_title('Linear Topo')
-    plt.xlim([0, nr_nodes + 2])
+    plt.xlim([0, nr_nodes_linear + 2])
     plt.ylim([0, plt.ylim()[1]])
     plt.savefig("report_Time_Linear.eps")
     
@@ -391,7 +391,7 @@ def buildGraph():
     ax1.set_ylabel("memory usage (megabytes)", fontsize=20)
     ax1.set_xlabel("# of Access Points", fontsize=20)
     ax1.set_title('Linear Topo')
-    plt.xlim([0, nr_nodes + 2])
+    plt.xlim([0, nr_nodes_linear + 2])
     plt.ylim([0, plt.ylim()[1]])
     plt.savefig("report_Memory_Linear.eps")
     
@@ -403,7 +403,7 @@ def buildGraph():
     ax1.set_ylabel("start+shutdown time (minutes)", fontsize=20)
     ax1.set_xlabel("# of Stations", fontsize=20)
     ax1.set_title('Single Topo')
-    plt.xlim([0, nr_nodes + 2])
+    plt.xlim([0, nr_nodes_single + 2])
     plt.ylim([0, plt.ylim()[1]])
     plt.savefig("report_Time_Single.eps")
     
@@ -415,7 +415,7 @@ def buildGraph():
     ax1.set_ylabel("memory usage (megabytes)", fontsize=20)
     ax1.set_xlabel("# of Stations", fontsize=20)
     ax1.set_title('Single Topo')
-    plt.xlim([0, nr_nodes + 2])
+    plt.xlim([0, nr_nodes_single + 2])
     plt.ylim([0, plt.ylim()[1]])
     plt.savefig("report_Memory_Single.eps")
     
@@ -427,7 +427,7 @@ def buildGraph():
     ax1.set_ylabel("time response (ms)", fontsize=20)
     ax1.set_xlabel("# of Access Points", fontsize=20)
     ax1.set_title('Linear Topo')
-    plt.xlim([0, nr_nodes + 2])
+    plt.xlim([0, nr_nodes_linear + 2])
     plt.ylim([0, plt.ylim()[1]])
     plt.savefig("report_ICMP_Linear.eps")
     
@@ -439,7 +439,7 @@ def buildGraph():
     ax1.set_ylabel("time response (ms)", fontsize=20)
     ax1.set_xlabel("# of Stations", fontsize=20)
     ax1.set_title('Single Topo')
-    plt.xlim([0, nr_nodes + 2])
+    plt.xlim([0, nr_nodes_single + 2])
     plt.ylim([0, plt.ylim()[1]])
     plt.savefig("report_ICMP_Single.eps")
 
