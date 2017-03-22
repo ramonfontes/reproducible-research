@@ -1,5 +1,6 @@
 ### Requirements to reproduce the results of this work:
-* Mininet-WiFi
+* Mininet-WiFi  
+* Further requirements are installed during the Mininet-WiFi installation.  
 
 ### How to reproduce this work:
 * Run the code with **python code.py**
