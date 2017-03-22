@@ -10,7 +10,7 @@
 ### You migh be interested in define the number of repetitions:
 * If so, please define the number of repetitions in **repetitions**
 
-### Server and software specifications of the deployment environment (it refers the results presented in the eps files):
+### Server and software specifications of the deployment environment (it refers the results presented into the eps files):
 
 * **Server**:	Lenovo ThinkServer RD640  
 * **Memory**:	24 GB  
