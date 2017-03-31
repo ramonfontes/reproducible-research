@@ -1,3 +1,5 @@
+#### Please refer the manual of Mininet-WiFi to reproduce this paper.  
+#### bibtex
 @inproceedings{fontes2015mininet,  
   title={Mininet-WiFi: Emulating software-defined wireless networks},  
   author={Fontes, Ramon R and Afzal, Samira and Brito, Samuel HB and Santos, Mateus AS and Rothenberg, Christian Esteve},  
