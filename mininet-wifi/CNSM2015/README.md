@@ -1,1 +1,8 @@
-Fontes, R. R., Afzal, S., Brito, S. H. B., Santos, M., Rothenberg, C. E. “Mininet-WiFi: Emulating Software-Defined Wireless Networks“. In 2nd International Workshop on Management of SDN and NFV Systems 2015. Barcelona, Spain, Nov 2015.
+@inproceedings{fontes2015mininet,  
+  title={Mininet-WiFi: Emulating software-defined wireless networks},  
+  author={Fontes, Ramon R and Afzal, Samira and Brito, Samuel HB and Santos, Mateus AS and Rothenberg, Christian Esteve},  
+  booktitle={Network and Service Management (CNSM), 2015 11th International Conference on},  
+  pages={384--389},  
+  year={2015},  
+  organization={IEEE}  
+}
