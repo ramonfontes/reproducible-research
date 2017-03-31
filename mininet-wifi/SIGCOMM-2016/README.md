@@ -1,6 +1,6 @@
 
 #### Please refer the manual of Mininet-WiFi to reproduce this paper.  
-#### bibtex
+#### bibtex:
 @inproceedings{fontes2016mininet,  
   title={Mininet-WiFi: A Platform for Hybrid Physical-Virtual Software-Defined Wireless Networking Research},  
   author={Fontes, Ramon dos Reis and Rothenberg, Christian Esteve},  
