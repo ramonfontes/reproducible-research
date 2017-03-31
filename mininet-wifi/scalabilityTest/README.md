@@ -1,6 +1,6 @@
 ### Requirements to reproduce the results of this work:
 * Mininet-WiFi  
-* Further requirements are installed during the Mininet-WiFi installation.  
+* Further requirements are installed when you install Mininet-WiFi.  
 
 ### How to reproduce this work:
 * Run the code with **python code.py**
@@ -21,4 +21,7 @@
 * **Mininet-WiFi**:	2.0r2  
 * **Open vSwitch**:	2.5.0  
 * **OpenFlow Reference Implementation**:	1.0.0  
+
+### Please note that the code available at this page includes an extra test:   
+The extra test is about sending data over ICMP with ping between two nodes, where the nodes (sta1 and sta2) are associated to the first two access points. The idea is to identify the impact of the consumed memory in the final results of the ping response time.   
 
