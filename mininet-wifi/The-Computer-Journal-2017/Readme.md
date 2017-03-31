@@ -1,3 +1,7 @@
+### Please refer the manual of Mininet-WiFi to reproduce this paper.
+
+### Bibtex:
+
 @article{Fontes2017,  
   doi = {10.1093/comjnl/bxx023},  
   url = {https://doi.org/10.1093%2Fcomjnl%2Fbxx023},  
