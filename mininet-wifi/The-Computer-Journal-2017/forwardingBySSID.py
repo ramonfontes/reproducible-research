@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 """
+Before running this script please stop network-manager:
+service network-manager stop
 This example shows how to create multiple SSID at the same AP and ideas around SSID-based packet forwarding
-see: *n_ssids*
- 
             --------
              ssid-4
             --------
@@ -28,7 +28,7 @@ import time
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=UserSwitch )
+    net = Mininet( controller=Controller, link=TCLink, switch=UserSwitch, disableAutoAssociation=True )
 
     print "*** Creating nodes"
     sta1 = net.addStation( 'sta1', position='10,60,0' )
@@ -55,7 +55,7 @@ def topology():
     sta3.setRange(15)
     sta4.setRange(15)
     sta5.setRange(15)
-    
+
     sta1.cmd('iwconfig sta1-wlan0 essid %s ap %s' % (ap1.params['ssid'][1], ap1.params['mac'][1]))
     sta2.cmd('iwconfig sta2-wlan0 essid %s ap %s' % (ap1.params['ssid'][2], ap1.params['mac'][2]))
     sta3.cmd('iwconfig sta3-wlan0 essid %s ap %s' % (ap1.params['ssid'][2], ap1.params['mac'][2]))
