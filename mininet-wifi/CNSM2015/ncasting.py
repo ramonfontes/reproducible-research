@@ -7,7 +7,7 @@ import subprocess
 import os
 
 from mininet.net import Mininet
-from mininet.node import  RemoteController, OVSKernelSwitch
+from mininet.node import  RemoteController, OVSKernelSwitch, OVSKernelAP
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 from mininet.link import TCLink
@@ -25,7 +25,7 @@ h1----s1        sta1
 
 def topology():
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP )
 
     print "*** Creating nodes"
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid_1", mode="g", channel="5" )

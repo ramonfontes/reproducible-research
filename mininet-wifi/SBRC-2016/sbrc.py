@@ -5,7 +5,7 @@
    authors: Ramon dos Reis Fontes and Christian Esteve Rothenberg"""
 
 from mininet.net import Mininet
-from mininet.node import RemoteController,OVSKernelSwitch, Controller
+from mininet.node import RemoteController, OVSKernelAP, Controller
 from mininet.link import TCLink
 from mininet.cli import CLI
 from mininet.node import Node
@@ -16,14 +16,14 @@ import time
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet( controller=RemoteController, link=TCLink, accessPoint=OVSKernelAP )
     staList = []
 
     print "*** Creating nodes"
     for n in range(10):
 	staList.append(n)
 	staList[n] = net.addStation( 'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:%s' % (n+1), ip='192.168.0.%s/24' % (n+1) )
-    phyap1 = net.addPhysicalBaseStation( 'phyap1', ssid= 'SBRC16-MininetWiFi', mode= 'g', channel= '1', position='50,115,0', phywlan='wlan11' )
+    phyap1 = net.addPhysicalBaseStation( 'phyap1', ssid='SBRC16-MininetWiFi', mode='g', channel='1', position='50,115,0', phywlan='wlan1' )
     sta11 = net.addStation( 'sta11', ip='10.0.0.111/8', position='120,200,0')
     ap2 = net.addAccessPoint( 'ap2', ssid= 'ap2', mode= 'g', channel= '11', position='100,175,0' )
     ap3 = net.addAccessPoint( 'ap3', ssid= 'ap3', mode= 'g', channel= '6', position='150,50,0' )
@@ -64,7 +64,7 @@ def topology():
         ip+=1
 
     "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWayPoint, GaussMarkov, ReferencePoint, TimeVariantCommunity ***"
-    net.startMobility(startTime=0, model='RandomWalk', max_x=220, max_y=220, min_v=0.1, max_v=0.2)
+    net.startMobility(time=0, model='RandomWalk', max_x=220, max_y=220, min_v=0.1, max_v=0.2)
 
     print "*** Running CLI"
     CLI( net )

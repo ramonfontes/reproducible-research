@@ -3,7 +3,7 @@
 """This example is based on this video: https://www.youtube.com/watch?v=_C4H2gBdyQY"""
 
 from mininet.net import Mininet
-from mininet.node import Controller,OVSKernelSwitch
+from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP
 from mininet.link import TCLink
 from mininet.cli import CLI
 from mininet.log import setLogLevel
@@ -11,7 +11,7 @@ import os
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP )
 
     print "*** Creating nodes"
     sta1 = net.addStation( 'sta1', wlans=2, ip='10.0.0.2/8', max_x=120, max_y=50, min_v=1.4, max_v=1.6 )
