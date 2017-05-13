@@ -1,8 +1,6 @@
 #!/usr/bin/python
 
-"""
-Handover example.
-"""
+'Example for handover'
 
 from mininet.net import Mininet
 from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP
@@ -13,15 +11,15 @@ from mininet.log import setLogLevel
 def topology():
 
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP )
+    net = Mininet(controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
 
     print "*** Creating nodes"
-    sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8' )
-    ap1 = net.addAccessPoint( 'ap1', ssid= 'new-ssid1', mode= 'g', channel= '1', position='15,30,0' )
-    ap2 = net.addAccessPoint( 'ap2', ssid= 'new-ssid1', mode= 'g', channel= '6', position='55,30,0' )
-    s3 = net.addSwitch( 's3' )
-    h1 = net.addHost( 'h1', mac='00:00:00:00:00:02', ip='10.0.0.2/8' )
-    c1 = net.addController( 'c1', controller=Controller, port=6653 )
+    sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8')
+    ap1 = net.addAccessPoint('ap1', ssid='new-ssid1', mode='g', channel='1', position='15,30,0')
+    ap2 = net.addAccessPoint('ap2', ssid='new-ssid1', mode='g', channel='6', position='55,30,0')
+    s3 = net.addSwitch('s3')
+    h1 = net.addHost('h1', mac='00:00:00:00:00:02', ip='10.0.0.2/8')
+    c1 = net.addController('c1', controller=Controller, port=6653)
 
     print "*** Configuring WiFi Nodes"
     net.configureWifiNodes()
@@ -37,9 +35,9 @@ def topology():
     print "*** Starting network"
     net.build()
     c1.start()
-    ap1.start( [c1] )
-    ap2.start( [c1] )
-    s3.start( [c1] )
+    ap1.start([c1])
+    ap2.start([c1])
+    s3.start([c1])
 
     """uncomment to plot graph"""
     net.plotGraph(max_x=100, max_y=100)
@@ -50,11 +48,11 @@ def topology():
     net.stopMobility(stopTime=80)
 
     print "*** Running CLI"
-    CLI( net )
+    CLI(net)
 
     print "*** Stopping network"
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel( 'info' )
+    setLogLevel('info')
     topology()
