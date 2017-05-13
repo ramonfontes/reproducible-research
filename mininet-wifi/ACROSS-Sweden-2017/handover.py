@@ -42,10 +42,10 @@ def topology():
     """uncomment to plot graph"""
     net.plotGraph(max_x=100, max_y=100)
 
-    net.startMobility(startTime=0)
+    net.startMobility(time=0)
     net.mobility(sta1, 'start', time=1, position='10,30,0')
     net.mobility(sta1, 'stop', time=80, position='60,30,0')
-    net.stopMobility(stopTime=80)
+    net.stopMobility(time=80)
 
     print "*** Running CLI"
     CLI(net)
