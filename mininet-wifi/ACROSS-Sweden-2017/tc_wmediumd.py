@@ -27,6 +27,9 @@ def topology(wmediumd):
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
 
+    print "*** Configuring Propagation Model"
+    net.propagationModel("logDistancePropagationLossModel", exp = 3.5)
+
     print "*** Starting network"
     net.build()
     c1.start()
