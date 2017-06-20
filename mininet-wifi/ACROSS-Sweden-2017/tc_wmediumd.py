@@ -13,7 +13,7 @@ def topology(wmediumd):
 
     "Create a network."
     if wmediumd:
-        net = Mininet(controller=Controller, link=TCLink, accessPoint=OVSKernelAP, useWmediumd=True, enable_interference=True)
+        net = Mininet(controller=Controller, link=TCLink, accessPoint=OVSKernelAP, enable_wmediumd=True, enable_interference=True)
     else:
         net = Mininet(controller=Controller, link=TCLink, accessPoint=OVSKernelAP)
 
