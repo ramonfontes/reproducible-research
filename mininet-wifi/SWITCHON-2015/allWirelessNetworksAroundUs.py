@@ -43,6 +43,15 @@ def topology():
     sta1.cmd('ip addr add 10.0.0.10/8 dev bond0')
     sta1.cmd('ip link set bond0 up')
 
+    'seed'
+    net.seed(12)
+
+    'plotting graph'
+    net.plotGraph(max_x=140, max_y=140)
+
+    "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWaypoint, GaussMarkov ***"
+    net.startMobility(startTime=0, model='RandomDirection')
+
     print "*** Starting network"
     net.build()
     c1.start()
@@ -53,15 +62,6 @@ def topology():
 
     sta1.cmd('ip addr del 10.0.0.2/8 dev sta1-wlan0')
     os.system('ovs-ofctl add-flow s4 actions=normal')
-
-    """seed"""
-    net.seed(12)
-
-    """uncomment to plot graph"""
-    net.plotGraph(max_x=140, max_y=140)
-    
-    "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWaypoint, GaussMarkov ***"
-    net.startMobility(startTime=0, model='RandomDirection')
 
     print "*** Running CLI"
     CLI( net )

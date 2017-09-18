@@ -30,13 +30,13 @@ def topology(wmediumd):
     print "*** Configuring Propagation Model"
     net.propagationModel("logDistancePropagationLossModel", exp = 3.5)
 
+    'plotting graph'
+    net.plotGraph(max_x=150, max_y=150)
+
     print "*** Starting network"
     net.build()
     c1.start()
     ap1.start([c1])
-
-    """uncomment to plot graph"""
-    net.plotGraph(max_x=150, max_y=150)
 
     print "*** Running CLI"
     CLI(net)

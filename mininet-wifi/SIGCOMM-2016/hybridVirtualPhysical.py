@@ -5,7 +5,7 @@
    authors: Ramon dos Reis Fontes and Christian Esteve Rothenberg"""
 
 """Topology
-        
+
              (2)ap2(3)
             /         \
           (3)          (2)

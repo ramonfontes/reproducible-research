@@ -32,20 +32,20 @@ def topology():
     net.addLink(ap2, s3)
     net.addLink(h1, s3)
 
-    print "*** Starting network"
-    net.build()
-    c1.start()
-    ap1.start([c1])
-    ap2.start([c1])
-    s3.start([c1])
-
-    """uncomment to plot graph"""
+    'plotting graph'
     net.plotGraph(max_x=100, max_y=100)
 
     net.startMobility(time=0)
     net.mobility(sta1, 'start', time=1, position='10,30,0')
     net.mobility(sta1, 'stop', time=80, position='60,30,0')
     net.stopMobility(time=80)
+
+    print "*** Starting network"
+    net.build()
+    c1.start()
+    ap1.start([c1])
+    ap2.start([c1])
+    s3.start([c1])
 
     print "*** Running CLI"
     CLI(net)

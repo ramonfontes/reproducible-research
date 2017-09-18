@@ -32,7 +32,7 @@ def topology():
     net.addHoc(sta5, ssid='adhocNet')
     net.addHoc(sta6, ssid='adhocNet')
 
-    net.plotGraph(max_x=200, max_y=200)
+    net.plotGraph(max_x=200, max_y=200, max_z=200)
 
     print "*** Starting network"
     net.build()

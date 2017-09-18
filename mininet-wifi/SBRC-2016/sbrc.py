@@ -34,7 +34,7 @@ def topology():
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
 
-    """uncomment to plot graph"""
+    'plotting graph'
     net.plotGraph(max_x=220, max_y=220)
 
     """Routing"""
@@ -50,6 +50,9 @@ def topology():
     net.addLink(ap2, ap3)
     net.addLink(ap3, ap4)
 
+    "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWayPoint, GaussMarkov, ReferencePoint, TimeVariantCommunity ***"
+    net.startMobility(time=0, model='RandomWalk', max_x=220, max_y=220, min_v=0.1, max_v=0.2)
+
     print "*** Starting network"
     net.build()
     c1.start()
@@ -62,9 +65,6 @@ def topology():
     for sta in staList:
         sta.setIP('10.0.0.%s/8' % ip, intf="%s-wlan1" % sta)
         ip+=1
-
-    "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWayPoint, GaussMarkov, ReferencePoint, TimeVariantCommunity ***"
-    net.startMobility(time=0, model='RandomWalk', max_x=220, max_y=220, min_v=0.1, max_v=0.2)
 
     print "*** Running CLI"
     CLI( net )
