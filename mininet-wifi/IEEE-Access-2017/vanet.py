@@ -1,11 +1,11 @@
 # !/usr/bin/python
 
 """
-This code illustrates a single case about Vehicular Ad-Hoc Networks. 
+This code illustrates a single case about Vehicular Ad-Hoc Networks.
 More detail about VANET implementation can be found at the paper titled
 From Theory to Experimental Evaluation: Resource Management in Software-Defined Vehicular Networks
-url: ...
-Video clip available at:
+url: http://ieeexplore.ieee.org/document/7859348/
+Video clip available at: https://www.youtube.com/watch?v=kO3O9EwrP_s
 """
 
 import os
@@ -43,58 +43,58 @@ def graphic():
 
     # initialize some variable to be lists:
     time_ = []
-    
+
     l1 = []
     l2 = []
     t1 = []
     t2 = []
-        
+
     ll1 = []
     ll2 = []
     tt1 = []
     tt2 = []
-    
+
     # scan the rows of the file stored in lines, and put the values into some variables:
     i = 0
-    for x in s_pkt:    
+    for x in s_pkt:
         p = x.split()
         l1.append(int(p[0]))
         if len(l1) > 1:
             ll1.append(l1[i] - l1[i - 1])
         i += 1
-    
+
     i = 0
-    for x in s_throughput:    
+    for x in s_throughput:
         p = x.split()
         t1.append(int(p[0]))
         if len(t1) > 1:
             tt1.append(t1[i] - t1[i - 1])
         i += 1
-    
+
     i = 0
-    for x in c_pkt:    
+    for x in c_pkt:
         p = x.split()
         l2.append(int(p[0]))
         if len(l2) > 1:
             ll2.append(l2[i] - l2[i - 1])
         i += 1
-    
+
     i = 0
-    for x in c_throughput:    
+    for x in c_throughput:
         p = x.split()
         t2.append(int(p[0]))
         if len(t2) > 1:
             tt2.append(t2[i] - t2[i - 1])
         i += 1
-    
+
     i = 0
-    for x in range(len(ll1)):    
+    for x in range(len(ll1)):
         time_.append(i)
         i = i + 0.5
-    
+
     fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
-    
+
     ax1.plot(time_, ll1, color='red', label='Received Data (client)', ls="--", markevery=7, linewidth=1)
     ax1.plot(time_, ll2, color='black', label='Transmited Data (server)', markevery=7, linewidth=1)
     ax2.plot(time_, tt1, color='red', label='Throughput (client)', ls="-.", markevery=7, linewidth=1)
@@ -125,7 +125,7 @@ def topology():
         car.append(x)
         stas.append(x)
     for x in range(0, 4):
-        car[x] = net.addCar('car%s' % (x), wlans=2, ip='10.0.0.%s/8' % (x + 1), \
+        car[x] = net.addCar('car%s' % (x), ip='10.0.0.%s/8' % (x + 1), \
         mac='00:00:00:00:00:0%s' % x, mode='b', position='%d,%d,0' % ((120 - (x * 20)), (100 - (x * 0))))
 
     eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='1', position='80,75,0')
@@ -139,7 +139,7 @@ def topology():
     net.plotNode(switch, position='125,200,0')
 
     print "*** Configuring wifi nodes"
-    net.configureWifiNodes()  
+    net.configureWifiNodes()
 
     print "*** Creating links"
     net.addLink(eNodeB1, switch)
@@ -158,7 +158,7 @@ def topology():
     rsu1.start([c1])
     switch.start([c1])
 
-    for sw in net.vehicles:
+    for sw in net.carsSW:
         sw.start([c1])
 
     i = 1
@@ -172,25 +172,25 @@ def topology():
 
     i = 1
     j = 2
-    for v in net.vehiclesSTA:
+    for v in net.carsSTA:
         v.cmd('ifconfig %s-eth0 192.168.1.%s/24 up' % (v, j))
         v.cmd('ifconfig %s-mp0 10.0.0.%s/24 up' % (v, i))
         v.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
         i += 1
         j += 2
 
-    for v1 in net.vehiclesSTA:
+    for v1 in net.carsSTA:
         i = 1
         j = 1
-        for v2 in net.vehiclesSTA:
+        for v2 in net.carsSTA:
             if v1 != v2:
                 v1.cmd('route add -host 192.168.1.%s gw 10.0.0.%s' % (j, i))
             i += 1
             j += 2
 
     client.cmd('ifconfig client-eth0 200.0.10.2')
-    net.vehiclesSTA[3].cmd('ifconfig car3STA-eth1 200.0.10.1')
-    net.vehiclesSTA[0].cmd('ifconfig car0STA-eth0 200.0.10.50')
+    net.carsSTA[3].cmd('ifconfig car3STA-eth1 200.0.10.1')
+    net.carsSTA[0].cmd('ifconfig car0STA-eth0 200.0.10.50')
 
     car[0].cmd('modprobe bonding mode=3')
     car[0].cmd('ip link add bond0 type bond')
@@ -212,9 +212,9 @@ def topology():
     client.cmd('ip route add 192.168.1.8 via 200.0.10.150')
     client.cmd('ip route add 10.0.0.1 via 200.0.10.150')
 
-    net.vehiclesSTA[3].cmd('ip route add 200.0.10.2 via 192.168.1.7')
-    net.vehiclesSTA[3].cmd('ip route add 200.0.10.100 via 10.0.0.1')
-    net.vehiclesSTA[0].cmd('ip route add 200.0.10.2 via 10.0.0.4')
+    net.carsSTA[3].cmd('ip route add 200.0.10.2 via 192.168.1.7')
+    net.carsSTA[3].cmd('ip route add 200.0.10.100 via 10.0.0.1')
+    net.carsSTA[0].cmd('ip route add 200.0.10.2 via 10.0.0.4')
 
     car[0].cmd('ip route add 10.0.0.4 via 200.0.10.50')
     car[0].cmd('ip route add 192.168.1.7 via 200.0.10.50')
@@ -264,7 +264,7 @@ def topology():
             client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\' >> %s' % switch_throughput)
             i += 0.5
 
-    print "Moving nodes"    
+    print "Moving nodes"
     car[0].moveNodeTo('150,100,0')
     car[1].moveNodeTo('120,100,0')
     car[2].moveNodeTo('90,100,0')
@@ -336,7 +336,7 @@ def topology():
     CLI(net)
 
     #os.system('rm *.vanetdata')
-    
+
     print "*** Stopping network"
     net.stop()
 
