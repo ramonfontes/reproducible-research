@@ -17,7 +17,7 @@ def topology():
     ap1 = net.addAccessPoint('ap1', ssid="my-ssid", mode="a", channel="36", failMode='standalone', position='10,10,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistancePropagationLossModel", exp=3.5)
+    net.propagationModel("logDistancePropagationLossModel", exp=4)
 
     net.plotGraph(max_x=100, max_y=100)
 
@@ -34,5 +34,5 @@ def topology():
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('info')
+    setLogLevel('debug')
     topology()
