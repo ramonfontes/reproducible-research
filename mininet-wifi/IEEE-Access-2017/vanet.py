@@ -265,10 +265,10 @@ def topology():
             i += 0.5
 
     print "Moving nodes"
-    car[0].moveNodeTo('150,100,0')
-    car[1].moveNodeTo('120,100,0')
-    car[2].moveNodeTo('90,100,0')
-    car[3].moveNodeTo('70,100,0')
+    car[0].setPosition('150,100,0')
+    car[1].setPosition('120,100,0')
+    car[2].setPosition('90,100,0')
+    car[3].setPosition('70,100,0')
 
     #time.sleep(3)
 
@@ -298,10 +298,10 @@ def topology():
             i += 0.5
 
     print "Moving nodes"
-    car[0].moveNodeTo('190,100,0')
-    car[1].moveNodeTo('150,100,0')
-    car[2].moveNodeTo('120,100,0')
-    car[3].moveNodeTo('90,100,0')
+    car[0].setPosition('190,100,0')
+    car[1].setPosition('150,100,0')
+    car[2].setPosition('120,100,0')
+    car[3].setPosition('90,100,0')
 
     #time.sleep(2)
 
