@@ -138,6 +138,9 @@ def topology():
     net.plotNode(client, position='125,230,0')
     net.plotNode(switch, position='125,200,0')
 
+    print "*** Configuring Propagation Model"
+    net.propagationModel("logDistancePropagationLossModel", exp=3.5)
+
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
 
