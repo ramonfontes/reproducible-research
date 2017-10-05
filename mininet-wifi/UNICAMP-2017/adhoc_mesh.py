@@ -19,7 +19,7 @@ def topology():
     sta6 = net.addStation('sta6', position='100,140,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistancePropagationLossModel", exp=4)
+    net.propagationModel("logDistancePropagationLossModel", exp=4.5)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
@@ -32,7 +32,6 @@ def topology():
     net.addHoc(sta5, ssid='adhocNet')
     net.addHoc(sta6, ssid='adhocNet')
 
-    #net.plotGraph(max_x=200, max_y=200, max_z=200)
     net.plotGraph(max_x=200, max_y=200)
 
     print "*** Starting network"
@@ -45,5 +44,5 @@ def topology():
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('debug')
+    setLogLevel('info')
     topology()
