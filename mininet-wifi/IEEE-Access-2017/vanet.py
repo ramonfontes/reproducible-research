@@ -114,6 +114,7 @@ def graphic():
 def topology():
 
     taskTime = 20
+    cars = 4
 
     "Create a network."
     net = Mininet(controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
@@ -121,16 +122,16 @@ def topology():
     print "*** Creating nodes"
     car = []
     stas = []
-    for x in range(0, 4):
-        car.append(x)
-        stas.append(x)
-    for x in range(0, 4):
-        car[x] = net.addCar('car%s' % (x), ip='10.0.0.%s/8' % (x + 1), \
-        mac='00:00:00:00:00:0%s' % x, mode='b', position='%d,%d,0' % ((120 - (x * 20)), (100 - (x * 0))))
+    for idx in range(0, cars):
+        car.append(idx)
+        stas.append(idx)
+    for idx in range(0, cars):
+        car[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8' % (idx + 1), range=40, \
+        mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0' % ((120 - (idx * 20)), (100 - (idx * 0))))
 
-    eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='1', position='80,75,0')
-    eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='6', position='180,75,0')
-    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', position='140,120,0')
+    eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='36', range=70, position='80,75,0')
+    eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='40', range=70, position='180,75,0')
+    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', range=50, position='140,120,0')
     c1 = net.addController('c1', controller=Controller)
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
@@ -338,7 +339,7 @@ def topology():
     print "*** Running CLI"
     CLI(net)
 
-    #os.system('rm *.vanetdata')
+    os.system('rm *.vanetdata')
 
     print "*** Stopping network"
     net.stop()
