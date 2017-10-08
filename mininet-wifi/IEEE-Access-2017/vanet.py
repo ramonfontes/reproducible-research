@@ -131,7 +131,7 @@ def topology():
 
     eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='36', range=70, position='80,75,0')
     eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='40', range=70, position='180,75,0')
-    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', range=50, position='140,120,0')
+    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', range=45, position='140,120,0')
     c1 = net.addController('c1', controller=Controller)
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
@@ -153,6 +153,9 @@ def topology():
     net.addLink(rsu1, car[0])
     net.addLink(eNodeB2, car[0])
     net.addLink(eNodeB1, car[3])
+
+    'Plotting Graph'
+    net.plotGraph(max_x=250, max_y=250)
 
     print "*** Starting network"
     net.build()
@@ -224,9 +227,6 @@ def topology():
     car[0].cmd('ip route add 192.168.1.7 via 200.0.10.50')
     car[0].cmd('ip route add 200.0.10.2 via 200.0.10.50')
     car[3].cmd('ip route add 200.0.10.100 via 192.168.1.8')
-
-    """uncomment to plot graph"""
-    net.plotGraph(max_x=250, max_y=250)
 
     os.system('rm *.vanetdata')
 
