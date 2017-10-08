@@ -193,7 +193,7 @@ def topology():
             j += 2
 
     client.cmd('ifconfig client-eth0 200.0.10.2')
-    net.carsSTA[3].cmd('ifconfig car3STA-eth1 200.0.10.1')
+    net.carsSTA[3].cmd('ifconfig car3STA-eth0 200.0.10.1')
     net.carsSTA[0].cmd('ifconfig car0STA-eth0 200.0.10.50')
 
     car[0].cmd('modprobe bonding mode=3')
@@ -227,8 +227,6 @@ def topology():
 
     """uncomment to plot graph"""
     net.plotGraph(max_x=250, max_y=250)
-
-    net.startGraph()
 
     os.system('rm *.vanetdata')
 
@@ -339,7 +337,7 @@ def topology():
     print "*** Running CLI"
     CLI(net)
 
-    os.system('rm *.vanetdata')
+    #os.system('rm *.vanetdata')
 
     print "*** Stopping network"
     net.stop()
