@@ -1,7 +1,6 @@
 # !/usr/bin/python
 
-"""
-This code illustrates a single case about Vehicular Ad-Hoc Networks.
+"""This code illustrates a single case about Vehicular Ad-Hoc Networks.
 More detail about VANET implementation can be found at the paper titled
 From Theory to Experimental Evaluation: Resource Management in Software-Defined Vehicular Networks
 url: http://ieeexplore.ieee.org/document/7859348/
@@ -13,7 +12,7 @@ import time
 import matplotlib.pyplot as plt
 
 from mininet.net import Mininet
-from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP
+from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP, Car
 from mininet.link import TCLink
 from mininet.log import setLogLevel
 from mininet.cli import CLI
@@ -95,10 +94,10 @@ def graphic():
     fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
 
-    ax1.plot(time_, ll1, color='red', label='Received Data (client)', ls="--", markevery=7, linewidth=1)
+    ax1.plot(time_, ll1, color='red', label='Received Data (client)', markevery=7, linewidth=1)
     ax1.plot(time_, ll2, color='black', label='Transmited Data (server)', markevery=7, linewidth=1)
-    ax2.plot(time_, tt1, color='red', label='Throughput (client)', ls="-.", markevery=7, linewidth=1)
-    ax2.plot(time_, tt2, color='black', label='Throughput (server)', ls=':', markevery=7, linewidth=1)
+    ax2.plot(time_, tt1, color='red', label='Throughput (client)', ls="--", markevery=7, linewidth=1)
+    ax2.plot(time_, tt2, color='black', label='Throughput (server)', ls='--', markevery=7, linewidth=1)
     ax1.legend(loc=2, borderaxespad=0., fontsize=12)
     ax2.legend(loc=1, borderaxespad=0., fontsize=12)
 
@@ -110,6 +109,18 @@ def graphic():
 
     plt.show()
     plt.savefig("graphic.eps")
+
+def recordValues(car, client, kernel):
+    if kernel == 1:
+        car.cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $3}\' >> %s' % c0_pkt)
+        client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $3}\' >> %s' % switch_pkt)
+        car.cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==2{print $5}\' >> %s' % c0_throughput)
+        client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\' >> %s' % switch_throughput)
+    else:
+        car.cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $2}\' | tr -d packets: >> %s' % c0_pkt)
+        client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $2}\' | tr -d packets: >> %s' % switch_pkt)
+        car.cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $6}\' | tr -d bytes: >> %s' % c0_throughput)
+        client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $2}\' | tr -d \'RX bytes:\' >> %s' % switch_throughput)
 
 def topology():
 
@@ -131,7 +142,7 @@ def topology():
 
     eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='36', range=70, position='80,75,0')
     eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='40', range=70, position='180,75,0')
-    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', range=45, position='140,120,0')
+    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', range=40, position='140,120,0')
     c1 = net.addController('c1', controller=Controller)
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
@@ -174,6 +185,7 @@ def topology():
         c.cmd('ifconfig %s-wlan0 192.168.0.%s/24 up' % (c, i))
         c.cmd('ifconfig %s-eth0 192.168.1.%s/24 up' % (c, i))
         c.cmd('ip route add 10.0.0.0/8 via 192.168.1.%s' % j)
+        c.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
         i += 2
         j += 2
 
@@ -196,7 +208,6 @@ def topology():
             j += 2
 
     client.cmd('ifconfig client-eth0 200.0.10.2')
-    net.carsSTA[3].cmd('ifconfig car3STA-eth0 200.0.10.1')
     net.carsSTA[0].cmd('ifconfig car0STA-eth0 200.0.10.50')
 
     car[0].cmd('modprobe bonding mode=3')
@@ -232,7 +243,7 @@ def topology():
 
     #os.system('xterm -hold -title "car0" -e "util/m car0 ping 200.0.10.2" &')
     car[0].cmdPrint("cvlc -vvv v4l2:///dev/video0 --mtu 1000 --sout \'#transcode{vcodec=mp4v,vb=800,scale=1,\
-                acodec=mpga,ab=128,channels=1}: duplicate{dst=display,dst=rtp{sdp=rtsp://200.0.10.100:8080/helmet.sdp}\' &")
+                acodec=mpga,ab=128,channels=1}: duplicate{dst=display,dst=rtp{sdp=rtsp://200.0.10.100:8080/helmet.sdp}}\' &")
     client.cmdPrint("cvlc rtsp://200.0.10.100:8080/helmet.sdp &")
 
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
@@ -253,6 +264,11 @@ def topology():
     car[0].cmd('ip route add 200.0.10.2 via 200.0.10.50')
     client.cmd('ip route add 200.0.10.100 via 200.0.10.150')
 
+    kernel = 0
+    var = client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\'')
+    if isinstance( var, int ):
+        kernel = 1
+
     timeout = time.time() + taskTime
     currentTime = time.time()
     i = 0
@@ -260,10 +276,7 @@ def topology():
         if time.time() > timeout:
             break;
         if time.time() - currentTime >= i:
-            car[0].cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $3}\' >> %s' % c0_pkt)
-            client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $3}\' >> %s' % switch_pkt)
-            car[0].cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==2{print $5}\' >> %s' % c0_throughput)
-            client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\' >> %s' % switch_throughput)
+            recordValues(car[0], client, kernel)
             i += 0.5
 
     print "Moving nodes"
@@ -293,10 +306,7 @@ def topology():
         if time.time() > timeout:
             break;
         if time.time() - currentTime >= i:
-            car[0].cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $3}\' >> %s' % c0_pkt)
-            client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $3}\' >> %s' % switch_pkt)
-            car[0].cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==2{print $5}\' >> %s' % c0_throughput)
-            client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\' >> %s' % switch_throughput)
+            recordValues(car[0], client, kernel)
             i += 0.5
 
     print "Moving nodes"
@@ -323,15 +333,13 @@ def topology():
         if time.time() > timeout:
             break;
         if time.time() - currentTime >= i:
-            car[0].cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $3}\' >> %s' % c0_pkt)
-            client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $3}\' >> %s' % switch_pkt)
-            car[0].cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==2{print $5}\' >> %s' % c0_throughput)
-            client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\' >> %s' % switch_throughput)
+            recordValues(car[0], client, kernel)
             i += 0.5
 
     print "*** Generating graphic"
     graphic()
 
+    os.system('pkill -f vlc')
     os.system('pkill xterm')
 
     print "*** Running CLI"
