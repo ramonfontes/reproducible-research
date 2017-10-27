@@ -41,10 +41,10 @@ def topology():
     ap2.start([c1])
     ap3.start([c1])
 
+    os.system('pkill -f "\wpa_supplicant -B -Dnl80211\"')
+
     print "*** Running CLI"
     CLI(net)
-
-    os.system('pkill -f "\wpa_supplicant -B -Dnl80211\"')
 
     print "*** Stopping network"
     net.stop()
