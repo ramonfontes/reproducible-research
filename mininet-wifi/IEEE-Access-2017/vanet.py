@@ -140,18 +140,18 @@ def topology():
         car[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8' % (idx + 1), range=40, \
         mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0' % ((120 - (idx * 20)), (100 - (idx * 0))))
 
-    eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='36', range=70, position='80,75,0')
-    eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='40', range=70, position='180,75,0')
-    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', range=40, position='140,120,0')
+    eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='36', position='80,75,0')
+    eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='40', position='180,75,0')
+    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', position='140,120,0')
     c1 = net.addController('c1', controller=Controller)
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
 
-    net.plotNode(client, position='125,230,0')
-    net.plotNode(switch, position='125,200,0')
+    client.plot(position='125,230,0')
+    switch.plot(position='125,200,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistancePropagationLossModel", exp=3.5)
+    net.propagationModel("logDistancePropagationLossModel", exp=4.1)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()

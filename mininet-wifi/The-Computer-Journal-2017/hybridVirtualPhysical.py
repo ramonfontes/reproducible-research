@@ -24,19 +24,25 @@ from mininet.log import setLogLevel
 import os
 import time
 
+
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, accessPoint=UserAP )
+    net = Mininet( controller=RemoteController, link=TCLink, accessPoint=UserAP,
+                   enable_wmediumd=True, enable_interference=True)
     staList = []
     internetIface = 'eth0'
     usbDongleIface = 'wlan11'
 
     print "*** Creating nodes"
     for n in range(10):
-	staList.append(n)
-	staList[n] = net.addStation( 'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:%s' % (n+1), ip='192.168.0.%s/24' % (n+1) )
-    phyap1 = net.addPhysicalBaseStation( 'phyap1', protocols='OpenFlow13', ssid='Sigcomm-2016-Mininet-WiFi', mode= 'g', channel= '1', position='50,115,0', phywlan=usbDongleIface )
+        staList.append(n)
+        staList[n] = net.addStation(
+            'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:%s'
+                                          % (n+1), ip='192.168.0.%s/24' % (n+1) )
+    phyap1 = net.addPhysicalBaseStation(
+        'phyap1', protocols='OpenFlow13', ssid='Sigcomm-2016-Mininet-WiFi',
+        mode='g', channel='1', position='50,115,0', phywlan=usbDongleIface )
     ap2 = net.addAccessPoint( 'ap2', protocols='OpenFlow13', ssid='ap-ssid2', mode= 'g', channel= '11', position='100,175,0' )
     ap3 = net.addAccessPoint( 'ap3', protocols='OpenFlow13', ssid='ap-ssid3', mode= 'g', channel= '6', position='150,115,0' )
     ap4 = net.addAccessPoint( 'ap4', protocols='OpenFlow13', ssid='ap-ssid4', mode= 'g', channel= '11', position='100,55,0' )
@@ -52,13 +58,9 @@ def topology():
     for sta in staList:
         net.addMesh(sta, ssid='meshNet')
 
-    """uncomment to plot graph"""
     net.plotGraph(max_x=240, max_y=240)
 
-    """Routing"""
-    net.meshRouting('custom')
-
-    """Seed"""
+    "Seed"
     net.seed(20)
 
     print "*** Associating and Creating links"

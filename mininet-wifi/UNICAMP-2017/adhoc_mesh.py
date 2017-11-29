@@ -6,6 +6,7 @@ from mininet.net import Mininet
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 
+
 def topology():
     "Create a network."
     net = Mininet(enable_wmediumd=True, enable_interference=True)
@@ -19,7 +20,7 @@ def topology():
     sta6 = net.addStation('sta6', position='100,140,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistancePropagationLossModel", exp=4.5)
+    net.propagationModel("logDistance", exp=4.5)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()

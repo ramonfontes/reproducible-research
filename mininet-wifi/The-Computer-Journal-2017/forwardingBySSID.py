@@ -28,7 +28,8 @@ import time
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=UserSwitch, disableAutoAssociation=True )
+    net = Mininet( controller=Controller, link=TCLink, switch=UserSwitch,
+                   disableAutoAssociation=True )
 
     print "*** Creating nodes"
     sta1 = net.addStation( 'sta1', position='10,60,0' )
@@ -36,7 +37,8 @@ def topology():
     sta3 = net.addStation( 'sta3', position='10,25,0' )
     sta4 = net.addStation( 'sta4', position='50,30,0' )
     sta5 = net.addStation( 'sta5', position='45,65,0' )
-    ap1 = net.addAccessPoint( 'ap1', ssid="ssid,ssid1,ssid2,ssid3,ssid4", mode="g", channel="1", position='30,40,0' )
+    ap1 = net.addAccessPoint( 'ap1', ssid="ssid,ssid1,ssid2,ssid3,ssid4",
+                              mode="g", channel="1", position='30,40,0' )
     c0 = net.addController('c0', controller=Controller, ip='127.0.0.1', port=6653 )
 
     print "*** Configuring wifi nodes"

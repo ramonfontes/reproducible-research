@@ -8,16 +8,21 @@ from mininet.link import TCLink
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 
+
 def topology():
 
     "Create a network."
     net = Mininet(link=TCLink, accessPoint=OVSKernelAP)
 
     print "*** Creating nodes"
-    sta1 = net.addStation('sta1', mac='00:00:00:00:00:02', ip='10.0.0.2/8', range=20)
-    sta2 = net.addStation('sta2', mac='00:00:00:00:00:03', ip='10.0.0.3/8', range=20)
-    ap1 = net.addAccessPoint('ap1', ssid='ssid-ap1', mode='g', channel='1', failMode='standalone', position='15,30,0', range=30)
-    ap2 = net.addAccessPoint('ap2', ssid='ssid-ap2', mode='g', channel='6', failMode='standalone', position='55,30,0', range=30)
+    sta1 = net.addStation('sta1', mac='00:00:00:00:00:02', ip='10.0.0.2/8')
+    sta2 = net.addStation('sta2', mac='00:00:00:00:00:03', ip='10.0.0.3/8')
+    ap1 = net.addAccessPoint('ap1', ssid='ssid-ap1', mode='g', channel='1',
+                             failMode='standalone', position='15,30,0')
+    ap2 = net.addAccessPoint('ap2', ssid='ssid-ap2', mode='g', channel='6',
+                             failMode='standalone', position='55,30,0')
+
+    net.propagationModel(model='logDistance', exp=5)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()

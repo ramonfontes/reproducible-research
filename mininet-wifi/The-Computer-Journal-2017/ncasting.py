@@ -1,10 +1,8 @@
 #!/usr/bin/python
 
 """
-Working yet..
+ncasting.
 """
-import subprocess
-import os
 
 from mininet.net import Mininet
 from mininet.node import  RemoteController, OVSKernelSwitch
@@ -22,6 +20,7 @@ h1----s1        sta1
         ap2.
 
 """
+
 
 def topology():
     "Create a network."

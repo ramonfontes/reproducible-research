@@ -14,18 +14,20 @@ def topology():
     net = Mininet(controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
 
     print "*** Creating nodes"
-    sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8', range=10)
-    ap1 = net.addAccessPoint('ap1', ssid='new-ssid1', mode='g', channel='1', position='15,30,0', range=33)
-    ap2 = net.addAccessPoint('ap2', ssid='new-ssid1', mode='g', channel='6', position='55,30,0', range=33)
+    sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8')
+    ap1 = net.addAccessPoint('ap1', ssid='new-ssid1', mode='g', channel='1', position='15,30,0')
+    ap2 = net.addAccessPoint('ap2', ssid='new-ssid1', mode='g', channel='6', position='55,30,0')
     s3 = net.addSwitch('s3')
     h1 = net.addHost('h1', mac='00:00:00:00:00:02', ip='10.0.0.2/8')
     c1 = net.addController('c1', controller=Controller, port=6653)
 
+    net.propagationModel(model="logDistance", exp=4.3)
+
     print "*** Configuring WiFi Nodes"
     net.configureWifiNodes()
 
-    net.plotNode(h1, position='35,90,0')
-    net.plotNode(s3, position='35,80,0')
+    h1.plot(position='35,90,0')
+    s3.plot(position='35,80,0')
 
     print "*** Creating links"
     net.addLink(ap1, s3)

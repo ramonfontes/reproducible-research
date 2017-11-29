@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 
-#import networkx as nx
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import numpy as np 
 import glob
-from operator import itemgetter, attrgetter, methodcaller
 
 #Caminho dos arquivos de Path a serem lidos
 myPath="./"

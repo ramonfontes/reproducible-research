@@ -19,7 +19,7 @@ def topology():
     net = Mininet( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch )
 
     print "*** Creating nodes"
-    ap1 = net.addAccessPoint( 'ap1', ssid= 'new-ssid', mode= 'g', channel= '1' )
+    ap1 = net.addAccessPoint( 'ap1', ssid='new-ssid', mode='g', channel='1' )
     sta2 = net.addStation( 'sta2', wlans=1, mac='00:02:00:00:00:02', ip='10.0.0.2/8' )
     sta3 = net.addStation( 'sta3', wlans=1, mac='00:02:00:00:00:03', ip='10.0.0.3/8' )
     sta4 = net.addStation( 'sta4', wlans=1, mac='00:02:00:00:00:04', ip='10.0.0.4/8' )
@@ -28,7 +28,7 @@ def topology():
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
-    
+
     print "*** Creating links"
     net.addLink(sta4, ap1)
     net.addLink(sta3, ap1)
@@ -39,7 +39,7 @@ def topology():
     net.build()
     c5.start()
     ap1.start( [c5] )
-   
+
     ap1.cmd("iw dev ap1-wlan0 interface add vwlan1 type managed")   
     ap1.cmd("iw dev ap1-wlan0 interface add vwlan2 type managed")
     ap1.cmd("ifconfig vwlan1 hw ether 00:00:00:aa:bb:11")
@@ -52,7 +52,7 @@ def topology():
     ap1.cmd("hostapd -B vwlan1.conf &")
     ap1.cmd("echo -e 'interface=vwlan2\ndriver=nl80211\nssid=vwlan2\nhw_mode=g\nchannel=1\nwme_enabled=1\nwmm_enabled=1' > vwlan2.conf")
     ap1.cmd("hostapd -B vwlan2.conf &")
-  
+
     sta2.cmd("ifconfig sta2-wlan0 down")
     sta2.cmd("iwconfig sta2-wlan0 essid 'vwlan1'")
     sta2.cmd("ifconfig sta2-wlan0 up")
