@@ -19,7 +19,7 @@ def topology():
                        failMode='standalone', position='10,10,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistance", exp=4)
+    net.propagationModel(model="logDistance", exp=4)
 
     net.plotGraph(max_x=100, max_y=100)
 
