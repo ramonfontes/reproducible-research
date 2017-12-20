@@ -28,28 +28,31 @@ import time
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, accessPoint=UserAP,
+    net = Mininet( controller=RemoteController, accessPoint=UserAP,
                    enable_wmediumd=True, enable_interference=True )
     staList = []
-    internetIface = 'eth0'
-    usbDongleIface = 'wlan11'
+    internetIface = 'enp2s0'
+    usbDongleIface = 'wlp1s0'
 
     print "*** Creating nodes"
     for n in range(10):
         staList.append(n)
         staList[n] = net.addStation(
-            'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:%s' % (n+1),
+            'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:' + '%02x' % (n+1),
             ip='192.168.0.%s/24' % (n+1))
     phyap1 = net.addPhysicalBaseStation(
-        'phyap1', protocols='OpenFlow13', ssid='Sigcomm-2016-Mininet-WiFi',
+        'phyap1', wlans=2, protocols='OpenFlow13', ssid='Sigcomm-2016-Mininet-WiFi,Sigcomm-2016-Mininet-WiFi',
         mode= 'g', channel= '1', position='50,115,0', phywlan=usbDongleIface)
-    ap2 = net.addAccessPoint( 'ap2', protocols='OpenFlow13', ssid='ap-ssid2', mode= 'g', channel= '11', position='100,175,0' )
-    ap3 = net.addAccessPoint( 'ap3', protocols='OpenFlow13', ssid='ap-ssid3', mode= 'g', channel= '6', position='150,115,0' )
-    ap4 = net.addAccessPoint( 'ap4', protocols='OpenFlow13', ssid='ap-ssid4', mode= 'g', channel= '11', position='100,55,0' )
+    ap2 = net.addAccessPoint( 'ap2', protocols='OpenFlow13', ssid='ap-ssid2', mode='g', channel='11', position='100,175,0' )
+    ap3 = net.addAccessPoint( 'ap3', protocols='OpenFlow13', ssid='ap-ssid3', mode='g', channel='6', position='150,115,0' )
+    ap4 = net.addAccessPoint( 'ap4', protocols='OpenFlow13', ssid='ap-ssid4', mode='g', channel='11', position='100,55,0' )
     c5 = net.addController( 'c5', controller=RemoteController, port=6653 )
     sta11 = net.addStation( 'sta11', ip='10.0.0.111/8', position='60,100,0')
     h12 = net.addHost( 'h12', ip='10.0.0.109/8')
     root = net.addHost( 'root', ip='10.0.0.254/8', inNamespace=False )
+
+    print "*** Configuring Propagation Model"
+    net.propagationModel(model="logDistance", exp=4)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
@@ -66,7 +69,7 @@ def topology():
     print "*** Associating and Creating links"
     net.addLink(phyap1, ap2)
     net.addLink(ap2, ap3)
-    net.addLink(sta11, ap2)
+    net.addLink(sta11, phyap1, 0, 1)
     net.addLink(ap3, ap4)
     net.addLink(ap4, phyap1)
     net.addLink(root, ap3)
@@ -154,5 +157,5 @@ def fixNetworkManager( root, intf ):
     root.cmd( 'service network-manager restart' )
 
 if __name__ == '__main__':
-    setLogLevel( 'info' )
+    setLogLevel( 'debug' )
     topology()
