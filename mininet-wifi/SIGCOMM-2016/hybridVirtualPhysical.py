@@ -32,7 +32,7 @@ def topology():
                    enable_wmediumd=True, enable_interference=True )
     staList = []
     internetIface = 'enp2s0'
-    usbDongleIface = 'wlp1s0'
+    usbDongleIface = 'wlan2'
 
     print "*** Creating nodes"
     for n in range(10):
@@ -41,11 +41,15 @@ def topology():
             'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:' + '%02x' % (n+1),
             ip='192.168.0.%s/24' % (n+1))
     phyap1 = net.addPhysicalBaseStation(
-        'phyap1', wlans=2, protocols='OpenFlow13', ssid='Sigcomm-2016-Mininet-WiFi,Sigcomm-2016-Mininet-WiFi',
-        mode= 'g', channel= '1', position='50,115,0', phywlan=usbDongleIface)
-    ap2 = net.addAccessPoint( 'ap2', protocols='OpenFlow13', ssid='ap-ssid2', mode='g', channel='11', position='100,175,0' )
-    ap3 = net.addAccessPoint( 'ap3', protocols='OpenFlow13', ssid='ap-ssid3', mode='g', channel='6', position='150,115,0' )
-    ap4 = net.addAccessPoint( 'ap4', protocols='OpenFlow13', ssid='ap-ssid4', mode='g', channel='11', position='100,55,0' )
+        'phyap1', wlans=2, protocols='OpenFlow13',
+        ssid='Sigcomm-2016-Mininet-WiFi,Sigcomm-2016-Mininet-WiFi',
+        mode='g', channel='1', position='50,115,0', phywlan=usbDongleIface)
+    ap2 = net.addAccessPoint( 'ap2', protocols='OpenFlow13', ssid='ap-ssid2',
+                              mode='g', channel='11', position='100,175,0' )
+    ap3 = net.addAccessPoint( 'ap3', protocols='OpenFlow13', ssid='ap-ssid3',
+                              mode='g', channel='6', position='150,115,0' )
+    ap4 = net.addAccessPoint( 'ap4', protocols='OpenFlow13', ssid='ap-ssid4',
+                              mode='g', channel='11', position='100,55,0' )
     c5 = net.addController( 'c5', controller=RemoteController, port=6653 )
     sta11 = net.addStation( 'sta11', ip='10.0.0.111/8', position='60,100,0')
     h12 = net.addHost( 'h12', ip='10.0.0.109/8')
@@ -84,7 +88,7 @@ def topology():
     ap4.start( [c5] )
 
     time.sleep(2)
-    """output=all,flood"""
+    'output=all,flood'
     ap3.cmd('dpctl unix:/tmp/ap3 meter-mod cmd=add,flags=1,meter=1 drop:rate=100')
     ap3.cmd('dpctl unix:/tmp/ap3 flow-mod table=0,cmd=add in_port=4,eth_type=0x800,ip_dst=10.0.0.100,meter:1 apply:output=flood')
     phyap1.cmd('dpctl unix:/tmp/phyap1 flow-mod table=0,cmd=add in_port=2,ip_dst=10.0.0.109,eth_type=0x800,ip_proto=6,tcp_dst=80 apply:set_field=tcp_dst:80,set_field=ip_dst:10.0.0.111,output=5')
@@ -103,8 +107,8 @@ def topology():
         sta.cmd('ip route add default via 10.0.0.254')
         ip+=1
 
-    "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWayPoint, GaussMarkov, ReferencePoint, TimeVariantCommunity ***"
-    net.startMobility(startTime=0, model='RandomWalk', max_x=200, max_y=200, min_v=0.1, max_v=0.2)
+    net.startMobility(startTime=0, model='RandomWalk', max_x=200,
+                      max_y=200, min_v=0.1, max_v=0.2)
 
     print "*** Running CLI"
     CLI( net )
@@ -157,5 +161,5 @@ def fixNetworkManager( root, intf ):
     root.cmd( 'service network-manager restart' )
 
 if __name__ == '__main__':
-    setLogLevel( 'debug' )
+    setLogLevel( 'info' )
     topology()
