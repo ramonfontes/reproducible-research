@@ -2,14 +2,14 @@
 
 'This example creates a simple network topology with 1 AP and 3 stations'
 
-from mininet.net import Mininet
-from mininet.cli import CLI
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 from mininet.log import setLogLevel
 
 
 def topology():
     "Create a network."
-    net = Mininet(enable_wmediumd=True, enable_interference=True)
+    net = Mininet_wifi(enable_wmediumd=True, enable_interference=True)
 
     print "*** Creating nodes"
     net.addStation('sta1', position='10,20,0')
@@ -30,7 +30,7 @@ def topology():
     net.build()
 
     print "*** Running CLI"
-    CLI(net)
+    CLI_wifi(net)
 
     print "*** Stopping network"
     net.stop()
