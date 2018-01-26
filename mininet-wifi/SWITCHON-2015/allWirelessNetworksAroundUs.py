@@ -1,18 +1,18 @@
 #!/usr/bin/python
 
-"""This example is based on this video: https://www.youtube.com/watch?v=_C4H2gBdyQY"""
+"This example is based on this video: https://www.youtube.com/watch?v=_C4H2gBdyQY"
 
-from mininet.net import Mininet
-from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP
-from mininet.link import TCLink
-from mininet.cli import CLI
+from mininet.node import Controller, OVSKernelSwitch
 from mininet.log import setLogLevel
+from mininet.wifi.node import OVSKernelAP
+from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.net import Mininet_wifi
 import os
 
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch,
+    net = Mininet_wifi( controller=Controller, switch=OVSKernelSwitch,
                    accessPoint=OVSKernelAP )
 
     print "*** Creating nodes"
@@ -66,7 +66,7 @@ def topology():
     os.system('ovs-ofctl add-flow s4 actions=normal')
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

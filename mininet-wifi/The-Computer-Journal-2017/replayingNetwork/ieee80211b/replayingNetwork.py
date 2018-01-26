@@ -1,20 +1,18 @@
 #!/usr/bin/python
 
-"""
-Replaying Network Conditions
-"""
+"Replaying Network Conditions"
 
-from mininet.net import Mininet
-from mininet.node import Controller,OVSKernelSwitch
-from mininet.link import TCLink
-from mininet.cli import CLI
 from mininet.log import setLogLevel
-from mininet.wifiReplaying import replayingNetworkBehavior
+from mininet.node import Controller, OVSKernelSwitch
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.replaying import replayingNetworkBehavior
+
 
 def topology():
 
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet_wifi( controller=Controller, switch=OVSKernelSwitch )
 
     print "*** Creating nodes"
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01', ip='192.168.0.1/24', position='47.28,50,0' )
@@ -42,11 +40,11 @@ def topology():
     replayingNetworkBehavior.addNode(sta1)
     replayingNetworkBehavior.addNode(sta2)
     replayingNetworkBehavior(net)
-   
+
     net.autoAssociation()
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

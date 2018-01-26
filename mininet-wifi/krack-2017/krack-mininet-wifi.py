@@ -6,17 +6,18 @@ determine whether an implementation is vulnerable to attacks."""
 __author__ = "Ramon Fontes, Hedertone Almeida, and Christian Rothenberg"
 __credits__ = ["https://github.com/vanhoefm/krackattacks-test-ap-ft"]
 
-from mininet.net import Mininet
-from mininet.node import Controller, UserAP
-from mininet.link import TCLink
-from mininet.cli import CLI
+from mininet.node import Controller
 from mininet.log import setLogLevel
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.node import UserAP
+from mininet.wifi.cli import CLI_wifi
 import os
+
 
 def topology():
 
     "Create a network."
-    net = Mininet(controller=Controller, link=TCLink, accessPoint=UserAP, enable_wmediumd=True, enable_interference=True)
+    net = Mininet(controller=Controller, accessPoint=UserAP, enable_wmediumd=True, enable_interference=True)
 
     print "*** Creating nodes"
     net.addStation('sta1', ip='10.0.0.1/8', position='80,80,0')
@@ -44,7 +45,7 @@ def topology():
     os.system('pkill -f "\wpa_supplicant -B -Dnl80211\"')
 
     print "*** Running CLI"
-    CLI(net)
+    CLI_wifi(net)
 
     print "*** Stopping network"
     net.stop()

@@ -2,11 +2,10 @@
 
 """MPTCP Demo"""
 
-from mininet.net import Mininet
-from mininet.node import RemoteController, OVSKernelSwitch
-from mininet.link import TCLink
-from mininet.cli import CLI
 from mininet.log import setLogLevel
+from mininet.node import RemoteController, OVSKernelSwitch
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 
 
 def topology():
@@ -22,7 +21,7 @@ def topology():
  
 
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet_wifi( controller=RemoteController, switch=OVSKernelSwitch )
 
     print "*** Creating nodes"
     sta1 = net.addStation(
@@ -97,7 +96,7 @@ def topology():
     h5.cmd('sysctl -w net.ipv4.ip_forward=1')
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

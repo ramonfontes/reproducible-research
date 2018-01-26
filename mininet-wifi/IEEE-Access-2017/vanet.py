@@ -11,16 +11,17 @@ import os
 import time
 import matplotlib.pyplot as plt
 
-from mininet.net import Mininet
-from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP, Car
-from mininet.link import TCLink
 from mininet.log import setLogLevel
-from mininet.cli import CLI
+from mininet.node import Controller, OVSKernelSwitch
+from mininet.wifi.node import OVSKernelAP, Car
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 
 switch_pkt = 'switch-pkt.vanetdata'
 switch_throughput = 'switch-throughput.vanetdata'
 c0_pkt = 'c0-pkt.vanetdata'
 c0_throughput = 'c0-throughput.vanetdata'
+
 
 def graphic():
 
@@ -128,7 +129,7 @@ def topology():
     cars = 4
 
     "Create a network."
-    net = Mininet(controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
+    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
 
     print "*** Creating nodes"
     car = []
@@ -343,7 +344,7 @@ def topology():
     os.system('pkill xterm')
 
     print "*** Running CLI"
-    CLI(net)
+    CLI_wifi(net)
 
     #os.system('rm *.vanetdata')
 

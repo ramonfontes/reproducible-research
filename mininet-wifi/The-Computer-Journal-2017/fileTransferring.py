@@ -7,24 +7,21 @@
 """Topology
 
    Nodes:   sta1------ap3---------sta2
-   Distance: |--2.72m--|---4.08m---|
-
-"""
+   Distance: |--2.72m--|---4.08m---|"""
 
 
-from mininet.net import Mininet
-from mininet.node import OVSSwitch, Controller
-from mininet.link import TCLink
-from mininet.cli import CLI
-from mininet.node import Node
 from mininet.log import setLogLevel
+from mininet.node import OVSSwitch, Controller, Node
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 import time
 import os
+
 
 def topology():
 
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSSwitch )
+    net = Mininet_wifi( controller=Controller, switch=OVSSwitch )
 
     print "*** Creating nodes"
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01',
@@ -51,7 +48,7 @@ def topology():
     sta2.cmd('pushd /home/alpha/Downloads; python3 -m http.server 80 &')
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

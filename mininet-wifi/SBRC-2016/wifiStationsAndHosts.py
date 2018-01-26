@@ -1,18 +1,17 @@
 #!/usr/bin/python
 
-"""
-This example shows how work with wireless and wired media
-"""
+"This example shows how work with wireless and wired media"
 
-from mininet.net import Mininet
-from mininet.node import  Controller, OVSKernelAP
-from mininet.cli import CLI
 from mininet.log import setLogLevel
-from mininet.link import TCLink
+from mininet.node import Controller
+from mininet.wifi.node import OVSKernelAP
+from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.net import Mininet_wifi
+
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, accessPoint=OVSKernelAP )
+    net = Mininet_wifi( controller=Controller, accessPoint=OVSKernelAP )
 
     print "*** Creating nodes"
     ap1 = net.addAccessPoint( 'ap1', ssid="simplewifi", mode="g", channel="5" )
@@ -36,7 +35,7 @@ def topology():
     ap1.start( [c0] )
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

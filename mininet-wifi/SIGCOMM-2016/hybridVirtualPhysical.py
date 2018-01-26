@@ -16,19 +16,19 @@ wlan1(2)phyap1          ap3(4)wlan0
              (3)ap4(2)          """
 
 
-from mininet.net import Mininet
-from mininet.node import RemoteController, OVSKernelSwitch, UserAP, Controller
-from mininet.link import TCLink
-from mininet.cli import CLI
-from mininet.node import Node
 from mininet.log import setLogLevel
+from mininet.node import RemoteController, OVSKernelSwitch, Controller, Node
+from mininet.wifi.node import UserAP
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 import os
 import time
+
 
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, accessPoint=UserAP,
+    net = Mininet_wifi( controller=RemoteController, accessPoint=UserAP,
                    enable_wmediumd=True, enable_interference=True )
     staList = []
     internetIface = 'enp2s0'
@@ -111,7 +111,7 @@ def topology():
                       max_y=200, min_v=0.1, max_v=0.2)
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

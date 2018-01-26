@@ -1,19 +1,17 @@
 #!/usr/bin/python
 
-"""
-Propagation Model Demo
-"""
+"Propagation Model Demo"
 
-from mininet.net import Mininet
-from mininet.node import  Controller, OVSKernelSwitch
-from mininet.cli import CLI
 from mininet.log import setLogLevel
-from mininet.link import TCLink
+from mininet.node import Controller, OVSKernelSwitch
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 import time
+
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet_wifi( controller=Controller, switch=OVSKernelSwitch )
 
     print "*** Creating nodes"
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid_ap1",
@@ -45,7 +43,7 @@ def topology():
         print sta1.params['rssi'][0] 
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

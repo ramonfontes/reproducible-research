@@ -5,19 +5,19 @@
    Networking Emulation"
    authors: Ramon dos Reis Fontes and Christian Esteve Rothenberg"""
 
-from mininet.net import Mininet
-from mininet.node import RemoteController, OVSKernelAP, Controller
-from mininet.link import TCLink
-from mininet.cli import CLI
-from mininet.node import Node
 from mininet.log import setLogLevel
+from mininet.node import RemoteController, Controller, Node
+from mininet.wifi.node import OVSKernelAP
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 import os
 import time
+
 
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, accessPoint=OVSKernelAP,
+    net = Mininet_wifi( controller=RemoteController, accessPoint=OVSKernelAP,
                    enable_wmediumd=True, enable_interference=True)
     staList = []
 
@@ -71,7 +71,7 @@ def topology():
         ip+=1
 
     print("*** Running CLI")
-    CLI( net )
+    CLI_wifi( net )
 
     print("*** Stopping network")
     net.stop()

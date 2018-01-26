@@ -2,20 +2,21 @@
 
 'Starting a topology with and without wmediumd'
 
-from mininet.net import Mininet
-from mininet.node import Controller, UserAP
-from mininet.link import TCLink
-from mininet.cli import CLI
 from mininet.log import setLogLevel
+from mininet.node import Controller
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.node import UserAP
+from mininet.wifi.cli import CLI_wifi
 import sys
+
 
 def topology(wmediumd):
 
     "Create a network."
     if wmediumd:
-        net = Mininet(controller=Controller, link=TCLink, accessPoint=UserAP, enable_wmediumd=True, enable_interference=True)
+        net = Mininet_wifi(controller=Controller, accessPoint=UserAP, enable_wmediumd=True, enable_interference=True)
     else:
-        net = Mininet(controller=Controller, link=TCLink, accessPoint=UserAP)
+        net = Mininet_wifi(controller=Controller, accessPoint=UserAP)
 
     print "*** Creating nodes"
     sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8', position='120,140,0')
@@ -39,7 +40,7 @@ def topology(wmediumd):
     ap1.start([c1])
 
     print "*** Running CLI"
-    CLI(net)
+    CLI_wifi(net)
 
     print "*** Stopping network"
     net.stop()

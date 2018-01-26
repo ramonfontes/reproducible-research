@@ -5,7 +5,7 @@
    authors: Ramon dos Reis Fontes and Christian Esteve Rothenberg"""
 
 """Topology
-        
+
              (2)ap2(3)
             /         \
           (3)          (2)
@@ -15,12 +15,11 @@ wlan1(2)phyap1          ap3(4)wlan0
              (3)ap4(2)          """
 
 
-from mininet.net import Mininet
-from mininet.node import RemoteController, OVSKernelSwitch, UserAP, Controller
-from mininet.link import TCLink
-from mininet.cli import CLI
-from mininet.node import Node
 from mininet.log import setLogLevel
+from mininet.node import RemoteController, OVSKernelSwitch, Controller
+from mininet.wifi.node import UserAP
+from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.net import Mininet_wifi
 import os
 import time
 
@@ -28,7 +27,7 @@ import time
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, accessPoint=UserAP,
+    net = Mininet_wifi( controller=RemoteController, accessPoint=UserAP,
                    enable_wmediumd=True, enable_interference=True)
     staList = []
     internetIface = 'eth0'
@@ -104,7 +103,7 @@ def topology():
     net.startMobility(startTime=0, model='RandomWalk', max_x=200, max_y=200, min_v=0.1, max_v=0.2)
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

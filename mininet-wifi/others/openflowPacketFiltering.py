@@ -7,16 +7,16 @@ This code serves as alternative if you want to filter OpenFlow Packets when
 transmitter and receives are associated to the same AP. 
 """
 
-from mininet.net import Mininet
 from mininet.node import Controller, RemoteController, OVSKernelSwitch, IVSSwitch, UserSwitch
-from mininet.link import Link, TCLink
-from mininet.cli import CLI
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 from mininet.log import setLogLevel
+
 
 def topology():
 
     "Create a network."
-    net = Mininet( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet_wifi( controller=RemoteController, link=TCLink, switch=OVSKernelSwitch )
 
     print "*** Creating nodes"
     ap1 = net.addAccessPoint( 'ap1', ssid='new-ssid', mode='g', channel='1' )
@@ -67,7 +67,7 @@ def topology():
     ap1.cmd("ovs-ofctl add-flow ap1 priority=65535,ip,nw_dst=10.0.0.2,actions=drop")
 
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()

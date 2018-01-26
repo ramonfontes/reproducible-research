@@ -1,20 +1,18 @@
 #!/usr/bin/python
 
-"""
-Replaying RSSI
-"""
+"Replaying RSSI"
 
-from mininet.net import Mininet
-from mininet.node import Controller,OVSKernelSwitch
-from mininet.link import TCLink
-from mininet.cli import CLI
 from mininet.log import setLogLevel
-from mininet.wifiReplaying import replayingNetworkBehavior
+from mininet.node import Controller, OVSKernelSwitch
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.replaying import replayingNetworkBehavior
+
 
 def topology():
 
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch )
+    net = Mininet_wifi( controller=Controller, switch=OVSKernelSwitch )
 
     print "*** Creating nodes"
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01', ip='192.168.0.1/24', position='47.28,50,0' )
@@ -55,30 +53,30 @@ def topology():
     #sta2.cmd('iperf -c ' + sta1.IP() + ' -i 0.5 -t 60 | awk \'t=120{if(NR>=7 && NR<=25) print $8; else if(NR>=26 && NR<=t+6) print $7}\' > replay2.dat &')
 
     net.autoAssociation()
- 
+
     print "*** Running CLI"
-    CLI( net )
+    CLI_wifi( net )
 
     print "*** Stopping network"
     net.stop()
 
 def getTrace(sta, file):
-   
+
     file = open(file, 'r')
     raw_data = file.readlines()
     file.close()
-    
-    sta.time = [] 
-    sta.bw = [] 
-    sta.loss = [] 
-    sta.delay = [] 
-    sta.latency = [] 
-  
+
+    sta.time = []
+    sta.bw = []
+    sta.loss = []
+    sta.delay = []
+    sta.latency = []
+
     for data in raw_data:
         line = data.split()
         sta.time.append(float(line[0])) #First Column = Time
         sta.bw.append(((float(line[1]))/1000000)/2) #Second Column = BW
-#        sta.loss.append(1) #Second Column = LOSS
+        #sta.loss.append(1) #Second Column = LOSS
         sta.loss.append(float(line[2])) #second Column = LOSS
         sta.delay.append(float(line[4])) #Second Column = DELAY
         sta.latency.append(float(line[3])) #Second Column = LATENCY

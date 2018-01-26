@@ -2,16 +2,17 @@
 
 'Example for handover'
 
-from mininet.net import Mininet
-from mininet.node import Controller, OVSKernelSwitch, OVSKernelAP
-from mininet.link import TCLink
-from mininet.cli import CLI
 from mininet.log import setLogLevel
+from mininet.node import Controller, OVSKernelSwitch
+from mininet.wifi.node import OVSKernelAP
+from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.net import Mininet_wifi
+
 
 def topology():
 
     "Create a network."
-    net = Mininet(controller=Controller, link=TCLink, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
+    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
 
     print "*** Creating nodes"
     sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8')
@@ -50,7 +51,7 @@ def topology():
     s3.start([c1])
 
     print "*** Running CLI"
-    CLI(net)
+    CLI_wifi(net)
 
     print "*** Stopping network"
     net.stop()
