@@ -20,7 +20,7 @@ def topology():
     sta6 = net.addStation('sta6', position='100,140,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistance", exp=4.5)
+    net.propagationModel(model="logDistance", exp=4.5)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
