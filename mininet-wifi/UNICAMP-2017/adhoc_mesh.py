@@ -4,12 +4,13 @@
 
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.link import wmediumd
 from mininet.log import setLogLevel
 
 
 def topology():
     "Create a network."
-    net = Mininet_wifi(enable_wmediumd=True, enable_interference=True)
+    net = Mininet_wifi(link=wmediumd, enable_interference=True)
 
     print "*** Creating nodes"
     sta1 = net.addStation('sta1', position='10,10,0')

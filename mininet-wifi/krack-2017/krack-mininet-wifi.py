@@ -11,13 +11,14 @@ from mininet.log import setLogLevel
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.node import UserAP
 from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.link import wmediumd
 import os
 
 
 def topology():
 
     "Create a network."
-    net = Mininet(controller=Controller, accessPoint=UserAP, enable_wmediumd=True, enable_interference=True)
+    net = Mininet(controller=Controller, accessPoint=UserAP, link=wmediumd, enable_interference=True)
 
     print "*** Creating nodes"
     net.addStation('sta1', ip='10.0.0.1/8', position='80,80,0')
