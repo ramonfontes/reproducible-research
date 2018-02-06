@@ -126,24 +126,27 @@ def recordValues(car, client, kernel):
 def topology():
 
     taskTime = 20
-    cars = 4
+    ncars = 4
 
     "Create a network."
     net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
 
     print "*** Creating nodes"
-    car = []
+    cars = []
     stas = []
-    for idx in range(0, cars):
-        car.append(idx)
+    for idx in range(0, ncars):
+        cars.append(idx)
         stas.append(idx)
-    for idx in range(0, cars):
-        car[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8' % (idx + 1), range=40, \
+    for idx in range(0, ncars):
+        cars[idx] = net.addCar('car%s' % idx, wlans=1, ip='10.0.0.%s/8' % (idx + 1), range=40,
         mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0' % ((120 - (idx * 20)), (100 - (idx * 0))))
 
-    eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000', mode='ac', channel='36', position='80,75,0')
-    eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000', mode='ac', channel='40', position='180,75,0')
-    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g', channel='11', position='140,120,0')
+    eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000',
+                                 mode='ac', channel='36', position='80,75,0')
+    eNodeB2 = net.addAccessPoint('eNodeB2', ssid='eNodeB2', dpid='2000000000000000',
+                                 mode='ac', channel='40', position='180,75,0')
+    rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g',
+                              channel='11', position='140,120,0')
     c1 = net.addController('c1', controller=Controller)
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
@@ -152,7 +155,7 @@ def topology():
     switch.plot(position='125,200,0')
 
     print "*** Configuring Propagation Model"
-    net.propagationModel("logDistancePropagationLossModel", exp=4.1)
+    net.propagationModel(model="logDistance", exp=4.1)
 
     print "*** Configuring wifi nodes"
     net.configureWifiNodes()
@@ -162,9 +165,9 @@ def topology():
     net.addLink(eNodeB2, switch)
     net.addLink(rsu1, switch)
     net.addLink(switch, client)
-    net.addLink(rsu1, car[0])
-    net.addLink(eNodeB2, car[0])
-    net.addLink(eNodeB1, car[3])
+    net.addLink(rsu1, cars[0])
+    net.addLink(eNodeB2, cars[0])
+    net.addLink(eNodeB1, cars[3])
 
     'Plotting Graph'
     net.plotGraph(max_x=250, max_y=250)
@@ -182,51 +185,51 @@ def topology():
 
     i = 1
     j = 2
-    for c in car:
-        c.cmd('ifconfig %s-wlan0 192.168.0.%s/24 up' % (c, i))
-        c.cmd('ifconfig %s-eth0 192.168.1.%s/24 up' % (c, i))
-        c.cmd('ip route add 10.0.0.0/8 via 192.168.1.%s' % j)
-        c.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
+    for car in cars:
+        car.setIP('192.168.0.%s/24' % i, intf='%s-wlan0' % car)
+        car.setIP('192.168.1.%s/24' % i, intf='%s-eth1' % car)
+        car.cmd('ip route add 10.0.0.0/8 via 192.168.1.%s' % j)
+        car.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
         i += 2
         j += 2
 
     i = 1
     j = 2
-    for v in net.carsSTA:
-        v.cmd('ifconfig %s-eth0 192.168.1.%s/24 up' % (v, j))
-        v.cmd('ifconfig %s-mp0 10.0.0.%s/24 up' % (v, i))
-        v.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
+    for carsta in net.carsSTA:
+        carsta.setIP('10.0.0.%s/24' % i, intf='%s-mp0' % carsta)
+        carsta.setIP('192.168.1.%s/24' % j, intf='%s-eth2' % carsta)
+        carsta.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
         i += 1
         j += 2
 
-    for v1 in net.carsSTA:
+    for carsta1 in net.carsSTA:
         i = 1
         j = 1
-        for v2 in net.carsSTA:
-            if v1 != v2:
-                v1.cmd('route add -host 192.168.1.%s gw 10.0.0.%s' % (j, i))
+        for carsta2 in net.carsSTA:
+            if carsta1 != carsta2:
+                carsta1.cmd('route add -host 192.168.1.%s gw 10.0.0.%s' % (j, i))
             i += 1
             j += 2
 
     client.cmd('ifconfig client-eth0 200.0.10.2')
     net.carsSTA[0].cmd('ifconfig car0STA-eth0 200.0.10.50')
 
-    car[0].cmd('modprobe bonding mode=3')
-    car[0].cmd('ip link add bond0 type bond')
-    car[0].cmd('ip link set bond0 address 02:01:02:03:04:08')
-    car[0].cmd('ip link set car0-eth0 down')
-    car[0].cmd('ip link set car0-eth0 address 00:00:00:00:00:11')
-    car[0].cmd('ip link set car0-eth0 master bond0')
-    car[0].cmd('ip link set car0-wlan0 down')
-    car[0].cmd('ip link set car0-wlan0 address 00:00:00:00:00:15')
-    car[0].cmd('ip link set car0-wlan0 master bond0')
-    car[0].cmd('ip link set car0-wlan1 down')
-    car[0].cmd('ip link set car0-wlan1 address 00:00:00:00:00:13')
-    car[0].cmd('ip link set car0-wlan1 master bond0')
-    car[0].cmd('ip addr add 200.0.10.100/24 dev bond0')
-    car[0].cmd('ip link set bond0 up')
+    cars[0].cmd('modprobe bonding mode=3')
+    cars[0].cmd('ip link add bond0 type bond')
+    cars[0].cmd('ip link set bond0 address 02:01:02:03:04:08')
+    cars[0].cmd('ip link set car0-eth0 down')
+    cars[0].cmd('ip link set car0-eth0 address 00:00:00:00:00:11')
+    cars[0].cmd('ip link set car0-eth0 master bond0')
+    cars[0].cmd('ip link set car0-wlan0 down')
+    cars[0].cmd('ip link set car0-wlan0 address 00:00:00:00:00:15')
+    cars[0].cmd('ip link set car0-wlan0 master bond0')
+    cars[0].cmd('ip link set car0-wlan1 down')
+    cars[0].cmd('ip link set car0-wlan1 address 00:00:00:00:00:13')
+    cars[0].cmd('ip link set car0-wlan1 master bond0')
+    cars[0].cmd('ip addr add 200.0.10.100/24 dev bond0')
+    cars[0].cmd('ip link set bond0 up')
 
-    car[3].cmd('ifconfig car3-wlan0 200.0.10.150')
+    cars[3].cmd('ifconfig car3-wlan0 200.0.10.150')
 
     client.cmd('ip route add 192.168.1.8 via 200.0.10.150')
     client.cmd('ip route add 10.0.0.1 via 200.0.10.150')
@@ -235,15 +238,15 @@ def topology():
     net.carsSTA[3].cmd('ip route add 200.0.10.100 via 10.0.0.1')
     net.carsSTA[0].cmd('ip route add 200.0.10.2 via 10.0.0.4')
 
-    car[0].cmd('ip route add 10.0.0.4 via 200.0.10.50')
-    car[0].cmd('ip route add 192.168.1.7 via 200.0.10.50')
-    car[0].cmd('ip route add 200.0.10.2 via 200.0.10.50')
-    car[3].cmd('ip route add 200.0.10.100 via 192.168.1.8')
+    cars[0].cmd('ip route add 10.0.0.4 via 200.0.10.50')
+    cars[0].cmd('ip route add 192.168.1.7 via 200.0.10.50')
+    cars[0].cmd('ip route add 200.0.10.2 via 200.0.10.50')
+    cars[3].cmd('ip route add 200.0.10.100 via 192.168.1.8')
 
     os.system('rm *.vanetdata')
 
     #os.system('xterm -hold -title "car0" -e "util/m car0 ping 200.0.10.2" &')
-    car[0].cmdPrint("cvlc -vvv v4l2:///dev/video0 --mtu 1000 --sout \'#transcode{vcodec=mp4v,vb=800,scale=1,\
+    cars[0].cmdPrint("cvlc -vvv v4l2:///dev/video0 --mtu 1000 --sout \'#transcode{vcodec=mp4v,vb=800,scale=1,\
                 acodec=mpga,ab=128,channels=1}: duplicate{dst=display,dst=rtp{sdp=rtsp://200.0.10.100:8080/helmet.sdp}}\' &")
     client.cmdPrint("cvlc rtsp://200.0.10.100:8080/helmet.sdp &")
 
@@ -262,7 +265,7 @@ def topology():
     os.system('ovs-ofctl del-flows eNodeB2')
     os.system('ovs-ofctl del-flows rsu1')
 
-    car[0].cmd('ip route add 200.0.10.2 via 200.0.10.50')
+    cars[0].cmd('ip route add 200.0.10.2 via 200.0.10.50')
     client.cmd('ip route add 200.0.10.100 via 200.0.10.150')
 
     kernel = 0
@@ -275,16 +278,16 @@ def topology():
     i = 0
     while True:
         if time.time() > timeout:
-            break;
+            break
         if time.time() - currentTime >= i:
-            recordValues(car[0], client, kernel)
+            recordValues(cars[0], client, kernel)
             i += 0.5
 
     print "Moving nodes"
-    car[0].setPosition('150,100,0')
-    car[1].setPosition('120,100,0')
-    car[2].setPosition('90,100,0')
-    car[3].setPosition('70,100,0')
+    cars[0].setPosition('150,100,0')
+    cars[1].setPosition('120,100,0')
+    cars[2].setPosition('90,100,0')
+    cars[3].setPosition('70,100,0')
 
     #time.sleep(3)
 
@@ -297,7 +300,7 @@ def topology():
     os.system('ovs-ofctl del-flows eNodeB2')
     os.system('ovs-ofctl del-flows rsu1')
 
-    car[0].cmd('ip route del 200.0.10.2 via 200.0.10.50')
+    cars[0].cmd('ip route del 200.0.10.2 via 200.0.10.50')
     client.cmd('ip route del 200.0.10.100 via 200.0.10.150')
 
     timeout = time.time() + taskTime
@@ -305,16 +308,16 @@ def topology():
     i = 0
     while True:
         if time.time() > timeout:
-            break;
+            break
         if time.time() - currentTime >= i:
-            recordValues(car[0], client, kernel)
+            recordValues(cars[0], client, kernel)
             i += 0.5
 
     print "Moving nodes"
-    car[0].setPosition('190,100,0')
-    car[1].setPosition('150,100,0')
-    car[2].setPosition('120,100,0')
-    car[3].setPosition('90,100,0')
+    cars[0].setPosition('190,100,0')
+    cars[1].setPosition('150,100,0')
+    cars[2].setPosition('120,100,0')
+    cars[3].setPosition('90,100,0')
 
     #time.sleep(2)
 
@@ -332,9 +335,9 @@ def topology():
     i = 0
     while True:
         if time.time() > timeout:
-            break;
+            break
         if time.time() - currentTime >= i:
-            recordValues(car[0], client, kernel)
+            recordValues(cars[0], client, kernel)
             i += 0.5
 
     print "*** Generating graphic"
@@ -352,5 +355,5 @@ def topology():
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('info')
+    setLogLevel('debug')
     topology()
