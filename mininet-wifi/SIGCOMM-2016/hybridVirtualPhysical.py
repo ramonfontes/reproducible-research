@@ -21,6 +21,7 @@ from mininet.node import RemoteController, OVSKernelSwitch, Controller, Node
 from mininet.wifi.node import UserAP
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.link import wmediumd
 import os
 import time
 
@@ -29,7 +30,7 @@ def topology():
 
     "Create a network."
     net = Mininet_wifi( controller=RemoteController, accessPoint=UserAP,
-                   enable_wmediumd=True, enable_interference=True )
+                   link=wmediumd, enable_interference=True )
     staList = []
     internetIface = 'enp2s0'
     usbDongleIface = 'wlan2'
