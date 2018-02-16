@@ -8,4 +8,5 @@
 3- sudo PYTHONPATH=. ./bin/ryu-manager ryu/app/krack_code.py ryu/app/krack_app.py  
 
 ##### Terminal 1: #####   
-4- mininet-wifi>py sta1.setPosition('150,100,0') 
+4- mininet-wifi>py sta1.setPosition('150,100,0')   
+5- mininet-wifi>sta1 ping 10.0.0.102  
