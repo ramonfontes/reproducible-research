@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 from mininet.log import setLogLevel
 from mininet.node import Controller, OVSKernelSwitch
-from mininet.wifi.node import OVSKernelAP, Car
+from mininet.wifi.node import OVSKernelAP
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
 
@@ -131,7 +131,7 @@ def topology():
     "Create a network."
     net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     cars = []
     stas = []
     for idx in range(0, ncars):
@@ -154,13 +154,13 @@ def topology():
     client.plot(position='125,230,0')
     switch.plot(position='125,200,0')
 
-    print "*** Configuring Propagation Model"
+    print("*** Configuring Propagation Model")
     net.propagationModel(model="logDistance", exp=4.1)
 
-    print "*** Configuring wifi nodes"
+    print("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
-    print "*** Creating links"
+    print("*** Creating links")
     net.addLink(eNodeB1, switch)
     net.addLink(eNodeB2, switch)
     net.addLink(rsu1, switch)
@@ -172,7 +172,7 @@ def topology():
     'Plotting Graph'
     net.plotGraph(max_x=250, max_y=250)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c1.start()
     eNodeB1.start([c1])
@@ -256,7 +256,7 @@ def topology():
 
     time.sleep(2)
 
-    print "applying first rule"
+    print("applying first rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=output:4')
     os.system('ovs-ofctl mod-flows switch in_port=4,actions=output:1')
     os.system('ovs-ofctl mod-flows switch in_port=2,actions=drop')
@@ -283,7 +283,7 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    print "Moving nodes"
+    print("Moving nodes")
     cars[0].setPosition('150,100,0')
     cars[1].setPosition('120,100,0')
     cars[2].setPosition('90,100,0')
@@ -291,7 +291,7 @@ def topology():
 
     #time.sleep(3)
 
-    print "applying second rule"
+    print("applying second rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
     os.system('ovs-ofctl mod-flows switch in_port=2,actions=output:4')
     os.system('ovs-ofctl mod-flows switch in_port=4,actions=output:2,3')
@@ -313,7 +313,7 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    print "Moving nodes"
+    print("Moving nodes")
     cars[0].setPosition('190,100,0')
     cars[1].setPosition('150,100,0')
     cars[2].setPosition('120,100,0')
@@ -321,7 +321,7 @@ def topology():
 
     #time.sleep(2)
 
-    print "applying third rule"
+    print("applying third rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
     os.system('ovs-ofctl mod-flows switch in_port=3,actions=drop')
     os.system('ovs-ofctl mod-flows switch in_port=2,actions=output:4')
@@ -340,20 +340,20 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    print "*** Generating graphic"
+    print("*** Generating graphic")
     graphic()
 
     os.system('pkill -f vlc')
     os.system('pkill xterm')
 
-    print "*** Running CLI"
+    print("*** Running CLI")
     CLI_wifi(net)
 
     #os.system('rm *.vanetdata')
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('debug')
+    setLogLevel('info')
     topology()

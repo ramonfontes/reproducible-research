@@ -56,100 +56,100 @@ def numberOfNodes(i):
 def runExperiment():
     """Run Experiment"""
     
-    print 'Testing OVS linear topo...'
+    print('Testing OVS linear topo...')
     for n in range(0, repetitions):
         i = 1
         while i <= nr_nodes_linear:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
             v = (int(subprocess.check_output(mem, shell=True)))
             os.system('echo %s >> %s' % (v, mem_ovs_linear))
-            print 'Test %d: Number of access points: %d' % (n, i)
+            print('Test %d: Number of access points: %d' % (n, i))
             step1 = '\"sta1 free -m | grep ^Mem | awk \'{print \$1 \$3}\'\nexit\"'
             step2 = 'mn --wifi --topo=linear,%d 2>&1' % i
             step3 = 'grep -E \"(Mem:|completed in)\" | tr -d em: | tr \'M\' \',\' | tr -d "copltd in" | tr -d ss | awk \'!(NR%2){print$0p}{p=$0}\''
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file1)
             i = numberOfNodes(i)
     
-    print '\nTesting User linear topo...'
+    print('\nTesting User linear topo...')
     for n in range(0, repetitions):
         i = 1
         while i <= nr_nodes_linear:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
             v = (int(subprocess.check_output(mem, shell=True)))
             os.system('echo %s >> %s' % (v, mem_user_linear))
-            print 'Test %d: Number of access points: %d' % (n, i)
+            print('Test %d: Number of access points: %d' % (n, i))
             step1 = '\"sta1 free -m | grep ^Mem | awk \'{print \$1 \$3}\'\nexit\"'
             step2 = 'mn --wifi --ap user --topo=linear,%d 2>&1' % i
             step3 = 'grep -E \"(Mem:|completed in)\" | tr -d em: | tr \'M\' \',\' | tr -d "copltd in" | tr -d ss | awk \'!(NR%2){print$0p}{p=$0}\''
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file2)
             i = numberOfNodes(i)
     
-    print '\nTesting OVS single topo...'
+    print('\nTesting OVS single topo...')
     for n in range(0, repetitions):
         i = 1
         while i <= nr_nodes_single:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
             v = (int(subprocess.check_output(mem, shell=True)))
             os.system('echo %s >> %s' % (v, mem_ovs_single))
-            print 'Test %d: Number of Stations: %d' % (n, i)
+            print('Test %d: Number of Stations: %d' % (n, i))
             step1 = '\"sta1 free -m | grep ^Mem | awk \'{print \$1 \$3}\'\nexit\"'
             step2 = 'mn --wifi --topo=single,%d 2>&1' % i
             step3 = 'grep -E \"(Mem:|completed in)\" | tr -d em: | tr \'M\' \',\' | tr -d "copltd in" | tr -d ss | awk \'!(NR%2){print$0p}{p=$0}\''
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file3)
             i = numberOfNodes(i)
     
-    print '\nTesting User single topo...'
+    print('\nTesting User single topo...')
     for n in range(0, repetitions):
         i = 1
         while i <= nr_nodes_single:
             mem = 'free -m | grep ^Mem | awk \'{print $1 $3}\' | tr -d Mem: | awk NR==1'
             v = (int(subprocess.check_output(mem, shell=True)))
             os.system('echo %s >> %s' % (v, mem_user_single))
-            print 'Test %d: Number of Stations: %d' % (n, i)
+            print('Test %d: Number of Stations: %d' % (n, i))
             step1 = '\"sta1 free -m | grep ^Mem | awk \'{print \$1 \$3}\'\nexit\"'
             step2 = 'mn --wifi --ap user --topo=single,%d 2>&1' % i
             step3 = 'grep -E \"(Mem:|completed in)\" | tr -d em: | tr \'M\' \',\' | tr -d "copltd in" | tr -d ss | awk \'!(NR%2){print$0p}{p=$0}\''
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file4)
             i = numberOfNodes(i)
     
-    print '\nTesting ICMP OVS linear topo...'
+    print('\nTesting ICMP OVS linear topo...')
     for n in range(0, repetitions):
         i = 2
         while i <= nr_nodes_linear:
-            print 'Test %d: Number of access points: %d' % (n, i)
+            print('Test %d: Number of access points: %d' % (n, i))
             step1 = '\"sta1 ping -c21 sta2\"'
             step2 = 'mn --wifi --topo=linear,%d 2>&1' % i
             step3 = 'grep -E \"(icmp_seq=20)\" | awk \'{print $7}\' | tr -d "time="'
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file5)
             i = numberOfNodes(i)
     
-    print '\nTesting ICMP User linear topo...'
+    print('\nTesting ICMP User linear topo...')
     for n in range(0, repetitions):
         i = 2
         while i <= nr_nodes_linear:
-            print 'Test %d: Number of access points: %d' % (n, i)
+            print('Test %d: Number of access points: %d' % (n, i))
             step1 = '\"sta1 ping -c21 sta2\"'
             step2 = 'mn --wifi --ap user --topo=linear,%d 2>&1' % i
             step3 = 'grep -E \"(icmp_seq=20)\" | awk \'{print $7}\' | tr -d "time="'
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file6)
             i = numberOfNodes(i)
     
-    print '\nTesting ICMP OVS single topo...'
+    print('\nTesting ICMP OVS single topo...')
     for n in range(0, repetitions):
         i = 2
         while i <= nr_nodes_single:
-            print 'Test %d: Number of Stations: %d' % (n, i)
+            print('Test %d: Number of Stations: %d' % (n, i))
             step1 = '\"sta1 ping -c11 sta2\"'
             step2 = 'mn --wifi --topo=single,%d 2>&1' % i
             step3 = 'grep -E \"(icmp_seq=10)\" | awk \'{print $7}\' | tr -d "time="'
             os.system('echo ' + step1 + ' | ' + step2 + ' | ' + step3 + ' >> %s' % file7)
             i = numberOfNodes(i)
     
-    print '\nTesting ICMP User single topo...'
+    print('\nTesting ICMP User single topo...')
     for n in range(0, repetitions):
         i = 2
         while i <= nr_nodes_single:
-            print 'Test %d: Number of Stations: %d' % (n, i)
+            print('Test %d: Number of Stations: %d' % (n, i))
             step1 = '\"sta1 ping -c11 sta2\"'
             step2 = 'mn --wifi --ap user --topo=single,%d 2>&1' % i
             step3 = 'grep -E \"(icmp_seq=10)\" | awk \'{print $7}\' | tr -d "time="'
@@ -472,11 +472,11 @@ def removeFiles():
         os.system('rm %s' % mem_user_single)
 
 if __name__ == '__main__':
-    print "------------------------------------------------------------------"
+    print("------------------------------------------------------------------")
     os.system('echo "CPU Model:" && cat /proc/cpuinfo | grep "model name" | awk NR==1 | awk \'{print $4 $5 $6 $7 $8 $9}\'')
     os.system('echo "Total Memory:" && cat /proc/meminfo | grep MemTotal | awk \'{print $2 $3}\'')
-    print "------------------------------------------------------------------"
-    print "Stopping network manager"
+    print("------------------------------------------------------------------")
+    print("Stopping network manager")
     os.system('service network-manager stop')
     
     removeFiles() # Remove Files

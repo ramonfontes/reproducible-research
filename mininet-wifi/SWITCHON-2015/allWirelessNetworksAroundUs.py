@@ -13,22 +13,25 @@ import os
 def topology():
     "Create a network."
     net = Mininet_wifi( controller=Controller, switch=OVSKernelSwitch,
-                   accessPoint=OVSKernelAP )
+                        accessPoint=OVSKernelAP )
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     sta1 = net.addStation('sta1', wlans=2, ip='10.0.0.2/8', max_x=120, max_y=50,
                            min_v=1.4, max_v=1.6)
     h1 = net.addHost( 'h1', mac='00:00:00:00:00:01', ip='10.0.0.1/8' )
-    ap1 = net.addAccessPoint( 'ap1', ssid='ssid_ap1', mode= 'g', channel=6, position='70,25,0' )
-    ap2 = net.addAccessPoint( 'ap2', ssid='ssid_ap2', mode= 'g', channel=1, position='30,25,0' )
-    ap3 = net.addAccessPoint( 'ap3', ssid='ssid_ap3', mode= 'g', channel=11, position='110,25,0' )
+    ap1 = net.addAccessPoint( 'ap1', ssid='ssid_ap1', mode='g',
+                              channel=6, position='70,25,0' )
+    ap2 = net.addAccessPoint( 'ap2', ssid='ssid_ap2', mode='g',
+                              channel=1, position='30,25,0' )
+    ap3 = net.addAccessPoint( 'ap3', ssid='ssid_ap3', mode='g',
+                              channel=11, position='110,25,0' )
     s4 = net.addSwitch( 's4', mac='00:00:00:00:00:10' )
     c1 = net.addController( 'c1', controller=Controller )
 
-    print "*** Configuring wifi nodes"
+    print("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
-    print "*** Associating and Creating links"
+    print("*** Associating and Creating links")
     net.addLink(ap1, s4)
     net.addLink(ap2, s4)
     net.addLink(ap3, s4)
@@ -54,7 +57,7 @@ def topology():
 
     net.startMobility(startTime=0, model='RandomDirection')
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c1.start()
     s4.start( [c1] )
@@ -65,10 +68,10 @@ def topology():
     sta1.cmd('ip addr del 10.0.0.2/8 dev sta1-wlan0')
     os.system('ovs-ofctl add-flow s4 actions=normal')
 
-    print "*** Running CLI"
+    print("*** Running CLI")
     CLI_wifi( net )
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':

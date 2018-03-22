@@ -11,46 +11,45 @@
 
 
 from mininet.log import setLogLevel
-from mininet.node import OVSSwitch, Controller, Node
+from mininet.node import Controller
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
-import time
-import os
 
 
 def topology():
 
     "Create a network."
-    net = Mininet_wifi( controller=Controller, switch=OVSSwitch )
+    net = Mininet_wifi( controller=Controller )
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01',
                            ip='192.168.0.1/24', position='47.28,50,0' )
     sta2 = net.addStation( 'sta2', mac='00:00:00:00:00:02',
                            ip='192.168.0.2/24', position='54.08,50,0' )
-    ap3 = net.addAccessPoint( 'ap3', ssid='ap-ssid3', mode='b', channel='1', position='50,50,0' )
+    ap3 = net.addAccessPoint( 'ap3', ssid='ap-ssid3', mode='b', channel='1',
+                              position='50,50,0' )
     c4 = net.addController( 'c4', controller=Controller, port=6653 )
 
-    print "*** Configuring wifi nodes"
+    print("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
     net.plotGraph(max_x=100, max_y=100)
 
-    print "*** Associating and Creating links"
+    print("*** Associating and Creating links")
     net.addLink(sta1, ap3)
     net.addLink(sta2, ap3)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c4.start()
     ap3.start( [c4] )
 
     sta2.cmd('pushd /home/alpha/Downloads; python3 -m http.server 80 &')
 
-    print "*** Running CLI"
+    print("*** Running CLI")
     CLI_wifi( net )
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':

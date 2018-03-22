@@ -19,19 +19,20 @@ This example shows how to create multiple SSID at the same AP and ideas around S
             --------
 """
 
-from mininet.net import Mininet
-from mininet.node import  Controller, UserSwitch
-from mininet.cli import CLI
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.node import UserAP
+from mininet.wifi.cli import CLI_wifi
+from mininet.node import  Controller
 from mininet.log import setLogLevel
 from mininet.link import TCLink
-import time
+
 
 def topology():
     "Create a network."
-    net = Mininet( controller=Controller, link=TCLink, switch=UserSwitch,
-                   disableAutoAssociation=True )
+    net = Mininet_wifi( controller=Controller, link=TCLink, accessPoint=UserAP,
+                        disableAutoAssociation=True )
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     sta1 = net.addStation( 'sta1', position='10,60,0' )
     sta2 = net.addStation( 'sta2', position='20,15,0' )
     sta3 = net.addStation( 'sta3', position='10,25,0' )
@@ -39,15 +40,16 @@ def topology():
     sta5 = net.addStation( 'sta5', position='45,65,0' )
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid,ssid1,ssid2,ssid3,ssid4",
                               mode="g", channel="1", position='30,40,0' )
-    c0 = net.addController('c0', controller=Controller, ip='127.0.0.1', port=6653 )
+    c0 = net.addController('c0', controller=Controller, ip='127.0.0.1',
+                           port=6653 )
 
-    print "*** Configuring wifi nodes"
+    print("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
-    """uncomment to plot graph"""
+    "plotting graph"
     net.plotGraph(max_x=100, max_y=100)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c0.start()
     ap1.start( [c0] )
@@ -73,10 +75,10 @@ def topology():
     ap1.cmd('dpctl unix:/tmp/ap1 flow-mod table=0,cmd=add in_port=4 meter:3 apply:output=flood')
     ap1.cmd('dpctl unix:/tmp/ap1 flow-mod table=0,cmd=add in_port=5 meter:4 apply:output=flood')
 
-    print "*** Running CLI"
-    CLI( net )
+    print("*** Running CLI")
+    CLI_wifi( net )
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':

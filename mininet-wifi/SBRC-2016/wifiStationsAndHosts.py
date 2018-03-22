@@ -13,7 +13,7 @@ def topology():
     "Create a network."
     net = Mininet_wifi( controller=Controller, accessPoint=OVSKernelAP )
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     ap1 = net.addAccessPoint( 'ap1', ssid="simplewifi", mode="g", channel="5" )
     sta1 = net.addStation( 'sta1', ip='192.168.0.1/24' )
     sta2 = net.addStation( 'sta2', ip='192.168.0.2/24' )
@@ -23,21 +23,21 @@ def topology():
 
     net.configureWifiNodes()
 
-    print "*** Adding Link"
+    print("*** Adding Link")
     net.addLink(sta1, ap1)
     net.addLink(sta2, ap1)
     net.addLink(h3, ap1)
     net.addLink(h4, ap1)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c0.start()
     ap1.start( [c0] )
 
-    print "*** Running CLI"
+    print("*** Running CLI")
     CLI_wifi( net )
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':

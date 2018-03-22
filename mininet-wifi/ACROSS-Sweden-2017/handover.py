@@ -12,9 +12,10 @@ from mininet.wifi.net import Mininet_wifi
 def topology():
 
     "Create a network."
-    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
+    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch,
+                       accessPoint=OVSKernelAP)
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8')
     ap1 = net.addAccessPoint('ap1', ssid='new-ssid1', mode='g', channel='1', position='15,30,0')
     ap2 = net.addAccessPoint('ap2', ssid='new-ssid1', mode='g', channel='6', position='55,30,0')
@@ -24,13 +25,13 @@ def topology():
 
     net.propagationModel(model="logDistance", exp=4.3)
 
-    print "*** Configuring WiFi Nodes"
+    print("*** Configuring WiFi Nodes")
     net.configureWifiNodes()
 
     h1.plot(position='35,90,0')
     s3.plot(position='35,80,0')
 
-    print "*** Creating links"
+    print("*** Creating links")
     net.addLink(ap1, s3)
     net.addLink(ap2, s3)
     net.addLink(h1, s3)
@@ -43,17 +44,17 @@ def topology():
     net.mobility(sta1, 'stop', time=80, position='60,30,0')
     net.stopMobility(time=80)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c1.start()
     ap1.start([c1])
     ap2.start([c1])
     s3.start([c1])
 
-    print "*** Running CLI"
+    print("*** Running CLI")
     CLI_wifi(net)
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':

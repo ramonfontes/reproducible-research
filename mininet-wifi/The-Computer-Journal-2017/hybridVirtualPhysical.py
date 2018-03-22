@@ -16,11 +16,12 @@ wlan1(2)phyap1          ap3(4)wlan0
 
 
 from mininet.log import setLogLevel
-from mininet.node import RemoteController, OVSKernelSwitch, Controller
+from mininet.node import RemoteController
 from mininet.wifi.node import UserAP
 from mininet.wifi.cli import CLI_wifi
 from mininet.wifi.net import Mininet_wifi
-import os
+from mininet.wifi.wmediumdConnector import interference
+from mininet.wifi.link import wmediumd
 import time
 
 
@@ -28,12 +29,12 @@ def topology():
 
     "Create a network."
     net = Mininet_wifi( controller=RemoteController, accessPoint=UserAP,
-                   enable_wmediumd=True, enable_interference=True)
+                        link=wmediumd, wmediumd_mode=interference)
     staList = []
     internetIface = 'eth0'
     usbDongleIface = 'wlan11'
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     for n in range(10):
         staList.append(n)
         staList[n] = net.addStation(
@@ -50,10 +51,10 @@ def topology():
     h12 = net.addHost( 'h12', ip='10.0.0.109/8')
     root = net.addHost( 'root', ip='10.0.0.254/8', inNamespace=False )
 
-    print "*** Configuring wifi nodes"
+    print("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
-    print "*** Creating links"
+    print("*** Creating links")
     for sta in staList:
         net.addMesh(sta, ssid='meshNet')
 
@@ -62,7 +63,7 @@ def topology():
     "Seed"
     net.seed(20)
 
-    print "*** Associating and Creating links"
+    print("*** Associating and Creating links")
     net.addLink(phyap1, ap2)
     net.addLink(ap2, ap3)
     net.addLink(sta11, ap2)
@@ -71,7 +72,7 @@ def topology():
     net.addLink(root, ap3)
     net.addLink(phyap1, h12)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c5.start()
     phyap1.start( [c5] )
@@ -102,10 +103,10 @@ def topology():
     "*** Available models: RandomWalk, TruncatedLevyWalk, RandomDirection, RandomWayPoint, GaussMarkov, ReferencePoint, TimeVariantCommunity ***"
     net.startMobility(startTime=0, model='RandomWalk', max_x=200, max_y=200, min_v=0.1, max_v=0.2)
 
-    print "*** Running CLI"
+    print("*** Running CLI")
     CLI_wifi( net )
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     net.stop()
 
 def startNAT( root, inetIntf, subnet='10.0/8', localIntf = None ):
@@ -145,7 +146,7 @@ def fixNetworkManager( root, intf ):
     line = '\niface %s inet manual\n' % intf
     config = open( cfile ).read()
     if ( line ) not in config:
-        print '*** Adding', line.strip(), 'to', cfile
+        print('*** Adding', line.strip(), 'to', cfile)
         with open( cfile, 'a' ) as f:
             f.write( line )
     # Probably need to restart network-manager to be safe -
