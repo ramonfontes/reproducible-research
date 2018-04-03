@@ -117,6 +117,7 @@ def graphic():
     plt.show()
     plt.savefig("graphic.eps")
 
+
 def recordValues(car, client, kernel):
     if kernel == 1:
         car.cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $3}\' >> %s' % c0_pkt)
@@ -128,6 +129,7 @@ def recordValues(car, client, kernel):
         client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $2}\' | tr -d packets: >> %s' % switch_pkt)
         car.cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $6}\' | tr -d bytes: >> %s' % c0_throughput)
         client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $2}\' | tr -d \'RX bytes:\' >> %s' % switch_throughput)
+
 
 def topology():
 
@@ -146,7 +148,7 @@ def topology():
         stas.append(idx)
     for idx in range(0, ncars):
         cars[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8'
-                                                          % (idx + 1), range="40,40",
+                                                          % (idx + 1), range="50,50",
         mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0'
                                                            % ((120 - (idx * 20)),
                                                               (100 - (idx * 0))))
@@ -280,7 +282,7 @@ def topology():
 
     kernel = 0
     var = client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\'')
-    if isinstance(var, int):
+    if var:
         kernel = 1
 
     timeout = time.time() + taskTime
@@ -350,7 +352,7 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    print("*** Generating graphic")
+    print("*** Generating graph")
     graphic()
 
     os.system('pkill -f vlc')
@@ -365,5 +367,5 @@ def topology():
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('debug')
+    setLogLevel('info')
     topology()
