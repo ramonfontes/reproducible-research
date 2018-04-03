@@ -2,7 +2,8 @@
 
 """This code illustrates a single case about Vehicular Ad-Hoc Networks.
 More detail about VANET implementation can be found at the paper titled
-From Theory to Experimental Evaluation: Resource Management in Software-Defined Vehicular Networks
+From Theory to Experimental Evaluation: Resource Management
+in Software-Defined Vehicular Networks
 url: http://ieeexplore.ieee.org/document/7859348/
 Video clip available at: https://www.youtube.com/watch?v=kO3O9EwrP_s
 """
@@ -16,6 +17,7 @@ from mininet.node import Controller, OVSKernelSwitch
 from mininet.wifi.node import OVSKernelAP
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
+
 
 switch_pkt = 'switch-pkt.vanetdata'
 switch_throughput = 'switch-throughput.vanetdata'
@@ -95,10 +97,14 @@ def graphic():
     fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
 
-    ax1.plot(time_, ll1, color='red', label='Received Data (client)', markevery=7, linewidth=1)
-    ax1.plot(time_, ll2, color='black', label='Transmited Data (server)', markevery=7, linewidth=1)
-    ax2.plot(time_, tt1, color='red', label='Throughput (client)', ls="--", markevery=7, linewidth=1)
-    ax2.plot(time_, tt2, color='black', label='Throughput (server)', ls='--', markevery=7, linewidth=1)
+    ax1.plot(time_, ll1, color='red', label='Received Data (client)',
+             markevery=7, linewidth=1)
+    ax1.plot(time_, ll2, color='black', label='Transmited Data (server)',
+             markevery=7, linewidth=1)
+    ax2.plot(time_, tt1, color='red', label='Throughput (client)', ls="--",
+             markevery=7, linewidth=1)
+    ax2.plot(time_, tt2, color='black', label='Throughput (server)', ls='--',
+             markevery=7, linewidth=1)
     ax1.legend(loc=2, borderaxespad=0., fontsize=12)
     ax2.legend(loc=1, borderaxespad=0., fontsize=12)
 
@@ -129,7 +135,8 @@ def topology():
     ncars = 4
 
     "Create a network."
-    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch, accessPoint=OVSKernelAP)
+    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch,
+                       accessPoint=OVSKernelAP)
 
     print("*** Creating nodes")
     cars = []
@@ -138,8 +145,11 @@ def topology():
         cars.append(idx)
         stas.append(idx)
     for idx in range(0, ncars):
-        cars[idx] = net.addCar('car%s' % idx, wlans=1, ip='10.0.0.%s/8' % (idx + 1), range=40,
-        mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0' % ((120 - (idx * 20)), (100 - (idx * 0))))
+        cars[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8'
+                                                          % (idx + 1), range="40,40",
+        mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0'
+                                                           % ((120 - (idx * 20)),
+                                                              (100 - (idx * 0))))
 
     eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000',
                                  mode='ac', channel='36', position='80,75,0')
@@ -187,7 +197,7 @@ def topology():
     j = 2
     for car in cars:
         car.setIP('192.168.0.%s/24' % i, intf='%s-wlan0' % car)
-        car.setIP('192.168.1.%s/24' % i, intf='%s-eth1' % car)
+        car.setIP('192.168.1.%s/24' % i, intf='%s-eth2' % car)
         car.cmd('ip route add 10.0.0.0/8 via 192.168.1.%s' % j)
         car.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
         i += 2
@@ -197,7 +207,7 @@ def topology():
     j = 2
     for carsta in net.carsSTA:
         carsta.setIP('10.0.0.%s/24' % i, intf='%s-mp0' % carsta)
-        carsta.setIP('192.168.1.%s/24' % j, intf='%s-eth2' % carsta)
+        carsta.setIP('192.168.1.%s/24' % j, intf='%s-eth3' % carsta)
         carsta.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
         i += 1
         j += 2
@@ -212,14 +222,14 @@ def topology():
             j += 2
 
     client.cmd('ifconfig client-eth0 200.0.10.2')
-    net.carsSTA[0].cmd('ifconfig car0STA-eth0 200.0.10.50')
+    net.carsSTA[0].cmd('ifconfig car0STA-eth3 200.0.10.50')
 
     cars[0].cmd('modprobe bonding mode=3')
     cars[0].cmd('ip link add bond0 type bond')
     cars[0].cmd('ip link set bond0 address 02:01:02:03:04:08')
-    cars[0].cmd('ip link set car0-eth0 down')
-    cars[0].cmd('ip link set car0-eth0 address 00:00:00:00:00:11')
-    cars[0].cmd('ip link set car0-eth0 master bond0')
+    cars[0].cmd('ip link set car0-eth2 down')
+    cars[0].cmd('ip link set car0-eth2 address 00:00:00:00:00:11')
+    cars[0].cmd('ip link set car0-eth2 master bond0')
     cars[0].cmd('ip link set car0-wlan0 down')
     cars[0].cmd('ip link set car0-wlan0 address 00:00:00:00:00:15')
     cars[0].cmd('ip link set car0-wlan0 master bond0')
@@ -270,7 +280,7 @@ def topology():
 
     kernel = 0
     var = client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $5}\'')
-    if isinstance( var, int ):
+    if isinstance(var, int):
         kernel = 1
 
     timeout = time.time() + taskTime
@@ -289,7 +299,7 @@ def topology():
     cars[2].setPosition('90,100,0')
     cars[3].setPosition('70,100,0')
 
-    #time.sleep(3)
+    # time.sleep(3)
 
     print("applying second rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
@@ -319,7 +329,7 @@ def topology():
     cars[2].setPosition('120,100,0')
     cars[3].setPosition('90,100,0')
 
-    #time.sleep(2)
+    # time.sleep(2)
 
     print("applying third rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
@@ -355,5 +365,5 @@ def topology():
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('info')
+    setLogLevel('debug')
     topology()
