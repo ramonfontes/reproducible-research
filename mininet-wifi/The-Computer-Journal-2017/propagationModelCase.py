@@ -16,8 +16,10 @@ def topology():
     print("*** Creating nodes")
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid_ap1",
                               txpower=15, mode="g", channel=1, position="10,10,0" )
-    sta1 = net.addStation( 'sta1', ip='192.168.0.1/24', txpower=15, position='10,10,0' )
-    sta2 = net.addStation( 'sta2', ip='192.168.0.2/24', txpower=15, position='11.36,10,0' )
+    sta1 = net.addStation( 'sta1', ip='192.168.0.1/24', txpower=15,
+                           position='10,10,0' )
+    sta2 = net.addStation( 'sta2', ip='192.168.0.2/24', txpower=15,
+                           position='11.36,10,0' )
 
     net.propagationModel(model='logDistance', exp=3, sL=1)
     # net.propagationModel('ITUPropagationLossModel', pL=50)

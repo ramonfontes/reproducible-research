@@ -10,15 +10,15 @@ from mininet.node import RemoteController, Controller, Node
 from mininet.wifi.node import OVSKernelAP
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
-import os
-import time
+from mininet.wifi.wmediumdConnector import interference
+from mininet.wifi.link import wmediumd, mesh
 
 
 def topology():
 
     "Create a network."
     net = Mininet_wifi( controller=RemoteController, accessPoint=OVSKernelAP,
-                   enable_wmediumd=True, enable_interference=True)
+                        link=wmediumd, wmediumd_mode=interference)
     staList = []
 
     print("*** Creating nodes")
@@ -50,7 +50,7 @@ def topology():
 
     print("*** Associating and Creating links")
     for sta in staList:
-        net.addMesh(sta, ssid='meshNet')
+        net.addLink(sta, cls=mesh, ssid='meshNet')
     net.addLink(phyap1, ap2)
     net.addLink(ap2, ap3)
     net.addLink(ap3, ap4)

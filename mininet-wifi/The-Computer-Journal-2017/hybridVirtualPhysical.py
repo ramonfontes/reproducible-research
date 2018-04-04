@@ -21,7 +21,7 @@ from mininet.wifi.node import UserAP
 from mininet.wifi.cli import CLI_wifi
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.wmediumdConnector import interference
-from mininet.wifi.link import wmediumd
+from mininet.wifi.link import wmediumd, mesh
 import time
 
 
@@ -56,7 +56,7 @@ def topology():
 
     print("*** Creating links")
     for sta in staList:
-        net.addMesh(sta, ssid='meshNet')
+        net.addLink(sta, cls=mesh, ssid='meshNet')
 
     net.plotGraph(max_x=240, max_y=240)
 

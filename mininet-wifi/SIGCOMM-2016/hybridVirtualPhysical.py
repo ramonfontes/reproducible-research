@@ -21,7 +21,7 @@ from mininet.node import RemoteController
 from mininet.wifi.node import UserAP
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.link import wmediumd
+from mininet.wifi.link import wmediumd, mesh
 from mininet.wifi.wmediumdConnector import interference
 import time
 
@@ -30,7 +30,7 @@ def topology():
 
     "Create a network."
     net = Mininet_wifi( controller=RemoteController, accessPoint=UserAP,
-                   link=wmediumd, wmediumd_mode=interference )
+                        link=wmediumd, wmediumd_mode=interference )
     staList = []
     internetIface = 'enp2s0'
     usbDongleIface = 'wlan2'
@@ -64,7 +64,7 @@ def topology():
 
     print("*** Creating links")
     for sta in staList:
-        net.addMesh(sta, ssid='meshNet')
+        net.addLink(sta, cls=mesh, ssid='meshNet')
 
     net.plotGraph(max_x=240, max_y=240)
 

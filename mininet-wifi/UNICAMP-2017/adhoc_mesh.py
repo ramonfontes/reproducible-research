@@ -4,7 +4,7 @@
 
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.link import wmediumd
+from mininet.wifi.link import wmediumd, adhoc, mesh
 from mininet.wifi.wmediumdConnector import interference
 from mininet.log import setLogLevel
 
@@ -28,12 +28,12 @@ def topology():
     net.configureWifiNodes()
 
     print("*** Creating links")
-    net.addMesh(sta1, ssid='meshNet')
-    net.addMesh(sta2, ssid='meshNet')
-    net.addMesh(sta3, ssid='meshNet')
-    net.addHoc(sta4, ssid='adhocNet')
-    net.addHoc(sta5, ssid='adhocNet')
-    net.addHoc(sta6, ssid='adhocNet')
+    net.addLink(sta1, cls=mesh, ssid='meshNet')
+    net.addLink(sta2, cls=mesh, ssid='meshNet')
+    net.addLink(sta3, cls=mesh, ssid='meshNet')
+    net.addLink(sta4, cls=adhoc, ssid='adhocNet')
+    net.addLink(sta5, cls=adhoc, ssid='adhocNet')
+    net.addLink(sta6, cls=adhoc, ssid='adhocNet')
 
     net.plotGraph(max_x=200, max_y=200)
 
