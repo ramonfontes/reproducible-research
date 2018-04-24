@@ -1,4 +1,4 @@
-# !/usr/bin/python
+#!/usr/bin/python
 
 """This code illustrates a single case about Vehicular Ad-Hoc Networks.
 More detail about VANET implementation can be found at the paper titled
