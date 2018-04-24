@@ -18,7 +18,7 @@ wlan1(2)phyap1          ap3(4)wlan0
 
 from mininet.log import setLogLevel
 from mininet.node import RemoteController
-from mininet.wifi.node import UserAP
+from mininet.wifi.node import UserAP, physicalAP
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.cli import CLI_wifi
 from mininet.wifi.link import wmediumd, mesh
@@ -33,7 +33,7 @@ def topology():
                         link=wmediumd, wmediumd_mode=interference )
     staList = []
     internetIface = 'enp2s0'
-    usbDongleIface = 'wlan2'
+    usbDongleIface = 'wlxf4f26d193319'
 
     print("*** Creating nodes")
     for n in range(10):
@@ -41,10 +41,10 @@ def topology():
         staList[n] = net.addStation(
             'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:' + '%02x' % (n+1),
             ip='192.168.0.%s/24' % (n+1))
-    phyap1 = net.addPhysicalBaseStation(
-        'phyap1', wlans=2, protocols='OpenFlow13',
-        ssid='Sigcomm-2016-Mininet-WiFi,Sigcomm-2016-Mininet-WiFi',
-        mode='g', channel='1', position='50,115,0', phywlan=usbDongleIface)
+    phyap1 = net.addAccessPoint(
+        'phyap1', protocols='OpenFlow13', ssid='Sigcomm-2016',
+        mode='g', channel='1', position='50,115,0', phywlan=usbDongleIface,
+        cls=physicalAP)
     ap2 = net.addAccessPoint( 'ap2', protocols='OpenFlow13', ssid='ap-ssid2',
                               mode='g', channel='11', position='100,175,0' )
     ap3 = net.addAccessPoint( 'ap3', protocols='OpenFlow13', ssid='ap-ssid3',
@@ -68,17 +68,17 @@ def topology():
 
     net.plotGraph(max_x=240, max_y=240)
 
-    "Seed"
-    net.seed(20)
-
     print("*** Associating and Creating links")
     net.addLink(phyap1, ap2)
     net.addLink(ap2, ap3)
-    net.addLink(sta11, phyap1, 0, 1)
+    net.addLink(sta11, phyap1)
     net.addLink(ap3, ap4)
     net.addLink(ap4, phyap1)
     net.addLink(root, ap3)
     net.addLink(phyap1, h12)
+
+    net.startMobility(time=0, model='RandomWalk', max_x=200,
+                      max_y=200, min_v=0.1, max_v=0.2, seed=20)
 
     print("*** Starting network")
     net.build()
@@ -107,9 +107,6 @@ def topology():
         sta.setIP('10.0.0.%s/8' % ip, intf="%s-wlan1" % sta)
         sta.cmd('ip route add default via 10.0.0.254')
         ip+=1
-
-    net.startMobility(startTime=0, model='RandomWalk', max_x=200,
-                      max_y=200, min_v=0.1, max_v=0.2)
 
     print("*** Running CLI")
     CLI_wifi( net )
