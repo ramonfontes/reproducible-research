@@ -10,10 +10,10 @@
    Distance: |--2.72m--|---4.08m---|"""
 
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import Controller
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.cli import CLI_wifi
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.cli import CLI_wifi
 
 
 def topology():
@@ -21,35 +21,35 @@ def topology():
     "Create a network."
     net = Mininet_wifi( controller=Controller )
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01',
                            ip='192.168.0.1/24', position='47.28,50,0' )
     sta2 = net.addStation( 'sta2', mac='00:00:00:00:00:02',
                            ip='192.168.0.2/24', position='54.08,50,0' )
-    ap3 = net.addAccessPoint( 'ap3', ssid='ap-ssid3', mode='b', channel='1',
+    ap1 = net.addAccessPoint( 'ap3', ssid='ap-ssid', mode='b', channel='1',
                               position='50,50,0' )
-    c4 = net.addController( 'c4', controller=Controller, port=6653 )
+    c1 = net.addController( 'c1', controller=Controller, port=6653 )
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
     net.plotGraph(max_x=100, max_y=100)
 
-    print("*** Associating and Creating links")
-    net.addLink(sta1, ap3)
-    net.addLink(sta2, ap3)
+    info("*** Associating and Creating links\n")
+    net.addLink(sta1, ap1)
+    net.addLink(sta2, ap1)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
-    c4.start()
-    ap3.start( [c4] )
+    c1.start()
+    ap1.start( [c1] )
 
     sta2.cmd('pushd /home/alpha/Downloads; python3 -m http.server 80 &')
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

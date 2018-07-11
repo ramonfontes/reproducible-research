@@ -3,10 +3,10 @@
 "This example is based on this video: https://www.youtube.com/watch?v=_C4H2gBdyQY"
 
 from mininet.node import Controller, OVSKernelSwitch
-from mininet.log import setLogLevel
-from mininet.wifi.node import OVSKernelAP
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.net import Mininet_wifi
+from mininet.log import setLogLevel, info
+from mn_wifi.node import OVSKernelAP
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.net import Mininet_wifi
 import os
 
 
@@ -15,7 +15,7 @@ def topology():
     net = Mininet_wifi( controller=Controller, switch=OVSKernelSwitch,
                         accessPoint=OVSKernelAP )
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     sta1 = net.addStation('sta1', wlans=2, ip='10.0.0.2/8', max_x=120, max_y=50,
                            min_v=1.4, max_v=1.6)
     h1 = net.addHost( 'h1', mac='00:00:00:00:00:01', ip='10.0.0.1/8' )
@@ -28,10 +28,10 @@ def topology():
     s4 = net.addSwitch( 's4', mac='00:00:00:00:00:10' )
     c1 = net.addController( 'c1', controller=Controller )
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
-    print("*** Associating and Creating links")
+    info("*** Associating and Creating links\n")
     net.addLink(ap1, s4)
     net.addLink(ap2, s4)
     net.addLink(ap3, s4)
@@ -57,7 +57,7 @@ def topology():
 
     net.startMobility(startTime=0, model='RandomDirection')
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c1.start()
     s4.start( [c1] )
@@ -68,10 +68,10 @@ def topology():
     sta1.cmd('ip addr del 10.0.0.2/8 dev sta1-wlan0')
     os.system('ovs-ofctl add-flow s4 actions=normal')
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

@@ -2,18 +2,18 @@
 
 "This example shows how work with wireless and wired media"
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import Controller
-from mininet.wifi.node import OVSKernelAP
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.net import Mininet_wifi
+from mn_wifi.node import OVSKernelAP
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.net import Mininet_wifi
 
 
 def topology():
     "Create a network."
     net = Mininet_wifi( controller=Controller, accessPoint=OVSKernelAP )
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     ap1 = net.addAccessPoint( 'ap1', ssid="simplewifi", mode="g", channel="5" )
     sta1 = net.addStation( 'sta1', ip='192.168.0.1/24' )
     sta2 = net.addStation( 'sta2', ip='192.168.0.2/24' )
@@ -23,21 +23,21 @@ def topology():
 
     net.configureWifiNodes()
 
-    print("*** Adding Link")
+    info("*** Adding Link\n")
     net.addLink(sta1, ap1)
     net.addLink(sta2, ap1)
     net.addLink(h3, ap1)
     net.addLink(h4, ap1)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c0.start()
     ap1.start( [c0] )
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

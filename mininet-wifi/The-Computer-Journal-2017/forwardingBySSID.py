@@ -20,11 +20,11 @@ around SSID-based packet forwarding
             --------
 """
 
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.node import UserAP
-from mininet.wifi.cli import CLI_wifi
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.node import UserAP
+from mn_wifi.cli import CLI_wifi
 from mininet.node import  Controller
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 
 
 def topology():
@@ -32,7 +32,7 @@ def topology():
     net = Mininet_wifi( controller=Controller, accessPoint=UserAP,
                         autoAssociation=False )
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     sta1 = net.addStation( 'sta1', position='10,60,0' )
     sta2 = net.addStation( 'sta2', position='20,15,0' )
     sta3 = net.addStation( 'sta3', position='10,25,0' )
@@ -45,13 +45,13 @@ def topology():
 
     net.propagationModel(model='logDistance', exp=5)
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
     "plotting graph"
     net.plotGraph(max_x=100, max_y=100)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c0.start()
     ap1.start( [c0] )
@@ -77,10 +77,10 @@ def topology():
     ap1.cmd('dpctl unix:/tmp/ap1 flow-mod table=0,cmd=add in_port=4 meter:3 apply:output=flood')
     ap1.cmd('dpctl unix:/tmp/ap1 flow-mod table=0,cmd=add in_port=5 meter:4 apply:output=flood')
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

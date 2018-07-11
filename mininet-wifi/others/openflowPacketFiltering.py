@@ -1,16 +1,14 @@
 #!/usr/bin/python
 
-"""
-Author: Chih-Heng Ke, smallko@gmail.com
+"""Author: Chih-Heng Ke, smallko@gmail.com
 
 This code serves as alternative if you want to filter OpenFlow Packets when
-transmitter and receives are associated to the same AP. 
-"""
+transmitter and receives are associated to the same AP."""
 
 from mininet.node import RemoteController
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.cli import CLI_wifi
-from mininet.log import setLogLevel
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.cli import CLI_wifi
+from mininet.log import setLogLevel, info
 
 
 def topology():
@@ -18,7 +16,7 @@ def topology():
     "Create a network."
     net = Mininet_wifi( controller=RemoteController )
 
-    print ("*** Creating nodes")
+    info ("*** Creating nodes\n")
     ap1 = net.addAccessPoint( 'ap1', ssid='new-ssid', mode='g', channel='1' )
     sta2 = net.addStation( 'sta2', wlans=1, mac='00:02:00:00:00:02', ip='10.0.0.2/8' )
     sta3 = net.addStation( 'sta3', wlans=1, mac='00:02:00:00:00:03', ip='10.0.0.3/8' )
@@ -26,16 +24,16 @@ def topology():
     c5 = net.addController( 'c5', ip='127.0.0.1', port=6633 )
     h7 = net.addHost( 'h7', mac='00:00:00:00:00:07', ip='10.0.0.7/8' )
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
-    print("*** Creating links")
+    info("*** Creating links\n")
     net.addLink(sta4, ap1)
     net.addLink(sta3, ap1)
     net.addLink(sta2, ap1)
     net.addLink(ap1, h7)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c5.start()
     ap1.start( [c5] )
@@ -66,10 +64,10 @@ def topology():
     #the following rule can block sta2 from communicating with other host or station
     ap1.cmd("ovs-ofctl add-flow ap1 priority=65535,ip,nw_dst=10.0.0.2,actions=drop")
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

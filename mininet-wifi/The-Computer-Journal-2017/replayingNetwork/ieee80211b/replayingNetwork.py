@@ -2,11 +2,11 @@
 
 "Replaying Network Conditions"
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import Controller
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.replaying import replayingNetworkBehavior
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.replaying import replayingNetworkConditions
 
 
 def topology():
@@ -14,22 +14,22 @@ def topology():
     "Create a network."
     net = Mininet_wifi( controller=Controller )
 
-    print "*** Creating nodes"
+    info("*** Creating nodes\n")
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:01', ip='192.168.0.1/24', 
                            position='47.28,50,0' )
     sta2 = net.addStation( 'sta2', mac='00:00:00:00:00:02', ip='192.168.0.2/24', 
                            position='54.08,50,0' )
-    ap3 = net.addBaseStation( 'ap3', ssid='ap-ssid3', mode='b', channel='1', 
+    ap1 = net.addAccessPoint( 'ap1', ssid='ap-ssid1', mode='b', channel='1',
                               position='50,50,0' )
     c0 = net.addController( 'c0', controller=Controller, port=6653 )
 
-    print "*** Configuring wifi nodes"
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
-    print "*** Starting network"
+    info("*** Starting network\n")
     net.build()
     c0.start()
-    ap3.start( [c0] )
+    ap1.start( [c0] )
 
     sta1.cmd('iw dev sta1-wlan0 interface add mon0 type monitor &')
     sta1.cmd('ifconfig mon0 up &')
@@ -40,14 +40,14 @@ def topology():
     getTrace(sta1, 'clientTrace.txt')
     getTrace(sta2, 'serverTrace.txt')
 
-    replayingNetworkBehavior.addNode(sta1)
-    replayingNetworkBehavior.addNode(sta2)
-    replayingNetworkBehavior(net)
+    replayingNetworkConditions.addNode(sta1)
+    replayingNetworkConditions.addNode(sta2)
+    replayingNetworkConditions(net)
 
-    print "*** Running CLI"
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print "*** Stopping network"
+    info("*** Stopping network\n")
     net.stop()
 
 def getTrace(sta, file):

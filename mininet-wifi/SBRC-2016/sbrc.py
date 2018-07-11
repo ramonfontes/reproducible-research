@@ -5,13 +5,13 @@
    Networking Emulation"
    authors: Ramon dos Reis Fontes and Christian Esteve Rothenberg"""
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import RemoteController, Controller, Node
-from mininet.wifi.node import OVSKernelAP
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.wmediumdConnector import interference
-from mininet.wifi.link import wmediumd, mesh
+from mn_wifi.node import OVSKernelAP
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.wmediumdConnector import interference
+from mn_wifi.link import wmediumd, mesh
 
 
 def topology():
@@ -21,7 +21,7 @@ def topology():
                         link=wmediumd, wmediumd_mode=interference)
     staList = []
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     for n in range(10):
         staList.append(n)
         staList[n] = net.addStation(
@@ -39,7 +39,7 @@ def topology():
 
     net.propagationModel(model="logDistance", exp=4)
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
     'plotting graph'
@@ -48,7 +48,7 @@ def topology():
     'Seed'
     net.seed(20)
 
-    print("*** Associating and Creating links")
+    info("*** Associating and Creating links\n")
     for sta in staList:
         net.addLink(sta, cls=mesh, ssid='meshNet')
     net.addLink(phyap1, ap2)
@@ -57,7 +57,7 @@ def topology():
 
     net.startMobility(time=0, model='RandomWalk', max_x=220, max_y=220, min_v=0.1, max_v=0.2)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c1.start()
     phyap1.start( [c1] )
@@ -70,10 +70,10 @@ def topology():
         sta.setIP('10.0.0.%s/8' % ip, intf="%s-wlan1" % sta)
         ip+=1
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 

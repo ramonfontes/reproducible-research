@@ -15,13 +15,13 @@ wlan1(2)phyap1          ap3(4)wlan0
              (3)ap4(2)          """
 
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import RemoteController
-from mininet.wifi.node import UserAP, physicalAP
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.wmediumdConnector import interference
-from mininet.wifi.link import wmediumd, mesh
+from mn_wifi.node import UserAP, physicalAP
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.wmediumdConnector import interference
+from mn_wifi.link import wmediumd, mesh
 import time
 
 
@@ -34,7 +34,7 @@ def topology():
     internetIface = 'enp2s0'
     usbDongleIface = 'wlxf4f26d193319'
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     for n in range(10):
         staList.append(n)
         staList[n] = net.addStation(
@@ -58,16 +58,16 @@ def topology():
     h12 = net.addHost( 'h12', ip='10.0.0.109/8')
     root = net.addHost( 'root', ip='10.0.0.254/8', inNamespace=False )
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
-    print("*** Creating links")
+    info("*** Creating links\n")
     for sta in staList:
         net.addLink(sta, cls=mesh, ssid='meshNet')
 
     net.plotGraph(max_x=240, max_y=240)
 
-    print("*** Associating and Creating links")
+    info("*** Associating and Creating links\n")
     net.addLink(phyap1, ap2)
     net.addLink(ap2, ap3)
     net.addLink(sta11, ap2)
@@ -80,7 +80,7 @@ def topology():
                       max_x=200, max_y=200,
                       min_v=0.1, max_v=0.2, seed=20)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c5.start()
     phyap1.start( [c5] )
@@ -108,10 +108,10 @@ def topology():
         sta.cmd('ip route add default via 10.0.0.254')
         ip+=1
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 def startNAT( root, inetIntf, subnet='10.0/8', localIntf = None ):

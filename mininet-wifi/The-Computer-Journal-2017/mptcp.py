@@ -2,10 +2,10 @@
 
 """MPTCP Demo"""
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import RemoteController, OVSKernelSwitch
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.cli import CLI_wifi
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.cli import CLI_wifi
 
 
 def topology():
@@ -23,7 +23,7 @@ def topology():
     "Create a network."
     net = Mininet_wifi( controller=RemoteController, switch=OVSKernelSwitch )
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     sta1 = net.addStation(
         'sta1', wlans=2, ip='10.0.0.10/8', position='51,10,0' )
     ap2 = net.addAccessPoint(
@@ -43,10 +43,10 @@ def topology():
     h10 = net.addHost( 'h10', mac='00:00:00:00:00:10', ip='192.168.1.254/24' )
     c11 = net.addController( 'c11', controller=RemoteController, ip='127.0.0.1' )
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
-    print("*** Associating and Creating links")
+    info("*** Associating and Creating links\n")
     net.addLink(ap2, sta1)
     net.addLink(ap3, sta1)
     net.addLink(ap2, h4, bw=1000)
@@ -79,7 +79,7 @@ def topology():
 
     sta1.cmd('ip route add default scope global nexthop via 10.0.0.254 dev sta1-wlan0')
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c11.start()
     s6.start( [c11] )
@@ -95,10 +95,10 @@ def topology():
     h4.cmd('sysctl -w net.ipv4.ip_forward=1')
     h5.cmd('sysctl -w net.ipv4.ip_forward=1')
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi( net )
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

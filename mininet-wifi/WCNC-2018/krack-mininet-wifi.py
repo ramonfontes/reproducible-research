@@ -6,19 +6,19 @@ determine whether an implementation is vulnerable to attacks."""
 __author__ = "Ramon Fontes, Hedertone Almeida, and Christian Rothenberg"
 __credits__ = ["https://github.com/vanhoefm/krackattacks-test-ap-ft"]
 
-from mininet.wifi.net import MininetWithControlNet
-from mininet.wifi.node import UserAP
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.link import wmediumd
-from mininet.wifi.wmediumdConnector import interference
+from mn_wifi.net import MininetWithControlNet
+from mn_wifi.node import UserAP
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.link import wmediumd
+from mn_wifi.wmediumdConnector import interference
 from mininet.node import RemoteController
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 import os
 
 
 def topology():
 
-    print("*** Shutting down any controller running on port 6653")
+    info("*** Shutting down any controller running on port 6653\n")
     os.system('sudo fuser -k 6653/tcp')
 
     "Create a network."
@@ -26,7 +26,7 @@ def topology():
                        link=wmediumd, wmediumd_mode=interference,
                        inNamespace=True)
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     net.addStation('sta1', ip='10.0.0.1/8', position='20,0,0', inNamespace=False)
     net.addStation('sta2', ip='10.0.0.2/8', position='-50,-50,0', inNamespace=True)
     ap1 = net.addAccessPoint('ap1', ip='10.0.0.101/8', mac='02:00:00:00:00:01',
@@ -39,19 +39,19 @@ def topology():
                              position='100,30,0', inNamespace=True)
     c1 = net.addController('c1', controller=RemoteController, port=6653)
 
-    print("*** Configuring Propagation Model")
+    info("*** Configuring Propagation Model\n")
     net.propagationModel(model="logDistance", exp=3.5)
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
-    print("*** Linking nodes")
+    info("*** Linking nodes\n")
     net.addLink(ap1, ap2)
 
     'plotting graph'
     net.plotGraph(min_x=-100, min_y=-100, max_x=200, max_y=200)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c1.start()
     ap1.start([c1])
@@ -59,10 +59,10 @@ def topology():
 
     os.system('ip link set hwsim0 up')
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi(net)
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':

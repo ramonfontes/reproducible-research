@@ -2,13 +2,13 @@
 
 'Starting a topology with and without wmediumd'
 
-from mininet.log import setLogLevel
+from mininet.log import setLogLevel, info
 from mininet.node import Controller
-from mininet.wifi.net import Mininet_wifi
-from mininet.wifi.node import UserAP
-from mininet.wifi.cli import CLI_wifi
-from mininet.wifi.wmediumdConnector import interference
-from mininet.wifi.link import wmediumd
+from mn_wifi.net import Mininet_wifi
+from mn_wifi.node import UserAP
+from mn_wifi.cli import CLI_wifi
+from mn_wifi.wmediumdConnector import interference
+from mn_wifi.link import wmediumd
 import sys
 
 
@@ -21,7 +21,7 @@ def topology(wmediumd):
     else:
         net = Mininet_wifi(controller=Controller, accessPoint=UserAP)
 
-    print("*** Creating nodes")
+    info("*** Creating nodes\n")
     sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8',
                           position='120,140,0')
     sta2 = net.addStation('sta2', mac='00:00:00:00:00:02', ip='10.0.0.2/8',
@@ -34,24 +34,24 @@ def topology(wmediumd):
                              encrypt='wpa2')
     c1 = net.addController('c1', controller=Controller)
 
-    print("*** Configuring Propagation Model")
+    info("*** Configuring Propagation Model\n")
     net.propagationModel(model="logDistance", exp = 4.2)
 
-    print("*** Configuring wifi nodes")
+    info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
     'plotting graph'
     net.plotGraph(max_x=150, max_y=150)
 
-    print("*** Starting network")
+    info("*** Starting network\n")
     net.build()
     c1.start()
     ap1.start([c1])
 
-    print("*** Running CLI")
+    info("*** Running CLI\n")
     CLI_wifi(net)
 
-    print("*** Stopping network")
+    info("*** Stopping network\n")
     net.stop()
 
 if __name__ == '__main__':
