@@ -40,10 +40,9 @@ def topology():
     sta5 = net.addStation( 'sta5', position='45,65,0' )
     ap1 = net.addAccessPoint( 'ap1', vssids=4, ssid="ssid,ssid1,ssid2,ssid3,ssid4",
                               mode="g", channel="1", position='30,40,0' )
-    c0 = net.addController('c0', controller=Controller, ip='127.0.0.1',
-                           port=6653 )
+    c0 = net.addController('c0' )
 
-    net.propagationModel(model='logDistance', exp=5)
+    net.setPropagationModel(model='logDistance', exp=5)
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

@@ -13,8 +13,7 @@ import time
 import matplotlib.pyplot as plt
 
 from mininet.log import setLogLevel, info
-from mininet.node import Controller, OVSKernelSwitch
-from mn_wifi.node import OVSKernelAP
+from mininet.node import Controller
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.cli import CLI_wifi
 
@@ -137,8 +136,7 @@ def topology():
     ncars = 4
 
     "Create a network."
-    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch,
-                       accessPoint=OVSKernelAP)
+    net = Mininet_wifi(controller=Controller)
 
     info("*** Creating nodes\n")
     cars = []
@@ -159,7 +157,7 @@ def topology():
                                  mode='ac', channel='40', position='180,75,0')
     rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g',
                               channel='11', position='140,120,0')
-    c1 = net.addController('c1', controller=Controller)
+    c1 = net.addController('c1')
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
 
@@ -167,7 +165,7 @@ def topology():
     switch.plot(position='125,200,0')
 
     info("*** Configuring Propagation Model\n")
-    net.propagationModel(model="logDistance", exp=4.1)
+    net.setPropagationModel(model="logDistance", exp=4.1)
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

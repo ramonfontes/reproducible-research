@@ -3,15 +3,13 @@
 "Propagation Model Demo"
 
 from mininet.log import setLogLevel, info
-from mininet.node import Controller
 from mn_wifi.net import Mininet_wifi
-from mn_wifi.node import OVSKernelAP
 from mn_wifi.cli import CLI_wifi
 
 
 def topology():
     "Create a network."
-    net = Mininet_wifi( controller=Controller, accessPoint=OVSKernelAP )
+    net = Mininet_wifi()
 
     info("*** Creating nodes\n")
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid_ap1",
@@ -21,7 +19,7 @@ def topology():
     sta2 = net.addStation( 'sta2', ip='192.168.0.2/24', txpower=15,
                            position='11.36,10,0' )
 
-    net.propagationModel(model='logDistance', exp=3, sL=1)
+    net.setPropagationModel(model='logDistance', exp=3, sL=1)
     # net.propagationModel('ITUPropagationLossModel', pL=50)
     # net.propagationModel('twoRayGroundPropagationLossModel')
     # net.propagationModel('friisPropagationLossModel', sL=2)

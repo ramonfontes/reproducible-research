@@ -3,7 +3,7 @@
 """MPTCP Demo"""
 
 from mininet.log import setLogLevel, info
-from mininet.node import RemoteController, OVSKernelSwitch
+from mininet.node import RemoteController
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.cli import CLI_wifi
 
@@ -21,7 +21,7 @@ def topology():
  
 
     "Create a network."
-    net = Mininet_wifi( controller=RemoteController, switch=OVSKernelSwitch )
+    net = Mininet_wifi(controller=RemoteController)
 
     info("*** Creating nodes\n")
     sta1 = net.addStation(

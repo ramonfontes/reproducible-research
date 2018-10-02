@@ -4,14 +4,13 @@
 
 from mininet.log import setLogLevel, info
 from mininet.node import Controller
-from mn_wifi.node import OVSKernelAP
 from mn_wifi.cli import CLI_wifi
 from mn_wifi.net import Mininet_wifi
 
 
 def topology():
     "Create a network."
-    net = Mininet_wifi( controller=Controller, accessPoint=OVSKernelAP )
+    net = Mininet_wifi( controller=Controller )
 
     info("*** Creating nodes\n")
     ap1 = net.addAccessPoint( 'ap1', ssid="simplewifi", mode="g", channel="5" )
@@ -19,7 +18,7 @@ def topology():
     sta2 = net.addStation( 'sta2', ip='192.168.0.2/24' )
     h3 = net.addHost( 'h3', ip='192.168.0.3/24' )
     h4 = net.addHost( 'h4', ip='192.168.0.4/24' )
-    c0 = net.addController('c0', controller=Controller, ip='127.0.0.1' )
+    c0 = net.addController('c0')
 
     net.configureWifiNodes()
 

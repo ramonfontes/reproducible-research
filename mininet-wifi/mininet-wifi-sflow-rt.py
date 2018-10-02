@@ -4,7 +4,6 @@
 
 from mininet.node import Controller
 from mininet.log import setLogLevel, info
-from mininet.wifi.node import OVSKernelAP
 from mininet.wifi.link import wmediumd, mesh
 from mininet.wifi.cli import CLI_wifi
 from mininet.wifi.net import Mininet_wifi
@@ -18,8 +17,8 @@ import re
 
 def topology():
     "Create a network."
-    net = Mininet_wifi(controller=Controller, accessPoint=OVSKernelAP,
-                       link=wmediumd, wmediumd_mode=interference)
+    net = Mininet_wifi(controller=Controller, link=wmediumd,
+                       wmediumd_mode=interference)
 
     info("*** Creating nodes\n")
     sta1 = net.addStation('sta1', mac='00:00:00:00:00:11', position='1,1,0')
@@ -27,8 +26,7 @@ def topology():
     ap1 = net.addAccessPoint('ap1', wlans=2, ssid='ssid1,', position='10,10,0')
     ap2 = net.addAccessPoint('ap2', wlans=2, ssid='ssid2,', position='30,10,0')
     ap3 = net.addAccessPoint('ap3', wlans=2, ssid='ssid3,', position='50,10,0')
-    c0 = net.addController('c0', controller=Controller, ip='127.0.0.1',
-                           port=6633)
+    c0 = net.addController('c0')
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

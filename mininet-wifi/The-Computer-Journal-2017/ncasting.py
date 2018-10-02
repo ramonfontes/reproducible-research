@@ -3,7 +3,7 @@
 "ncasting"
 
 from mininet.log import setLogLevel, info
-from mininet.node import RemoteController, OVSKernelSwitch
+from mininet.node import RemoteController
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.cli import CLI_wifi
 
@@ -18,7 +18,7 @@ h1----s1        sta1
 
 def topology():
     "Create a network."
-    net = Mininet_wifi( controller=RemoteController, switch=OVSKernelSwitch )
+    net = Mininet_wifi(controller=RemoteController)
 
     info("*** Creating nodes\n")
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid_1", mode="g", channel="5" )

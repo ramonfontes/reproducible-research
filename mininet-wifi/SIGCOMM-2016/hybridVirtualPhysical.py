@@ -57,7 +57,7 @@ def topology():
     root = net.addHost( 'root', ip='10.0.0.254/8', inNamespace=False )
 
     info("*** Configuring Propagation Model\n")
-    net.propagationModel(model="logDistance", exp=4)
+    net.setPropagationModel(model="logDistance", exp=4)
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

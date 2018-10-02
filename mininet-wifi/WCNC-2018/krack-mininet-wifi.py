@@ -28,7 +28,7 @@ def topology():
 
     info("*** Creating nodes\n")
     net.addStation('sta1', ip='10.0.0.1/8', position='20,0,0', inNamespace=False)
-    net.addStation('sta2', ip='10.0.0.2/8', position='-50,-50,0', inNamespace=True)
+    #net.addStation('sta2', ip='10.0.0.2/8', position='-50,-50,0', inNamespace=True)
     ap1 = net.addAccessPoint('ap1', ip='10.0.0.101/8', mac='02:00:00:00:00:01',
                              ssid="handover", mode="g", channel="1", ieee80211r='yes',
                              mobility_domain='a1b2', passwd='123456789a', encrypt='wpa2',
@@ -40,7 +40,7 @@ def topology():
     c1 = net.addController('c1', controller=RemoteController, port=6653)
 
     info("*** Configuring Propagation Model\n")
-    net.propagationModel(model="logDistance", exp=3.5)
+    net.setPropagationModel(model="logDistance", exp=3.5)
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

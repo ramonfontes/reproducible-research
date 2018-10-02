@@ -6,8 +6,7 @@
    authors: Ramon dos Reis Fontes and Christian Esteve Rothenberg"""
 
 from mininet.log import setLogLevel, info
-from mininet.node import RemoteController, Controller, Node
-from mn_wifi.node import OVSKernelAP
+from mininet.node import Controller, Node
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.cli import CLI_wifi
 from mn_wifi.wmediumdConnector import interference
@@ -17,8 +16,8 @@ from mn_wifi.link import wmediumd, mesh
 def topology():
 
     "Create a network."
-    net = Mininet_wifi( controller=RemoteController, accessPoint=OVSKernelAP,
-                        link=wmediumd, wmediumd_mode=interference)
+    net = Mininet_wifi( controller=Controller, link=wmediumd,
+                        wmediumd_mode=interference)
     staList = []
 
     info("*** Creating nodes\n")
@@ -34,10 +33,10 @@ def topology():
     ap2 = net.addAccessPoint( 'ap2', ssid='ap2', mode='g', channel='11', position='100,175,0' )
     ap3 = net.addAccessPoint( 'ap3', ssid='ap3', mode='g', channel='6', position='150,50,0' )
     ap4 = net.addAccessPoint( 'ap4', ssid='ap4', mode='g', channel='1', position='175,150,0' )
-    c1 = net.addController( 'c1', controller=Controller, port=6653 )
+    c1 = net.addController('c1')
     Node( 'root', inNamespace=False )
 
-    net.propagationModel(model="logDistance", exp=4)
+    net.setPropagationModel(model="logDistance", exp=4)
 
     info("*** Configuring wifi nodes")
     net.configureWifiNodes()

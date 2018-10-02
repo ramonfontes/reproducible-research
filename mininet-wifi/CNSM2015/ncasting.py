@@ -21,8 +21,7 @@ h1----s1        sta1
 
 def topology():
     "Create a network."
-    net = Mininet_wifi( controller=RemoteController, link=TCLink,
-                        switch=OVSKernelSwitch, accessPoint=OVSKernelAP )
+    net = Mininet_wifi( controller=RemoteController, link=TCLink )
 
     info("*** Creating nodes\n")
     ap1 = net.addAccessPoint( 'ap1', ssid="ssid_1", mode="g", channel="5" )

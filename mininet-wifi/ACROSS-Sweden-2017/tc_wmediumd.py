@@ -35,7 +35,7 @@ def topology(wmediumd):
     c1 = net.addController('c1', controller=Controller)
 
     info("*** Configuring Propagation Model\n")
-    net.propagationModel(model="logDistance", exp = 4.2)
+    net.setPropagationModel(model="logDistance", exp = 4.2)
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

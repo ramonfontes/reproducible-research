@@ -28,7 +28,7 @@ def topology():
                            ip='192.168.0.2/24', position='54.08,50,0' )
     ap1 = net.addAccessPoint( 'ap3', ssid='ap-ssid', mode='b', channel='1',
                               position='50,50,0' )
-    c1 = net.addController( 'c1', controller=Controller, port=6653 )
+    c1 = net.addController( 'c1' )
 
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()

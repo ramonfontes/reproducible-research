@@ -3,8 +3,7 @@
 'Example for handover'
 
 from mininet.log import setLogLevel, info
-from mininet.node import Controller, OVSKernelSwitch
-from mn_wifi.node import OVSKernelAP
+from mininet.node import Controller
 from mn_wifi.cli import CLI_wifi
 from mn_wifi.net import Mininet_wifi
 
@@ -12,8 +11,7 @@ from mn_wifi.net import Mininet_wifi
 def topology():
 
     "Create a network."
-    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch,
-                       accessPoint=OVSKernelAP)
+    net = Mininet_wifi(controller=Controller)
 
     info("*** Creating nodes\n")
     sta1 = net.addStation('sta1', mac='00:00:00:00:00:01', ip='10.0.0.1/8')
@@ -21,9 +19,9 @@ def topology():
     ap2 = net.addAccessPoint('ap2', ssid='new-ssid1', mode='g', channel='6', position='55,30,0')
     s3 = net.addSwitch('s3')
     h1 = net.addHost('h1', mac='00:00:00:00:00:02', ip='10.0.0.2/8')
-    c1 = net.addController('c1', controller=Controller, port=6653)
+    c1 = net.addController('c1')
 
-    net.propagationModel(model="logDistance", exp=4.3)
+    net.setPropagationModel(model="logDistance", exp=4.3)
 
     info("*** Configuring WiFi Nodes\n")
     net.configureWifiNodes()
