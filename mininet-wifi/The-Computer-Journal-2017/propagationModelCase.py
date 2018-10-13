@@ -39,7 +39,7 @@ def topology():
         y = 10
         z = 0
         pos = '%s,%s,%s' % (x,y,z)
-        sta1.moveStationTo(pos)
+        sta1.setPosition(pos)
         info(sta1.params['rssi'][0])
 
     info("*** Running CLI\n")
