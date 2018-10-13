@@ -1,6 +1,3 @@
-
-#### Ryu Controller
-
 **Terminal 1**
 * `git clone https://github.com/ramonfontes/ryu -b dev`    
 * `cd ryu`   
