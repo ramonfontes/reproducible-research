@@ -140,16 +140,16 @@ def topology():
 
     info("*** Creating nodes\n")
     cars = []
-    stas = []
     for idx in range(0, ncars):
-        cars.append(idx)
-        stas.append(idx)
-    for idx in range(0, ncars):
-        cars[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8'
-                                                          % (idx + 1), range="50,50",
-        mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0'
-                                                           % ((120 - (idx * 20)),
-                                                              (100 - (idx * 0))))
+        cars.append(net.addCar('car%s' % idx,
+                               wlans=2,
+                               ip='10.0.0.%s/8'% (idx + 1),
+                               range="50,50",
+                               mac='00:00:00:00:00:0%s' % idx,
+                               mode='b',
+                               position='%d,%d,0'
+                                        % ((120 - (idx * 20)),
+                                           (100 - (idx * 0)))))
 
     eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000',
                                  mode='ac', channel='36', position='80,75,0')
