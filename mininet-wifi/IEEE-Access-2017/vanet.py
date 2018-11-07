@@ -6,6 +6,13 @@ From Theory to Experimental Evaluation: Resource Management
 in Software-Defined Vehicular Networks
 url: http://ieeexplore.ieee.org/document/7859348/
 Video clip available at: https://www.youtube.com/watch?v=kO3O9EwrP_s
+
+Since the node car architecture we use in this script isn't supported with mininet-wifi anymore,
+you may want to run git checkout 34a58d417cf4 and then sudo make install in order 
+to get previous version.
+
+Please note that lines 127-136 might not work with some kernel versions
+and adjustments might be needed.
 """
 
 import os
