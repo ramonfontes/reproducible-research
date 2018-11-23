@@ -12,10 +12,10 @@ from mn_wifi.link import wmediumd
 import sys
 
 
-def topology(wmediumd):
+def topology(wmediumd_):
 
     "Create a network."
-    if wmediumd:
+    if wmediumd_:
         net = Mininet_wifi(controller=Controller, accessPoint=UserAP,
                            link=wmediumd, wmediumd_mode=interference)
     else:
@@ -56,5 +56,5 @@ def topology(wmediumd):
 
 if __name__ == '__main__':
     setLogLevel('info')
-    wmediumd = True if '-w' in sys.argv else False
-    topology(wmediumd)
+    wmediumd_ = True if '-w' in sys.argv else False
+    topology(wmediumd_)
