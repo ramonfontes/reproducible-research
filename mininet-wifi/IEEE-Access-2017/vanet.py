@@ -201,7 +201,8 @@ def topology():
 
     for car in cars:
         net.addLink(car, intf=car.params['wlan'][1],
-                    cls=mesh, ssid='mesh-ssid', channel=5)
+                    cls=mesh, ssid='mesh-ssid', channel=5,
+                    passwd='thisisreallysecret')
 
     'Plotting Graph'
     net.plotGraph(max_x=300, max_y=300)
@@ -243,6 +244,8 @@ def topology():
     cars[0].cmd('ip link set car1-mp1 master bond0')
     cars[0].cmd('ip addr add 192.168.200.1/24 dev bond0')
     cars[0].cmd('ip link set bond0 up')
+    cars[0].cmd('ifconfig car1-mp1 0')
+    cars[0].cmd('ifconfig bond0:0 10.0.0.1')
 
     r1.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
     enb1.cmd('echo 1 > /proc/sys/net/ipv4/ip_forward')
