@@ -1,3 +1,8 @@
+### Requirements ###
+* python-scapy
+* ryu
+
+
 ### Simple steps to reproducibility ###
 
 ##### Terminal 1: #####  
