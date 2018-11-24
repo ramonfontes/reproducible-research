@@ -6,13 +6,13 @@ determine whether an implementation is vulnerable to attacks."""
 __author__ = "Ramon Fontes, Hedertone Almeida, and Christian Rothenberg"
 __credits__ = ["https://github.com/vanhoefm/krackattacks-test-ap-ft"]
 
-from mn_wifi.net import MininetWithControlNet
+from mininet.node import RemoteController
+from mininet.log import setLogLevel, info
+from mn_wifi.net import MininetWithControlWNet
 from mn_wifi.node import UserAP
 from mn_wifi.cli import CLI_wifi
 from mn_wifi.link import wmediumd
 from mn_wifi.wmediumdConnector import interference
-from mininet.node import RemoteController
-from mininet.log import setLogLevel, info
 import os
 
 
@@ -22,9 +22,9 @@ def topology():
     os.system('sudo fuser -k 6653/tcp')
 
     "Create a network."
-    net = MininetWithControlNet(controller=RemoteController, accessPoint=UserAP,
-                       link=wmediumd, wmediumd_mode=interference,
-                       inNamespace=True)
+    net = MininetWithControlWNet(controller=RemoteController, accessPoint=UserAP,
+                                 link=wmediumd, wmediumd_mode=interference,
+                                 inNamespace=True)
 
     info("*** Creating nodes\n")
     net.addStation('sta1', ip='10.0.0.1/8', position='20,0,0', inNamespace=False)
