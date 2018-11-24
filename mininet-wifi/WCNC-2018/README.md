@@ -1,6 +1,7 @@
 ### Requirements ###
 * python-scapy
 * ryu
+* ofsoftswitch13
 
 
 ### Simple steps to reproducibility ###
