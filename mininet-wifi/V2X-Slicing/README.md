@@ -42,8 +42,9 @@
 ## Multiple controller approach
 
 **Requirements:**
-* Ryu:  
+* Ryu   
 * Docker containers  
+* python-scapy  
 
 **Terminal 1**
 * $ sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host controller /bin/bash   
