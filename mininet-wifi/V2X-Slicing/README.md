@@ -67,7 +67,7 @@
 * $ sudo python multi-c-approach.py  
 
 
-Extract dataset from ping.txt  (slicing federation is the default one)     
->> you have to modify [/wifi.py](https://github.com/ramonfontes/ryu/blob/book/ryu/app/wifi.py), specially the [load value reference](https://github.com/ramonfontes/ryu/blob/86d130b11de5024313b122ce0875c222a6590a85/ryu/app/wifi.py#L152), in order to test no-slicing federation case.
+**Extract dataset from ping.txt  (slicing federation is the default one)**    
+**>> you have to modify [wifi.py](https://github.com/ramonfontes/ryu/blob/book/ryu/app/wifi.py), specially the [load value reference](https://github.com/ramonfontes/ryu/blob/86d130b11de5024313b122ce0875c222a6590a85/ryu/app/wifi.py#L152), in order to test no-slicing federation case.**
 
 
