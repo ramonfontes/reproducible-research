@@ -1,5 +1,9 @@
 ## Single controller approach
 
+**Requirements:**
+* Ryu   
+* FreeRadius 
+
 #### FreeRadius (Consider the following setup)
 
 **clients.conf**  
