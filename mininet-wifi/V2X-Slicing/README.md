@@ -1,3 +1,5 @@
+## Single controller approach
+
 #### FreeRadius (Consider the following setup)
 
 **clients.conf**  
@@ -27,7 +29,7 @@
 
 
 **Terminal 1**
-* `sudo python use-case.py` 
+* `sudo python single-c-approach.py` 
 
 **Terminal 2**
 * `git clone https://github.com/ramonfontes/ryu -b dev`    
@@ -36,6 +38,33 @@
 
 **Extract dataset from data-log/sta1.log**   
 **>> you have to modify [vanet_run.py](https://github.com/ramonfontes/ryu/blob/dev/ryu/app/vanet_run.py#L134) in order to run the correct case.**
+
+## Multiple controller approach
+
+**Requirements:**
+* Ryu:  
+* Docker containers  
+
+**Terminal 1**
+* $ sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host controller /bin/bash   
+* c0# `git clone https://github.com/ramonfontes/ryu -b book`    
+* c0# `cd ryu`   
+* c0# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
+
+**Terminal 2**
+* $ sudo docker run -it --privileged=true --name c1 --hostname=c1 --pid=host controller /bin/bash   
+* c1# `git clone https://github.com/ramonfontes/ryu -b book`    
+* c1# `cd ryu`   
+* c1# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
+
+**Terminal 3**
+* $ sudo docker run -it --privileged=true --name c2 --hostname=c2 --pid=host controller /bin/bash   
+* c2# `git clone https://github.com/ramonfontes/ryu -b book`    
+* c2# `cd ryu`   
+* c2# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
+
+**Terminal 4**
+* $ sudo python multi-c-approach.py  
 
 
 
