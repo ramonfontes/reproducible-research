@@ -6,23 +6,17 @@ From Theory to Experimental Evaluation: Resource Management
 in Software-Defined Vehicular Networks
 url: http://ieeexplore.ieee.org/document/7859348/
 Video clip available at: https://www.youtube.com/watch?v=kO3O9EwrP_s
-
-Since the node car architecture we use in this script isn't supported with mininet-wifi anymore,
-you may want to run git checkout 34a58d417cf4 and then sudo make install in order 
-to get previous version.
-
-Please note that lines 127-136 might not work with some kernel versions
-and adjustments might be needed.
 """
 
 import os
 import time
 import matplotlib.pyplot as plt
 
-from mininet.log import setLogLevel, info
-from mininet.node import Controller
-from mn_wifi.net import Mininet_wifi
-from mn_wifi.cli import CLI_wifi
+from mininet.log import setLogLevel
+from mininet.node import Controller, OVSKernelSwitch
+from mininet.wifi.node import OVSKernelAP
+from mininet.wifi.net import Mininet_wifi
+from mininet.wifi.cli import CLI_wifi
 
 
 switch_pkt = 'switch-pkt.vanetdata'
@@ -143,20 +137,21 @@ def topology():
     ncars = 4
 
     "Create a network."
-    net = Mininet_wifi(controller=Controller)
+    net = Mininet_wifi(controller=Controller, switch=OVSKernelSwitch,
+                       accessPoint=OVSKernelAP)
 
-    info("*** Creating nodes\n")
+    print("*** Creating nodes")
     cars = []
+    stas = []
     for idx in range(0, ncars):
-        cars.append(net.addCar('car%s' % idx,
-                               wlans=2,
-                               ip='10.0.0.%s/8'% (idx + 1),
-                               range="50,50",
-                               mac='00:00:00:00:00:0%s' % idx,
-                               mode='b',
-                               position='%d,%d,0'
-                                        % ((120 - (idx * 20)),
-                                           (100 - (idx * 0)))))
+        cars.append(idx)
+        stas.append(idx)
+    for idx in range(0, ncars):
+        cars[idx] = net.addCar('car%s' % idx, wlans=2, ip='10.0.0.%s/8'
+                                                          % (idx + 1), range="50,50",
+        mac='00:00:00:00:00:0%s' % idx, mode='b', position='%d,%d,0'
+                                                           % ((120 - (idx * 20)),
+                                                              (100 - (idx * 0))))
 
     eNodeB1 = net.addAccessPoint('eNodeB1', ssid='eNodeB1', dpid='1000000000000000',
                                  mode='ac', channel='36', position='80,75,0')
@@ -164,20 +159,20 @@ def topology():
                                  mode='ac', channel='40', position='180,75,0')
     rsu1 = net.addAccessPoint('rsu1', ssid='rsu1', dpid='3000000000000000', mode='g',
                               channel='11', position='140,120,0')
-    c1 = net.addController('c1')
+    c1 = net.addController('c1', controller=Controller)
     client = net.addHost ('client')
     switch = net.addSwitch ('switch', dpid='4000000000000000')
 
     client.plot(position='125,230,0')
     switch.plot(position='125,200,0')
 
-    info("*** Configuring Propagation Model\n")
-    net.setPropagationModel(model="logDistance", exp=4.1)
+    print("*** Configuring Propagation Model")
+    net.propagationModel(model="logDistance", exp=4.1)
 
-    info("*** Configuring wifi nodes\n")
+    print("*** Configuring wifi nodes")
     net.configureWifiNodes()
 
-    info("*** Creating links\n")
+    print("*** Creating links")
     net.addLink(eNodeB1, switch)
     net.addLink(eNodeB2, switch)
     net.addLink(rsu1, switch)
@@ -189,7 +184,7 @@ def topology():
     'Plotting Graph'
     net.plotGraph(max_x=250, max_y=250)
 
-    info("*** Starting network\n")
+    print("*** Starting network")
     net.build()
     c1.start()
     eNodeB1.start([c1])
@@ -300,7 +295,7 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    info("Moving nodes\n")
+    print("Moving nodes")
     cars[0].setPosition('150,100,0')
     cars[1].setPosition('120,100,0')
     cars[2].setPosition('90,100,0')
@@ -308,7 +303,7 @@ def topology():
 
     # time.sleep(3)
 
-    info("applying second rule\n")
+    print("applying second rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
     os.system('ovs-ofctl mod-flows switch in_port=2,actions=output:4')
     os.system('ovs-ofctl mod-flows switch in_port=4,actions=output:2,3')
@@ -330,7 +325,7 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    info("Moving nodes\n")
+    print("Moving nodes")
     cars[0].setPosition('190,100,0')
     cars[1].setPosition('150,100,0')
     cars[2].setPosition('120,100,0')
@@ -338,7 +333,7 @@ def topology():
 
     # time.sleep(2)
 
-    info("applying third rule\n")
+    print("applying third rule")
     os.system('ovs-ofctl mod-flows switch in_port=1,actions=drop')
     os.system('ovs-ofctl mod-flows switch in_port=3,actions=drop')
     os.system('ovs-ofctl mod-flows switch in_port=2,actions=output:4')
@@ -357,18 +352,19 @@ def topology():
             recordValues(cars[0], client, kernel)
             i += 0.5
 
-    info("*** Generating graph\n")
+    print("*** Generating graph")
     graphic()
 
     os.system('pkill -f vlc')
     os.system('pkill xterm')
+    os.system('rmmod bonding')
 
-    info("*** Running CLI\n")
+    print("*** Running CLI")
     CLI_wifi(net)
 
     #os.system('rm *.vanetdata')
 
-    info("*** Stopping network\n")
+    print("*** Stopping network")
     net.stop()
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-### Please refer the manual of Mininet-WiFi to reproduce this paper.
+### Please refer the manual of Mininet-WiFi to reproduce this paper. Consider to use this [commit](7825d52da77fe331583c1a7f90d46860b4e18f02) from Mininet-WiFi. 
 
 ### Bibtex:  
 @article{DosReisFontes2017,  
@@ -12,3 +12,4 @@
   title = {From Theory to Experimental Evaluation: Resource Management in Software-Defined Vehicular Networks},  
   journal = {{IEEE} Access}  
 }
+
