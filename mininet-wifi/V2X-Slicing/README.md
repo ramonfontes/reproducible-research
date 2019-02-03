@@ -51,19 +51,19 @@
 * python-scapy  
 
 **Terminal 1**
-* $ sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host controller /bin/bash   
+* $ sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host ubuntu /bin/bash   
 * c0# `git clone https://github.com/ramonfontes/ryu -b book`    
 * c0# `cd ryu`   
 * c0# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
 
 **Terminal 2**
-* $ sudo docker run -it --privileged=true --name c1 --hostname=c1 --pid=host controller /bin/bash   
+* $ sudo docker run -it --privileged=true --name c1 --hostname=c1 --pid=host ubuntu /bin/bash   
 * c1# `git clone https://github.com/ramonfontes/ryu -b book`    
 * c1# `cd ryu`   
 * c1# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
 
 **Terminal 3**
-* $ sudo docker run -it --privileged=true --name c2 --hostname=c2 --pid=host controller /bin/bash   
+* $ sudo docker run -it --privileged=true --name c2 --hostname=c2 --pid=host ubuntu /bin/bash   
 * c2# `git clone https://github.com/ramonfontes/ryu -b book`    
 * c2# `cd ryu`   
 * c2# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
