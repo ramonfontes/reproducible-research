@@ -9,7 +9,7 @@
   volume = {18},
   number = {12},
   pages = {4435},
-  author = {Claudia Campolo and Ramon Fontes and Antonella Molinaro and Christian~Esteve~ Rothenberg and Antonio Iera},
+  author = {Claudia Campolo and Ramon Fontes and Antonella Molinaro and Christian Esteve Rothenberg and Antonio Iera},
   title = {Slicing on the Road: Enabling the Automotive Vertical through 5G Network Softwarization},
   journal = {Sensors}
 }
