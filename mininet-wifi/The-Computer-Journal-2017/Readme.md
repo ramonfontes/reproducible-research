@@ -1,4 +1,4 @@
-### Please refer the manual of Mininet-WiFi to reproduce this paper.
+### Please refer to the manual of Mininet-WiFi to reproduce this paper.
 
 ### Bibtex:
 

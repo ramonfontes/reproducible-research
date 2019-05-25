@@ -1,4 +1,4 @@
-#### Please refer the manual of Mininet-WiFi to reproduce this paper.  
+#### Please refer to the manual of Mininet-WiFi to reproduce this paper.
 #### bibtex
 @inproceedings{fontes2015mininet,  
   title={Mininet-WiFi: Emulating software-defined wireless networks},  

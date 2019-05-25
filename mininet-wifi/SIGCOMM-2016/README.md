@@ -1,5 +1,5 @@
 
-#### Please refer the manual of Mininet-WiFi to reproduce this paper.  
+#### Please refer to the manual of Mininet-WiFi to reproduce this paper.
 #### bibtex:
 @inproceedings{fontes2016mininet,  
   title={Mininet-WiFi: A Platform for Hybrid Physical-Virtual Software-Defined Wireless Networking Research},  
