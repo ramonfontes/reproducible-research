@@ -1,11 +1,11 @@
 ### Bibtex:
-  
+
 @article{Campolo2018,
   doi = {10.3390/s18124435},
   url = {https://doi.org/10.3390/s18124435},
   year  = {2018},
   month = {dec},
-  publisher = {{MDPI} {AG}},
+  publisher = {{MDPI} {AG}},  
   volume = {18},
   number = {12},
   pages = {4435},
@@ -13,7 +13,6 @@
   title = {Slicing on the Road: Enabling the Automotive Vertical through 5G Network Softwarization},
   journal = {Sensors}
 }
-
 
 ## Single controller approach
 

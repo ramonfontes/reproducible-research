@@ -25,23 +25,31 @@ def topology():
 
     info("*** Creating nodes\n")
     cars = []
-    car1 = net.addStation('car1', mac='02:00:00:00:00:01', position='40,40,0') #, active_scan=1)
+    car1 = net.addStation('car1', mac='02:00:00:00:00:01',
+                          encrypt='wpa2',
+                          position='40,40,0') #, active_scan=1)
     cars.append(car1)
     for idx in range(2,11):
-        cars.append(net.addStation('car%s' % idx, mac='02:00:00:00:00:%02d' % idx,
-                                   position='17%s,%s,0' % (idx, (int(idx)+50)))) #, active_scan=1)
+        cars.append(net.addStation('car%s' % idx,
+                                   mac='02:00:00:00:00:%02d' % idx,
+                                   encrypt='wpa2',
+                                   position='17%s,%s,0'
+                                            % (idx, (int(idx)+50)))) #, active_scan=1)
 
     enb1 = net.addAccessPoint('enb1', mac='00:00:00:00:00:01', ssid="handover",
-                              mode="g", channel="1", datapath='user',
-                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes', mobility_domain='a1b2',
+                              mode="a", channel="36", datapath='user',
+                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
+                              mobility_domain='a1b2',
                               dpid='1', position='50,50,0')
-    enb2 = net.addAccessPoint('enb2', mac='00:00:00:00:00:02', ssid="handover",
-                              mode="g", channel="6", datapath='user',
-                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes', mobility_domain='a1b2',
+    enb2 = net.addAccessPoint('b1', mac='00:00:00:00:00:02', ssid="handover",
+                              mode="a", channel="36", datapath='user',
+                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
+                              mobility_domain='a1b2',
                               dpid='2', position='110,50,0', color='r')
-    enb3 = net.addAccessPoint('enb3', mac='00:00:00:00:00:03', ssid="handover",
-                              mode="g", channel="11", datapath='user',
-                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes', mobility_domain='a1b2',
+    enb3 = net.addAccessPoint('a2', mac='00:00:00:00:00:03', ssid="handover",
+                              mode="a", channel="36", datapath='user',
+                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
+                              mobility_domain='a1b2',
                               dpid='3', position='130,50,0')
     backbone1 = net.addSwitch('backbone1', mac='00:00:00:00:00:04', dpid='4',
                               failMode='standalone')
@@ -99,6 +107,9 @@ def topology():
             else:
                 cars[0].setPosition('140,50,0')
             j+=1
+        # force association due to better rssi
+        if j == 2 and (time.time() - currentTime) == 5:
+            cars[0].cmdPrint('wpa_cli -i car1-wlan0 roam 00:00:00:00:00:03')
 
     info("*** Running CLI\n")
     CLI_wifi(net)
