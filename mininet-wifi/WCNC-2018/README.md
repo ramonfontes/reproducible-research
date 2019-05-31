@@ -1,10 +1,10 @@
 #### Please refer to the manual of Mininet-WiFi to reproduce this paper.
 #### bibtex:
-@inproceedings{fontesonthekrackattack,
-  title={On the Krack Attack: Reproducing Vulnerability and a Software-Defined Mitigation Approach},
-  author={Fontes, Ramon dos Reis and Rothenberg, Christian Esteve},
-  year={2017},
-  organization={WCNC}
+@article{fontesonthekrackattack,  
+  title={On the Krack Attack: Reproducing Vulnerability and a Software-Defined Mitigation Approach},  
+  author={Fontes, Ramon dos Reis and Rothenberg, Christian Esteve},  
+  year={2017},  
+  organization={WCNC}  
 }
 
 ### Requirements ###

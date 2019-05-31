@@ -5,7 +5,7 @@
   url = {https://doi.org/10.3390/s18124435},
   year  = {2018},
   month = {dec},
-  publisher = {{MDPI} {AG}},  
+  publisher = {{MDPI} {AG}},
   volume = {18},
   number = {12},
   pages = {4435},
@@ -13,6 +13,7 @@
   title = {Slicing on the Road: Enabling the Automotive Vertical through 5G Network Softwarization},
   journal = {Sensors}
 }
+
 
 ## Single controller approach
 
@@ -93,5 +94,3 @@
 
 ![](https://github.com/ramonfontes/reproducible-research/blob/master/mininet-wifi/V2X-Slicing/arq-multi-c.png)   
 Figure 1. Proposed prototype for multiple controller approach
-
-
