@@ -68,7 +68,7 @@
 * python-scapy  
 
 **Terminal 1**
-* $ sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host ubuntu /bin/bash  
+* $ `sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host ubuntu /bin/bash`  
 * c0# `cd ~`    
 * c0# `git clone https://github.com/intrig-unicamp/mininet-wifi`    
 * c0# `cd mininet-wifi`   
@@ -79,7 +79,7 @@
 * c0# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
 
 **Terminal 2**
-* $ sudo docker run -it --privileged=true --name c1 --hostname=c1 --pid=host ubuntu /bin/bash   
+* $ `sudo docker run -it --privileged=true --name c1 --hostname=c1 --pid=host ubuntu /bin/bash`   
 * c1# `cd ~`    
 * c1# `git clone https://github.com/intrig-unicamp/mininet-wifi`    
 * c1# `cd mininet-wifi`   
@@ -90,7 +90,7 @@
 * c1# ~/ryu$ `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
 
 **Terminal 3**
-* $ sudo docker run -it --privileged=true --name c2 --hostname=c2 --pid=host ubuntu /bin/bash   
+* $ `sudo docker run -it --privileged=true --name c2 --hostname=c2 --pid=host ubuntu /bin/bash`   
 * c2# `cd ~`    
 * c2# `git clone https://github.com/intrig-unicamp/mininet-wifi`    
 * c2# `cd mininet-wifi`   
