@@ -64,8 +64,8 @@ def pkt_callback(pkt):
                             CLIENT,bssid,ssid,rssi,target_bssid,
                             target_signal,n_clients,target_n_clients)
                         packet = IP(src="10.0.0.%s" % NODE_ID,
-                                    dst="172.17.0.%d"
-                                        % (int(bssid_id)+1))/UDP(sport=8000, dport=8002)/msg
+                                    dst="10.0.0.10%s"
+                                        % (bssid_id))/UDP(sport=8000, dport=8002)/msg
                         send(packet, verbose=0, iface="car%s-wlan0" % NODE_ID)
                         t = 0
 
