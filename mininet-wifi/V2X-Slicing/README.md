@@ -68,41 +68,10 @@
 * python-scapy  
 
 **Terminal 1**
-* $ `sudo docker run -it --privileged=true --name c0 --hostname=c0 --pid=host ubuntu /bin/bash`  
-* root@c0:/# `cd ~`    
-* root@c0:~# `git clone https://github.com/intrig-unicamp/mininet-wifi`    
-* root@c0:~# `cd mininet-wifi`   
-* root@c0:~/mininet-wifi#`util/install.sh -Wlnfv`   
-* root@c0:~/mininet-wifi# `cd ~`   
-* root@c0:~# `git clone https://github.com/ramonfontes/ryu -b book`    
-* root@c0:~# `cd ryu`   
-* root@c0:~/ryu# `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
-
-**Terminal 2**
-* $ `sudo docker run -it --privileged=true --name c1 --hostname=c1 --pid=host ubuntu /bin/bash`   
-* root@c1:/# `cd ~`    
-* root@c1:~# `git clone https://github.com/intrig-unicamp/mininet-wifi`    
-* root@c1:~# `cd mininet-wifi`   
-* root@c1:~/mininet-wifi#`util/install.sh -Wlnfv`   
-* root@c1:~/mininet-wifi# `cd ~`   
-* root@c1:~# `git clone https://github.com/ramonfontes/ryu -b book`    
-* root@c1:~# `cd ryu`   
-* root@c1:~/ryu# `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`     
-
-**Terminal 3**
-* $ `sudo docker run -it --privileged=true --name c2 --hostname=c2 --pid=host ubuntu /bin/bash`   
-* root@c2:/# `cd ~`    
-* root@c2:~# `git clone https://github.com/intrig-unicamp/mininet-wifi`    
-* root@c2:~# `cd mininet-wifi`   
-* root@c2:~/mininet-wifi#`util/install.sh -Wlnfv`   
-* root@c2:~/mininet-wifi# `cd ~`   
-* root@c2:~# `git clone https://github.com/ramonfontes/ryu -b book`    
-* root@c2:~# `cd ryu`   
-* root@c2:~/ryu# `PYTHONPATH=. ./bin/ryu-manager ryu/app/wifi.py`       
-
-**Terminal 4**
-* $ sudo python multi-c-approach.py  
-
+* ~$ `cd reproducible-research/mininet-wifi/V2X-Slicing`
+* ~/reproducible-research/mininet-wifi/V2X-Slicing$ `git clone https://github.com/ramonfontes/ryu -b book` 
+* ~/reproducible-research/mininet-wifi/V2X-Slicing$ `cp run.sh ryu`    
+* ~/reproducible-research/mininet-wifi/V2X-Slicing$ `sudo python multi-c-approach.py`             
 
 **Extract dataset from ping.txt  (slicing federation is the default one)**    
 **>> in order to test no-slicing federation case, a minor change in [wifi.py](https://github.com/ramonfontes/ryu/blob/book/ryu/app/wifi.py) is required (specially the [load value reference](https://github.com/ramonfontes/ryu/blob/86d130b11de5024313b122ce0875c222a6590a85/ryu/app/wifi.py#L152)).**
