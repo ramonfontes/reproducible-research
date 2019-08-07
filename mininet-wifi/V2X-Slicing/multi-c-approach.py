@@ -135,9 +135,9 @@ def topology():
                 % (cars[0].name, cars[0].name))
     cars[0].cmd('ifconfig %s-mon0 up' % cars[0].name)
 
-    enb1.cmd('ovs-ofctl add-flow "enb1" in_port=1,udp,tp_src=8000,actions=output:3')
-    enb2.cmd('ovs-ofctl add-flow "enb2" in_port=1,udp,tp_src=8000,actions=output:3')
-    enb3.cmd('ovs-ofctl add-flow "enb3" in_port=1,udp,tp_src=8000,actions=output:3')
+    enb1.cmd('ovs-ofctl add-flow "enb1" in_port=1,udp,tp_src=8000,actions=controller')
+    enb2.cmd('ovs-ofctl add-flow "enb2" in_port=1,udp,tp_src=8000,actions=controller')
+    enb3.cmd('ovs-ofctl add-flow "enb3" in_port=1,udp,tp_src=8000,actions=controller')
     backbone1.cmd('ovs-ofctl add-flow "backbone1" in_port=1,actions=output:4')
     backbone1.cmd('ovs-ofctl add-flow "backbone1" in_port=2,actions=output:4')
     backbone1.cmd('ovs-ofctl add-flow "backbone1" in_port=3,actions=output:4')
@@ -155,12 +155,12 @@ def topology():
             else:
                 cars[0].setPosition('140,50,0')
             j+=1
-        if j == 2 and (time.time() - currentTime) == 1:
-            cars[0].cmd('wpa_cli -i car1-wlan0 scan')
+        #if j == 2 and (time.time() - currentTime) == 1:
+        #    cars[0].cmd('wpa_cli -i car1-wlan0 scan')
         # force association due to better rssi
-        if j == 2 and (time.time() - currentTime) == 5:
-            cars[0].cmd('wpa_cli -i car1-wlan0 scan_results')
-            cars[0].cmd('wpa_cli -i car1-wlan0 roam 00:00:00:00:00:03')
+        #if j == 2 and (time.time() - currentTime) == 5:
+        #    cars[0].cmd('wpa_cli -i car1-wlan0 scan_results')
+        #    cars[0].cmd('wpa_cli -i car1-wlan0 roam 00:00:00:00:00:03')
 
     info("*** Running CLI\n")
     CLI_wifi(net)

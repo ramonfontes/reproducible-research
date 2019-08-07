@@ -14,7 +14,7 @@ t = 0
 def pkt_callback(pkt):
     global t
     t += 1
-    if t >= 201:
+    if t >= 10:
         if pkt.haslayer(Dot11):
             ssid = None
             try:
