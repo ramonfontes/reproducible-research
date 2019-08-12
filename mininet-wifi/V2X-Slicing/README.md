@@ -64,7 +64,6 @@
 
 **Requirements:**
 * Ryu   
-* Docker containers  
 * python-scapy  
 
 **Terminal 1**
