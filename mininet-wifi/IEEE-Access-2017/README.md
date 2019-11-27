@@ -3,12 +3,14 @@
 - VLC
 
 ### Reproducibility steps
+```
 - ~/mininet-wifi$ git clone https://github.com/ramonfontes/reproducible-research
 - ~/mininet-wifi$ sudo rm -r /usr/local/lib/python2.7/dist-packages/mininet*
 - ~/mininet-wifi$ git reset --hard b43af65
 - ~/mininet-wifi$ sudo make install
 - ~/mininet-wifi$ cd reproducible-research/mininet-wifi/IEEE-Access-2017
 - ~/mininet-wifi/reproducible-research/mininet-wifi/IEEE-Access-2017$ sudo python vanet.py
+```
 
 ### Bibtex:  
 @article{DosReisFontes2017,  
