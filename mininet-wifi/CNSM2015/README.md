@@ -1,5 +1,21 @@
-#### Please refer to the manual of Mininet-WiFi to reproduce this paper.
-#### bibtex
+### Requirements
+- Mininet-WiFi
+- Floodlight 
+
+### Reproducibility Steps
+
+**Terminal 1**
+```
+~/floodlight$ sudo java -jar target/floodlight.jar
+```
+
+**Terminal 2**
+```
+sudo python ncasting.py
+mininet-wifi> sh python ncasting-controller.py
+```
+
+### bibtex
 @inproceedings{fontes2015mininet,  
   title={Mininet-WiFi: Emulating software-defined wireless networks},  
   author={Fontes, Ramon R and Afzal, Samira and Brito, Samuel HB and Santos, Mateus AS and Rothenberg, Christian Esteve},  
