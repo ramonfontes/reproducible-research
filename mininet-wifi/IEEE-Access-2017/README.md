@@ -2,7 +2,7 @@
 - Mininet-WiFi
 - VLC
 
-### Reprocubibility steps
+### Reproducibility steps
 - ~/mininet-wifi$ git clone https://github.com/ramonfontes/reproducible-research
 - ~/mininet-wifi$ sudo rm -r /usr/local/lib/python2.7/dist-packages/mininet*
 - ~/mininet-wifi$ git reset --hard b43af65
