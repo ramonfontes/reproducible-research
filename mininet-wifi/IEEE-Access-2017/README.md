@@ -1,4 +1,4 @@
-### Please refer to the manual of Mininet-WiFi to reproduce this paper. Consider to use this [commit](https://github.com/intrig-unicamp/mininet-wifi/commit/7825d52da77fe331583c1a7f90d46860b4e18f02) from Mininet-WiFi.
+### Please refer to the manual of Mininet-WiFi to reproduce this paper. Consider to run Mininet-WiFi with this [commit](https://github.com/intrig-unicamp/mininet-wifi/commit/7825d52da77fe331583c1a7f90d46860b4e18f02).
 
 ### Bibtex:  
 @article{DosReisFontes2017,  
