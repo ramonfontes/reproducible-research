@@ -1,4 +1,4 @@
-#!/usr/bin/python
+z#!/usr/bin/python
 
 "This example is based on this video: https://www.youtube.com/watch?v=_C4H2gBdyQY"
 
@@ -28,6 +28,8 @@ def topology():
     s4 = net.addSwitch( 's4', mac='00:00:00:00:00:10' )
     c1 = net.addController( 'c1', controller=Controller )
 
+    net.setPropagationModel(model="logDistance", exp=4.3)
+
     info("*** Configuring wifi nodes\n")
     net.configureWifiNodes()
 
@@ -49,13 +51,10 @@ def topology():
     sta1.cmd('ip addr add 10.0.0.10/8 dev bond0')
     sta1.cmd('ip link set bond0 up')
 
-    'seed'
-    net.seed(12)
-
     'plotting graph'
     net.plotGraph(max_x=140, max_y=140)
 
-    net.startMobility(startTime=0, model='RandomDirection')
+    net.startMobility(time=0, seed=1, model='RandomDirection')
 
     info("*** Starting network\n")
     net.build()
