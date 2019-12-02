@@ -1,4 +1,4 @@
-z#!/usr/bin/python
+#!/usr/bin/python
 
 "This example is based on this video: https://www.youtube.com/watch?v=_C4H2gBdyQY"
 
