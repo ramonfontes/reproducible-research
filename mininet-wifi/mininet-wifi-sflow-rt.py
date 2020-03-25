@@ -5,7 +5,7 @@
 from mininet.node import Controller
 from mininet.log import setLogLevel, info
 from mininet.wifi.link import wmediumd, mesh
-from mininet.wifi.cli import CLI_wifi
+from mininet.wifi.cli import CLI
 from mininet.wifi.net import Mininet_wifi
 from mininet.wifi.wmediumdConnector import interference
 from json import dumps
@@ -61,7 +61,7 @@ def topology():
 
     for ap in net.aps:
         sflow += ' -- set bridge %s sflow=@sflow' % ap
-        print ' '.join([ap.name for ap in net.aps])
+        print(' '.join([ap.name for ap in net.aps]))
         quietRun(sflow)
 
     agent = '127.0.0.1'
@@ -110,7 +110,7 @@ def topology():
     put('http://127.0.0.1:8008/topology/json',data=dumps(topo))
 
     info("*** Running CLI\n")
-    CLI_wifi(net)
+    CLI(net)
 
     info("*** Stopping network\n")
     net.stop()

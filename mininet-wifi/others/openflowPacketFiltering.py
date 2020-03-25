@@ -7,7 +7,7 @@ transmitter and receives are associated to the same AP."""
 
 from mininet.node import RemoteController
 from mn_wifi.net import Mininet_wifi
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 from mininet.log import setLogLevel, info
 
 
@@ -65,7 +65,7 @@ def topology():
     ap1.cmd("ovs-ofctl add-flow ap1 priority=65535,ip,nw_dst=10.0.0.2,actions=drop")
 
     info("*** Running CLI\n")
-    CLI_wifi( net )
+    CLI( net )
 
     info("*** Stopping network\n")
     net.stop()

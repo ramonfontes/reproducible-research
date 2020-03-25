@@ -5,7 +5,7 @@
 from mininet.log import setLogLevel, info
 from mininet.node import RemoteController
 from mn_wifi.net import Mininet_wifi
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 
 """       ap1.
          /    .
@@ -49,7 +49,7 @@ def topology():
     h4.cmd("ifconfig h4-eth0:0 192.168.1.1/24")
 
     info("*** Running CLI\n")
-    CLI_wifi( net )
+    CLI( net )
 
     info("*** Stopping network\n")
     net.stop()

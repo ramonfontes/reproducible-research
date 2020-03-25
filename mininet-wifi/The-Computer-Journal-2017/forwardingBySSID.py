@@ -22,7 +22,7 @@ around SSID-based packet forwarding
 
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.node import UserAP
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 from mininet.node import  Controller
 from mininet.log import setLogLevel, info
 
@@ -77,7 +77,7 @@ def topology():
     ap1.cmd('dpctl unix:/tmp/ap1 flow-mod table=0,cmd=add in_port=5 meter:4 apply:output=flood')
 
     info("*** Running CLI\n")
-    CLI_wifi( net )
+    CLI( net )
 
     info("*** Stopping network\n")
     net.stop()

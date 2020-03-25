@@ -8,7 +8,7 @@ from mininet.term import makeTerm, cleanUpScreens
 from mininet.log import setLogLevel
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.link import wmediumd
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 from mn_wifi.wmediumdConnector import interference
 
 
@@ -191,7 +191,7 @@ def topology():
     makeTerm( h4, cmd="bash -c 'iperf -s -i 1 -u;'" )
 
     print("*** Running CLI")
-    CLI_wifi(net)
+    CLI(net)
 
     os.system('pkill radiusd')
     if py_version_info < (3, 0):

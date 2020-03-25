@@ -5,7 +5,7 @@
 from mininet.node import Controller, OVSKernelSwitch
 from mininet.log import setLogLevel, info
 from mn_wifi.node import OVSKernelAP
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 from mn_wifi.net import Mininet_wifi
 import os
 
@@ -68,7 +68,7 @@ def topology():
     os.system('ovs-ofctl add-flow s4 actions=normal')
 
     info("*** Running CLI\n")
-    CLI_wifi( net )
+    CLI( net )
 
     info("*** Stopping network\n")
     net.stop()

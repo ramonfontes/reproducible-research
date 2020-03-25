@@ -5,7 +5,7 @@
 from mininet.log import setLogLevel, info
 from mininet.node import RemoteController
 from mn_wifi.net import Mininet_wifi
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 
 
 def topology():
@@ -96,7 +96,7 @@ def topology():
     h5.cmd('sysctl -w net.ipv4.ip_forward=1')
 
     info("*** Running CLI\n")
-    CLI_wifi( net )
+    CLI( net )
 
     info("*** Stopping network\n")
     net.stop()

@@ -5,7 +5,7 @@ import os
 
 from mininet.log import setLogLevel, info
 from mininet.node import RemoteController
-from mn_wifi.cli import CLI_wifi
+from mn_wifi.cli import CLI
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.link import wmediumd
 from mininet.term import makeTerm, cleanUpScreens
@@ -48,20 +48,20 @@ def topology():
                                             % (idx, (int(idx)+50)))) #, active_scan=1)
 
     enb1 = net.addAccessPoint('enb1', mac='00:00:00:00:00:01', ssid="handover",
-                             mode="g", channel="1", datapath='user',
-                             passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
-                             mobility_domain='a1b2', dpid='1',
-                             position='50,50,0', inband=True)
+                              mode="g", channel="1", datapath='user',
+                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
+                              mobility_domain='a1b2', dpid='1',
+                              position='50,50,0', inband=True)
     enb2 = net.addAccessPoint('enb2', mac='00:00:00:00:00:02', ssid="handover",
-                             mode="g", channel="1", datapath='user',
-                             passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
-                             mobility_domain='a1b2', dpid='2',
-                             position='110,50,0', color='r', inband=True)
+                              mode="g", channel="1", datapath='user',
+                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
+                              mobility_domain='a1b2', dpid='2',
+                              position='110,50,0', color='r', inband=True)
     enb3 = net.addAccessPoint('enb3', mac='00:00:00:00:00:03', ssid="handover",
-                             mode="g", channel="1", datapath='user',
-                             passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
-                             mobility_domain='a1b2', dpid='3',
-                             position='130,50,0', inband=True)
+                              mode="g", channel="1", datapath='user',
+                              passwd='123456789a', encrypt='wpa2', ieee80211r='yes',
+                              mobility_domain='a1b2', dpid='3',
+                              position='130,50,0', inband=True)
     backbone1 = net.addSwitch('backbone1', mac='00:00:00:00:00:04', dpid='4',
                               datapath='user', inband=True)
     server1 = net.addHost('server1', ip='10.0.0.100/8')
@@ -155,15 +155,9 @@ def topology():
             else:
                 cars[0].setPosition('140,50,0')
             j+=1
-        #if j == 2 and (time.time() - currentTime) == 1:
-        #    cars[0].cmd('wpa_cli -i car1-wlan0 scan')
-        # force association due to better rssi
-        #if j == 2 and (time.time() - currentTime) == 5:
-        #    cars[0].cmd('wpa_cli -i car1-wlan0 scan_results')
-        #    cars[0].cmd('wpa_cli -i car1-wlan0 roam 00:00:00:00:00:03')
 
     info("*** Running CLI\n")
-    CLI_wifi(net)
+    CLI(net)
 
     os.system('pkill -f \"xterm -title\"')
     os.system('pkill ryu-manager')
