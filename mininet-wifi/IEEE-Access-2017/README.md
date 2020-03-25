@@ -1,4 +1,18 @@
-### Please refer to the manual of Mininet-WiFi to reproduce this paper. Consider to use this [commit](https://github.com/intrig-unicamp/mininet-wifi/commit/7825d52da77fe331583c1a7f90d46860b4e18f02) from Mininet-WiFi.
+### Requirements
+```
+- Mininet-WiFi
+- VLC
+```
+
+### Reproducibility steps
+```
+- ~/mininet-wifi$ git clone https://github.com/ramonfontes/reproducible-research
+- ~/mininet-wifi$ sudo rm -r /usr/local/lib/python2.7/dist-packages/mininet*
+- ~/mininet-wifi$ git reset --hard b43af65
+- ~/mininet-wifi$ sudo make install
+- ~/mininet-wifi$ cd reproducible-research/mininet-wifi/IEEE-Access-2017
+- ~/mininet-wifi/reproducible-research/mininet-wifi/IEEE-Access-2017$ sudo python vanet.py
+```
 
 ### Bibtex:  
 @article{DosReisFontes2017,  

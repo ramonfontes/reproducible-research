@@ -110,6 +110,7 @@ def graphic():
     plt.show()
     plt.savefig("graphic.eps")
 
+
 def recordValues(car, client, kernel):
     if kernel == 1:
         car.cmd('ifconfig bond0 | grep \"TX packets\" | awk -F\' \' \'{print $3}\' >> %s' % c0_pkt)
@@ -121,6 +122,7 @@ def recordValues(car, client, kernel):
         client.cmd('ifconfig client-eth0 | grep \"RX packets\" | awk -F\' \' \'{print $2}\' | tr -d packets: >> %s' % switch_pkt)
         car.cmd('ifconfig bond0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $6}\' | tr -d bytes: >> %s' % c0_throughput)
         client.cmd('ifconfig client-eth0 | grep \"bytes\" | awk -F\' \' \'NR==1{print $2}\' | tr -d \'RX bytes:\' >> %s' % switch_throughput)
+
 
 def topology():
 
