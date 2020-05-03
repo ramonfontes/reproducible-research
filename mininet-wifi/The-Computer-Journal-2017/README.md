@@ -13,7 +13,7 @@ Firstly, run the controller:
 sudo java -jar target/floodlight.jar
 ```
 
-Then, start the network in a new terminal
+Then, start the network topology in a new terminal
 ``` 
 sudo python ncasting.py
 ```
