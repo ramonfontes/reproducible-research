@@ -63,3 +63,22 @@ sta1`s terminal #2
 ``` 
 iperf -c 192.168.1.254
 ```
+
+## Reproducibility Steps - SSID-based Flow Abstraction
+
+### Requirements
+- Mininet-WiFi
+- ofsoftswitch13
+
+To reproduce this case you have to run the following script:
+
+```
+sudo python forwardingBySSID.py
+```
+
+Then, you may run any application (e.g., Iperf) to measure the bandwidth. Alternatively, you may run `dpctl` to check the meter table configuration.
+
+
+```
+mininet-wifi> sh dpctl unix:/tmp/ap1 meter-config
+```
