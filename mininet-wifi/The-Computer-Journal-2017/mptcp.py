@@ -21,7 +21,7 @@ def topology():
  
 
     "Create a network."
-    net = Mininet_wifi(controller=RemoteController)
+    net = Mininet_wifi()
 
     info("*** Creating nodes\n")
     sta1 = net.addStation(
@@ -47,8 +47,8 @@ def topology():
     net.configureWifiNodes()
 
     info("*** Associating and Creating links\n")
-    net.addLink(ap2, sta1)
-    net.addLink(ap3, sta1)
+    net.addLink(ap2, sta1, 0, 1)
+    net.addLink(ap3, sta1, 0, 2)
     net.addLink(ap2, h4, bw=1000)
     net.addLink(ap3, h5, bw=1000)
     net.addLink(s6, h4, bw=1000)
