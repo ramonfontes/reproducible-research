@@ -13,7 +13,7 @@ Firstly, run the controller:
 sudo java -jar target/floodlight.jar
 ```
 
-Then, start the network topology in a new terminal
+Then, start the network topology Then, start the network topology in a new terminal:in a new terminal
 ``` 
 sudo python ncasting.py
 ```
@@ -39,7 +39,12 @@ In order to allow the communication we use pox controller with spanning tree ena
 ```
 Then, start the network topology in a new terminal:
 ``` 
-sudo python mptcp.pymininet-wifi>xterm sta1 sta1 h10 h10
+sudo python mptcp.py
+```
+
+and open 4 new terminals with xterm:
+``` 
+mininet-wifi>xterm sta1 sta1 h10 h10
 ```
 
 and run some commands with xterm:
@@ -76,8 +81,8 @@ iperf -c 192.168.1.254
 **Note** - You may want to set both Internet and wlan interfaces in `hybridVirtualPhysical.py`.
 
 ```
-internetIface ='eth0'# wired/wireless card.
-usbDongleIface ='wlan0'# wifi interface.
+internetIface ='eth0'  # wired/wireless card
+usbDongleIface ='wlan0'  # wifi interface
 ```
 
 Now, run the Floodlight controller
