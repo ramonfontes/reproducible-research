@@ -31,16 +31,19 @@ def topology():
     "Create a network."
     net = Mininet_wifi( controller=RemoteController, accessPoint=UserAP,
                         link=wmediumd, wmediumd_mode=interference )
-    staList = []
-    internetIface = 'enp2s0'
+
+    internetIface = 'enp3s0'
     usbDongleIface = 'wlxf4f26d193319'
 
     info("*** Creating nodes\n")
     for n in range(10):
-        staList.append(n)
-        staList[n] = net.addStation(
-            'sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:' + '%02x' % (n+1),
-            ip='192.168.0.%s/24' % (n+1))
+        net.addStation('sta%s' % (n+1), wlans=2, mac='00:00:00:00:00:' + '%02x' % (n+1),
+                       ip='192.168.0.%s/24' % (n+1))
+    sta11 = net.addStation('sta11', ip='10.0.0.111/8', position='60,100,0')
+
+    h12 = net.addHost('h12', ip='10.0.0.109/8')
+    root = net.addHost('root', ip='10.0.0.254/8', inNamespace=False)
+
     phyap1 = net.addAccessPoint(
         'phyap1', protocols='OpenFlow13', ssid='Sigcomm-2016',
         mode='g', channel='1', position='50,115,0', phywlan=usbDongleIface,
@@ -52,9 +55,6 @@ def topology():
     ap4 = net.addAccessPoint( 'ap4', protocols='OpenFlow13', ssid='ap-ssid4',
                               mode='g', channel='11', position='100,55,0' )
     c5 = net.addController( 'c5', controller=RemoteController, port=6653 )
-    sta11 = net.addStation( 'sta11', ip='10.0.0.111/8', position='60,100,0')
-    h12 = net.addHost( 'h12', ip='10.0.0.109/8')
-    root = net.addHost( 'root', ip='10.0.0.254/8', inNamespace=False )
 
     info("*** Configuring Propagation Model\n")
     net.setPropagationModel(model="logDistance", exp=4)
@@ -63,10 +63,8 @@ def topology():
     net.configureWifiNodes()
 
     info("*** Creating links\n")
-    for sta in staList:
-        net.addLink(sta, cls=mesh, ssid='meshNet')
-
-    net.plotGraph(max_x=240, max_y=240)
+    for sta in net.stations:
+        net.addLink(sta, cls=mesh, intf='%s-wlan0' % sta.name, ssid='meshNet')
 
     info("*** Associating and Creating links")
     net.addLink(phyap1, ap2)
@@ -77,8 +75,10 @@ def topology():
     net.addLink(root, ap3)
     net.addLink(phyap1, h12)
 
-    net.startMobility(time=0, model='RandomWalk', max_x=200,
-                      max_y=200, min_v=0.1, max_v=0.2, seed=20)
+    net.plotGraph(max_x=240, max_y=240)
+
+    net.setMobilityModel(time=0, model='RandomWalk', max_x=200,
+                         max_y=200, min_v=0.1, max_v=0.2, seed=20)
 
     info("*** Starting network\n")
     net.build()
@@ -102,17 +102,17 @@ def topology():
     sta11.cmd('ip route add default via 10.0.0.254')
     sta11.cmd('pushd /home/fontes; python3 -m http.server 80 &')
 
-    ip = 201
-    for sta in staList:
-        sta.setIP('10.0.0.%s/8' % ip, intf="%s-wlan1" % sta)
-        sta.cmd('ip route add default via 10.0.0.254')
-        ip+=1
+    for id, sta in enumerate(net.stations):
+        if sta.name != 'sta11':
+            sta.setIP('10.0.0.%s/8' % (id+201), intf="%s-wlan1" % sta)
+            sta.cmd('ip route add default via 10.0.0.254')
 
     info("*** Running CLI\n")
     CLI( net )
 
     info("*** Stopping network\n")
     net.stop()
+
 
 def startNAT( root, inetIntf, subnet='10.0/8', localIntf = None ):
     """Start NAT/forwarding between Mininet and external network
@@ -161,3 +161,4 @@ def fixNetworkManager( root, intf ):
 if __name__ == '__main__':
     setLogLevel( 'info' )
     topology()
+   
