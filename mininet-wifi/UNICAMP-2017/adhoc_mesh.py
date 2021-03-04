@@ -28,12 +28,12 @@ def topology():
     net.configureWifiNodes()
 
     info("*** Creating links\n")
-    net.addLink(sta1, cls=mesh, ssid='meshNet')
-    net.addLink(sta2, cls=mesh, ssid='meshNet')
-    net.addLink(sta3, cls=mesh, ssid='meshNet')
-    net.addLink(sta4, cls=adhoc, ssid='adhocNet')
-    net.addLink(sta5, cls=adhoc, ssid='adhocNet')
-    net.addLink(sta6, cls=adhoc, ssid='adhocNet')
+    net.addLink(sta1, cls=mesh, intf='sta1-wlan0', ssid='meshNet')
+    net.addLink(sta2, cls=mesh, intf='sta2-wlan0', ssid='meshNet')
+    net.addLink(sta3, cls=mesh, intf='sta3-wlan0', ssid='meshNet')
+    net.addLink(sta4, cls=adhoc, intf='sta4-wlan0', ssid='adhocNet')
+    net.addLink(sta5, cls=adhoc, intf='sta5-wlan0', ssid='adhocNet')
+    net.addLink(sta6, cls=adhoc, intf='sta6-wlan0', ssid='adhocNet')
 
     net.plotGraph(max_x=200, max_y=200)
 
