@@ -22,21 +22,21 @@ def topology():
     os.system('sudo fuser -k 6653/tcp')
 
     "Create a network."
-    net = MininetWithControlWNet(controller=RemoteController, accessPoint=UserAP,
-                                 link=wmediumd, wmediumd_mode=interference,
-                                 inNamespace=True)
+    net = MininetWithControlWNet(controller=RemoteController,
+                                 link=wmediumd, wmediumd_mode=interference)
 
     info("*** Creating nodes\n")
     net.addStation('sta1', ip='10.0.0.1/8', position='20,0,0', inNamespace=False,
-                   scan_freq='2412', freq_list='2412')
+                   #scan_freq='2412', freq_list='2412',
+                   bgscan_threshold=-60, s_inverval=5, l_interval=10)
     ap1 = net.addAccessPoint('ap1', mac='02:00:00:00:00:01',
                              ssid='handover', mode='g', channel='1', ieee80211r='yes',
                              mobility_domain='a1b2', passwd='123456789a', encrypt='wpa2',
-                             position='10,30,0', inNamespace=True)
+                             position='10,30,0', datapath='user')
     ap2 = net.addAccessPoint('ap2', mac='02:00:00:00:00:02',
-                             ssid='handover', mode='g', channel='1', ieee80211r='yes',
+                             ssid='handover', mode='g', channel='6', ieee80211r='yes',
                              mobility_domain='a1b2', passwd='123456789a', encrypt='wpa2',
-                             position='100,30,0', inNamespace=True)
+                             position='100,30,0', datapath='user')
     c1 = net.addController('c1', controller=RemoteController, port=6653)
 
     info("*** Configuring Propagation Model\n")
@@ -68,5 +68,5 @@ def topology():
     net.stop()
 
 if __name__ == '__main__':
-    setLogLevel('info')
+    setLogLevel('debug')
     topology()
